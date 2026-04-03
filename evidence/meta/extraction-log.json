@@ -1,0 +1,51 @@
+[
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "colorectal",
+    "claims_extracted": 17,
+    "date": "2026-04-03T22:45:08.638Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "breast",
+    "claims_extracted": 7,
+    "date": "2026-04-03T22:45:38.568Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "lung",
+    "claims_extracted": 11,
+    "date": "2026-04-03T22:46:25.842Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "bladder",
+    "claims_extracted": 6,
+    "date": "2026-04-03T22:46:51.276Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "melanoma",
+    "claims_extracted": 9,
+    "date": "2026-04-03T22:47:26.520Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "physicianFAQ.js",
+    "cancer_type": "_default",
+    "claims_extracted": 8,
+    "date": "2026-04-03T22:47:56.611Z",
+    "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "source": "expertInsights.js",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 10,
+    "date": "2026-04-03T22:48:38.183Z",
+    "model": "claude-sonnet-4-20250514"
+  }
+]

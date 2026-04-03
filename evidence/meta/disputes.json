@@ -1,0 +1,150 @@
+[
+  {
+    "type": "unmatched_claude",
+    "pmid": "35657320",
+    "score": 0.09090909090909091,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "XCN-EVIDENCE-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "CRC landmark",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "url": null
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Landmark CRC ctDNA MRD evidence published in NEJM 2022",
+        "trial_name": null,
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": null,
+        "n": null,
+        "hr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "follow_up_months": null,
+        "effect_summary": "Landmark CRC evidence"
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-03",
+        "model_version": "claude-sonnet-4-20250514",
+        "seed_source": "physicianFAQ.js"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "35657320",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "CRC-DYNAMIC-002",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/35657320.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "III"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "A completely different subgroup analysis finding with unrelated terms",
+        "trial_name": "DYNAMIC",
+        "endpoint": "overall survival",
+        "endpoint_type": "secondary",
+        "result_direction": "positive",
+        "n": 200,
+        "hr": 0.65,
+        "ci_lower": 0.4,
+        "ci_upper": 0.9,
+        "p_value": 0.01,
+        "follow_up_months": 37,
+        "effect_summary": "HR 0.65"
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-03",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      }
+    }
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "99999999",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "CRC-DYNAMIC-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/35657320.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "II"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA-guided treatment reduced adjuvant chemotherapy use without compromising recurrence-free survival",
+        "trial_name": "DYNAMIC",
+        "endpoint": "recurrence-free survival",
+        "endpoint_type": "primary",
+        "result_direction": "non-inferior",
+        "n": 455,
+        "hr": 0.96,
+        "ci_lower": 0.51,
+        "ci_upper": 1.82,
+        "p_value": null,
+        "follow_up_months": 37,
+        "effect_summary": "HR 0.96, non-inferior"
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-03",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      }
+    }
+  }
+]

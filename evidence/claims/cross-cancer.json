@@ -1,0 +1,711 @@
+[
+  {
+    "id": "XCN-EVIDENCE-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "CRC landmark",
+      "journal": "NEJM",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Landmark CRC ctDNA MRD evidence published in NEJM 2022",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Landmark CRC evidence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-EVIDENCE-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "bladder",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Bladder cancer ctDNA evidence published in NEJM 2024",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Bladder cancer evidence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-GUIDELINES-001",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "NCCN Colon Cancer Guidelines v1.2025",
+      "journal": null,
+      "year": 2025,
+      "authors_short": "NCCN",
+      "source_type": "clinical-guideline",
+      "url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1428"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "NCCN includes ctDNA MRD recommendations for CRC Category 2A, stage II",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Category 2A recommendation"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-GUIDELINES-002",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "ASCO PCO 2024 — CRC ctDNA",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "ASCO",
+      "source_type": "clinical-guideline",
+      "url": "https://ascopubs.org/doi/10.1200/JCO.24.00512"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ASCO PCO covers CRC stage II-III ctDNA MRD testing",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Stage II-III coverage"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-CLINICAL-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "31070691",
+      "title": "lead time",
+      "journal": "JAMA Oncology",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Lead time from ctDNA detection to radiographic recurrence ranges from 3-12 months",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "3-12 month lead time"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-DIAGNOSTIC-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": null,
+      "title": "COSMOS specificity",
+      "journal": null,
+      "year": null,
+      "authors_short": "Guardant Health",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Guardant Reveal COSMOS specificity 98.2%",
+      "trial_name": "COSMOS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "98.2% specificity"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-DIAGNOSTIC-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": null,
+      "title": "COSMOS lead time",
+      "journal": null,
+      "year": null,
+      "authors_short": "Guardant Health",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Guardant Reveal COSMOS median lead time 5.3 months",
+      "trial_name": "COSMOS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 5.3,
+      "effect_summary": "5.3 month median lead time"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-GUIDELINES-003",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "CMS MolDX LCD L39256",
+      "journal": null,
+      "year": null,
+      "authors_short": "CMS",
+      "source_type": "clinical-guideline",
+      "url": "https://www.cms.gov/medicare-coverage-database"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Medicare covers tumor-informed ctDNA MRD across solid tumors via MolDX LCD L39256",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Medicare coverage for solid tumors"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-001",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Clinical sensitivity (percentage of recurred patients correctly identified as MRD-positive) differs from analytical sensitivity (detection rate in lab validation conditions) and should be distinguished when interpreting MRD test performance.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-002",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Landmark sensitivity (detection at a single post-surgery timepoint) typically yields lower numbers than longitudinal sensitivity (detection at any timepoint across multiple draws) and should be distinguished when comparing MRD tests.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-003",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": [
+        "II"
+      ],
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Stage II cancers present the greatest MRD detection challenge due to lower tumor burden and less circulating tumor DNA, yet represent where MRD-guided therapy decisions often have the most impact.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-004",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR, SW",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Analytical specificity (correct identification of negative samples in lab) differs from clinical specificity (MRD-negative results corresponding to no recurrence) and both metrics answer different clinical questions.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-005",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR, SW",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "With serial MRD testing, even 99% analytical specificity results in approximately 5% cumulative false positive probability over 5 annual tests, making analytical specificity particularly important for repeat monitoring scenarios.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-006",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR, SW",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "LOD (limit of detection) values cannot be compared directly across different MRD test architectures due to different units, pre-analytical factors, and methodological differences.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-007",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR, SW",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "When LOD is significantly lower than LOD95, MRD tests may offer additional surveillance potential through serial testing, as multiple samples provide repeated detection opportunities below the LOD95 threshold.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-008",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "SW",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "The amount of cfDNA input to the MRD assay (measured in ng) can be as relevant as blood volume (mL) for test performance, as different extraction methods yield different cfDNA amounts from the same blood volume.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-009",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Clinical sensitivity from interventional MRD trials requires careful interpretation because treatment effects on MRD-positive patients make it difficult to determine how many would have recurred without intervention.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "XCN-METHOD-010",
+    "type": "methodology_note",
+    "source": {
+      "pmid": null,
+      "title": "OpenOnco Expert Advisory Panel",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "MR",
+      "source_type": "expert-panel",
+      "url": null
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "MRD tests support three distinct clinical use cases (landmark post-surgery decision-making, treatment response monitoring, and surveillance) with different performance requirements and sensitivity figures that may not be interchangeable across use cases.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]

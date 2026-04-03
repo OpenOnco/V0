@@ -1,0 +1,275 @@
+[
+  {
+    "id": "BRC-SURVEILLANCE-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36720083",
+      "title": "c-TRAK TN — ctDNA surveillance in TNBC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA surveillance detects recurrence earlier than standard imaging in TNBC",
+      "trial_name": "c-TRAK TN",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA surveillance detects recurrence earlier than standard imaging"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-SURVEILLANCE-002",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36720083",
+      "title": "c-TRAK TN — ctDNA surveillance in TNBC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "RaDaR detected ctDNA median 1.4 months earlier than dPCR",
+      "trial_name": "c-TRAK TN",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 1.4,
+      "effect_summary": "RaDaR detected ctDNA 1.4 months earlier than dPCR"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-DARE-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "DARE trial — ASCO 2025 interim",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "conference-abstract",
+      "url": "https://clinicaltrials.gov/ct2/show/NCT04567420"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "DARE trial screened 507 high-risk HR+/HER2- patients, found 60 ctDNA-positive",
+      "trial_name": "DARE",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 507,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "60 of 507 patients were ctDNA-positive"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-DARE-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "DARE trial — ASCO 2025 interim",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "conference-abstract",
+      "url": "https://clinicaltrials.gov/ct2/show/NCT04567420"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Switching to palbociclib + fulvestrant achieved twofold higher ctDNA clearance at 3 months",
+      "trial_name": "DARE",
+      "endpoint": "ctDNA clearance",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 3,
+      "effect_summary": "Twofold higher ctDNA clearance at 3 months"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-DARE-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "DARE trial — ASCO 2025 interim",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "conference-abstract",
+      "url": "https://clinicaltrials.gov/ct2/show/NCT04567420"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Patients with sustained ctDNA negativity (99.5%) remained recurrence-free at 27.4 months",
+      "trial_name": "DARE",
+      "endpoint": "RFS",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 27.4,
+      "effect_summary": "99.5% of ctDNA-negative patients remained recurrence-free at 27.4 months"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-PROGNOSIS-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "36720083",
+      "title": "c-TRAK TN — ctDNA surveillance in TNBC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA positivity post-neoadjuvant chemo in TNBC has >95% PPV for recurrence",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": ">95% positive predictive value for recurrence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BRC-SURVEILLANCE-003",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36720083",
+      "title": "c-TRAK TN — lead time in TNBC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Lead time from ctDNA detection to radiographic recurrence in breast cancer ranges from 6-12 months",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "6-12 months lead time from ctDNA to radiographic recurrence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]

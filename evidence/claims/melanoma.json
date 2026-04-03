@@ -1,0 +1,365 @@
+[
+  {
+    "id": "MEL-EVIDENCE-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40250457",
+      "title": "COMBI-AD biomarker analysis",
+      "journal": "Lancet Oncology",
+      "year": 2026,
+      "authors_short": "COMBI-AD investigators et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "COMBI-AD biomarker analysis included 597 stage III melanoma patients with 60-month median follow-up",
+      "trial_name": "COMBI-AD",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 597,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 60,
+      "effect_summary": "597 stage III melanoma patients, 60-month median follow-up"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "40250457",
+      "title": "COMBI-AD biomarker analysis",
+      "journal": "Lancet Oncology",
+      "year": 2026,
+      "authors_short": "COMBI-AD investigators et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection rate was 13% (79/597) in stage III melanoma patients",
+      "trial_name": "COMBI-AD",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 597,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "13% baseline ctDNA detection rate"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40250457",
+      "title": "COMBI-AD biomarker analysis",
+      "journal": "Lancet Oncology",
+      "year": 2026,
+      "authors_short": "COMBI-AD investigators et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA+ patients in placebo arm had increased recurrence risk with HR 2.91",
+      "trial_name": "COMBI-AD",
+      "endpoint": "RFS",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": 2.91,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.0001,
+      "follow_up_months": null,
+      "effect_summary": "HR 2.91 for recurrence in ctDNA+ vs ctDNA- (placebo)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40250457",
+      "title": "COMBI-AD biomarker analysis",
+      "journal": "Lancet Oncology",
+      "year": 2026,
+      "authors_short": "COMBI-AD investigators et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA+ patients in targeted therapy arm had increased recurrence risk with HR 2.98",
+      "trial_name": "COMBI-AD",
+      "endpoint": "RFS",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": 2.98,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.0001,
+      "follow_up_months": null,
+      "effect_summary": "HR 2.98 for recurrence in ctDNA+ vs ctDNA- (targeted therapy)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-005",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36853306",
+      "title": "ctDNA in resected melanoma",
+      "journal": null,
+      "year": null,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA dynamics during adjuvant immunotherapy correlate with clinical outcomes",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA dynamics correlate with clinical outcomes during adjuvant immunotherapy"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-006",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "36853306",
+      "title": "ctDNA in resected melanoma",
+      "journal": null,
+      "year": null,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Pre-ICI ctDNA positivity rate was 91.7% in stage IV melanoma",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "91.7% ctDNA positivity rate pre-ICI in stage IV"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36853306",
+      "title": "ctDNA in resected melanoma",
+      "journal": null,
+      "year": null,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "6-month ctDNA clearance (47.4%) was associated with improved PFS (HR 10.0)",
+      "trial_name": null,
+      "endpoint": "PFS",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": 10,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.03,
+      "follow_up_months": null,
+      "effect_summary": "47.4% 6-month ctDNA clearance rate; HR 10.0 for PFS benefit"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-008",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "NCCN Melanoma Guidelines v2.2025",
+      "journal": null,
+      "year": 2025,
+      "authors_short": "NCCN",
+      "source_type": "clinical-guideline",
+      "url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1492"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "NCCN Melanoma guidelines do not yet include ctDNA MRD recommendations",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "No ctDNA MRD recommendations in current NCCN guidelines"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "MEL-EVIDENCE-009",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": null,
+      "title": "CMS MolDX LCD L39256",
+      "journal": null,
+      "year": null,
+      "authors_short": "CMS",
+      "source_type": "clinical-guideline",
+      "url": "https://www.cms.gov/medicare-coverage-database"
+    },
+    "scope": {
+      "cancer": "melanoma",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Medicare covers tumor-informed ctDNA in melanoma via MolDX",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Medicare coverage available for tumor-informed ctDNA assays"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]

@@ -1,0 +1,254 @@
+[
+  {
+    "id": "BLD-EVIDENCE-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "IMvigor011 Phase III trial enrolled 761 patients in ctDNA surveillance with 250 ctDNA+ patients randomized 2:1 to adjuvant atezolizumab vs placebo",
+      "trial_name": "IMvigor011",
+      "endpoint": "DFS",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": 0.64,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.0047,
+      "follow_up_months": null,
+      "effect_summary": "Median DFS 9.9 vs 4.8 months, HR 0.64, P=0.0047"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BLD-EVIDENCE-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "IMvigor011 showed median OS 32.8 vs 21.1 months for atezolizumab vs placebo in ctDNA+ patients",
+      "trial_name": "IMvigor011",
+      "endpoint": "OS",
+      "endpoint_type": "secondary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Median OS 32.8 vs 21.1 months"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BLD-EVIDENCE-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "IMvigor011 showed 12-month DFS 44.7% vs 30.0% for atezolizumab vs placebo in ctDNA+ patients",
+      "trial_name": "IMvigor011",
+      "endpoint": "DFS",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 12,
+      "effect_summary": "12-month DFS 44.7% vs 30.0%"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BLD-EVIDENCE-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "IMvigor011 showed 12-month OS 85.1% vs 70.0% for atezolizumab vs placebo in ctDNA+ patients",
+      "trial_name": "IMvigor011",
+      "endpoint": "OS",
+      "endpoint_type": "secondary",
+      "result_direction": "superior",
+      "n": 250,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 12,
+      "effect_summary": "12-month OS 85.1% vs 70.0%"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BLD-EVIDENCE-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA-negative patients in IMvigor011 had 12-month DFS of 95.4% and 12-month OS of 100%",
+      "trial_name": "IMvigor011",
+      "endpoint": "DFS",
+      "endpoint_type": "exploratory",
+      "result_direction": null,
+      "n": 511,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 12,
+      "effect_summary": "12-month DFS 95.4%, 12-month OS 100%"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "BLD-EVIDENCE-006",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "38507753",
+      "title": "IMvigor011",
+      "journal": "NEJM",
+      "year": 2024,
+      "authors_short": "Powles et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "bladder",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "IMvigor011 provides the first Level 1 evidence for intervening on positive ctDNA in an adjuvant setting in any cancer type",
+      "trial_name": "IMvigor011",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "First Level 1 evidence for ctDNA-guided intervention"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]

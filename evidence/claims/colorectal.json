@@ -1,0 +1,701 @@
+[
+  {
+    "id": "CRC-DYNAMIC-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
+      "journal": "New England Journal of Medicine",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "DYNAMIC trial randomized 455 stage II CRC patients to ctDNA-guided vs. standard management.",
+      "trial_name": "DYNAMIC",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 455,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "455 patients randomized to ctDNA-guided vs. standard management"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-DYNAMIC-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
+      "journal": "New England Journal of Medicine",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA-guided arm reduced adjuvant chemotherapy from 28% to 15%.",
+      "trial_name": "DYNAMIC",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Reduced adjuvant chemotherapy from 28% to 15%"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-DYNAMIC-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "35657320",
+      "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
+      "journal": "New England Journal of Medicine",
+      "year": 2022,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "2-year RFS non-inferior between ctDNA-guided vs. standard management: 93.5% vs 92.4% (HR 0.92).",
+      "trial_name": "DYNAMIC",
+      "endpoint": "RFS",
+      "endpoint_type": "primary",
+      "result_direction": "non-inferior",
+      "n": null,
+      "hr": 0.92,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 24,
+      "effect_summary": "2-year RFS 93.5% vs 92.4%, HR 0.92"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-DYNAMIC-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "DYNAMIC 5-year follow-up",
+      "journal": "Nature Medicine",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "5-year RFS was 88% vs. 87% between ctDNA-guided vs. standard management.",
+      "trial_name": "DYNAMIC",
+      "endpoint": "RFS",
+      "endpoint_type": null,
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 60,
+      "effect_summary": "5-year RFS 88% vs. 87%"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-DYNAMIC-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "40055522",
+      "title": "DYNAMIC 5-year follow-up",
+      "journal": "Nature Medicine",
+      "year": 2025,
+      "authors_short": "Tie et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "5-year OS was 93.8% vs 93.3% (HR 1.05; P=0.887).",
+      "trial_name": "DYNAMIC",
+      "endpoint": "OS",
+      "endpoint_type": null,
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": 1.05,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.887,
+      "follow_up_months": 60,
+      "effect_summary": "5-year OS 93.8% vs 93.3%, HR 1.05, P=0.887"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GALAXY-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37264205",
+      "title": "GALAXY/VEGA study",
+      "journal": "Nature Medicine",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "GALAXY/VEGA enrolled over 2,000 patients.",
+      "trial_name": "GALAXY/VEGA",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 2000,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Over 2,000 patients enrolled"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GALAXY-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37264205",
+      "title": "GALAXY/VEGA study",
+      "journal": "Nature Medicine",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA-positive patients receiving adjuvant chemotherapy had significantly improved DFS vs. observation (HR 0.39).",
+      "trial_name": "GALAXY/VEGA",
+      "endpoint": "DFS",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": 0.39,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA+ patients: adjuvant chemo vs. observation DFS HR 0.39"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GALAXY-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37264205",
+      "title": "GALAXY/VEGA study",
+      "journal": "Nature Medicine",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA-positive patients had DFS HR 11.99 vs. ctDNA-negative patients.",
+      "trial_name": "GALAXY/VEGA",
+      "endpoint": "DFS",
+      "endpoint_type": null,
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 11.99,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA+ vs. ctDNA- DFS HR 11.99"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GALAXY-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37264205",
+      "title": "GALAXY/VEGA study",
+      "journal": "Nature Medicine",
+      "year": 2023,
+      "authors_short": "Kotani et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA-positive patients had OS HR 9.68 vs. ctDNA-negative patients.",
+      "trial_name": "GALAXY/VEGA",
+      "endpoint": "OS",
+      "endpoint_type": null,
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 9.68,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA+ vs. ctDNA- OS HR 9.68"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-ALTAIR-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "ALTAIR trial",
+      "journal": null,
+      "year": 2026,
+      "authors_short": "ALTAIR investigators",
+      "source_type": "conference-abstract",
+      "url": "https://www.natera.com/company/news/natera-presents-updated-analyses-from-altair-clinical-trial-at-asco-gi/"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "I",
+        "II",
+        "III",
+        "IV"
+      ],
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ALTAIR trial showed FTD/TPI vs. placebo in Signatera-positive stage I-IV CRC yielded median DFS 9.23 vs. 5.55 months (HR 0.75; 95% CI 0.55-0.98; P=0.0406).",
+      "trial_name": "ALTAIR",
+      "endpoint": "DFS",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": 0.75,
+      "ci_lower": 0.55,
+      "ci_upper": 0.98,
+      "p_value": 0.0406,
+      "follow_up_months": null,
+      "effect_summary": "Median DFS 9.23 vs. 5.55 months, HR 0.75, P=0.0406"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-CITCCA-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "CITCCA study",
+      "journal": null,
+      "year": 2026,
+      "authors_short": "CITCCA investigators",
+      "source_type": "conference-abstract",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "CITCCA study of 377 patients showed post-treatment ctDNA positivity carried HR 38.5 for recurrence.",
+      "trial_name": "CITCCA",
+      "endpoint": "recurrence",
+      "endpoint_type": null,
+      "result_direction": "inferior",
+      "n": 377,
+      "hr": 38.5,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Post-treatment ctDNA+ HR 38.5 for recurrence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-REVEAL-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "Guardant Reveal stage III CRC study",
+      "journal": "Journal of Clinical Oncology",
+      "year": 2026,
+      "authors_short": "Guardant investigators",
+      "source_type": "journal-article",
+      "url": "https://investors.guardanthealth.com/press-releases/press-releases/2026/Largest-Published-Study-of-Molecular-Residual-Disease-MRD-in-Stage-III-Colon-Cancer-Shows-Guardant-Reveal-Blood-Test-More-Precisely-Identifies-Risk-of-Recurrence-After-Surgery-to-Support-Timely-Treatment-Decisions/default.aspx"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Guardant Reveal stage III study showed ctDNA+ patients had TTR HR 5.96.",
+      "trial_name": null,
+      "endpoint": "TTR",
+      "endpoint_type": null,
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 5.96,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA+ patients TTR HR 5.96"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-REVEAL-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "Guardant Reveal stage III CRC study",
+      "journal": "Journal of Clinical Oncology",
+      "year": 2026,
+      "authors_short": "Guardant investigators",
+      "source_type": "journal-article",
+      "url": "https://investors.guardanthealth.com/press-releases/press-releases/2026/Largest-Published-Study-of-Molecular-Residual-Disease-MRD-in-Stage-III-Colon-Cancer-Shows-Guardant-Reveal-Blood-Test-More-Precisely-Identifies-Risk-of-Recurrence-After-Surgery-to-Support-Timely-Treatment-Decisions/default.aspx"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "5-year DFS was 27.7% vs. 77.1% for ctDNA+ vs. ctDNA- patients.",
+      "trial_name": null,
+      "endpoint": "DFS",
+      "endpoint_type": null,
+      "result_direction": "inferior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": 60,
+      "effect_summary": "5-year DFS 27.7% vs. 77.1% (ctDNA+ vs. ctDNA-)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GUIDELINE-001",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "NCCN Colon Cancer Guidelines v1.2026",
+      "journal": null,
+      "year": 2026,
+      "authors_short": "NCCN",
+      "source_type": "clinical-guideline",
+      "url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1428"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "NCCN recognizes ctDNA as a high-risk factor for recurrence in the adjuvant setting, Category 2A for stage II adjuvant therapy decisions.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA recognized as high-risk factor, Category 2A for stage II"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-GUIDELINE-002",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "ASCO Provisional Clinical Opinion 2024",
+      "journal": null,
+      "year": 2024,
+      "authors_short": "ASCO",
+      "source_type": "clinical-guideline",
+      "url": "https://ascopubs.org/doi/10.1200/JCO.24.00512"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ASCO issued a Provisional Clinical Opinion endorsing ctDNA for stage II-III CRC to identify patients who may benefit from adjuvant therapy intensification or de-escalation.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ASCO PCO endorses ctDNA for stage II-III adjuvant therapy decisions"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-COSMOS-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": null,
+      "title": "COSMOS study",
+      "journal": null,
+      "year": null,
+      "authors_short": "COSMOS investigators",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "COSMOS demonstrated 98.2% specificity for ctDNA detection.",
+      "trial_name": "COSMOS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "98.2% specificity"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "CRC-REINERT-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "31070691",
+      "title": "Analysis of ctDNA to Predict Outcome after Surgery and Adjuvant Treatment in Colorectal Cancer",
+      "journal": "JAMA Oncology",
+      "year": 2019,
+      "authors_short": "Reinert et al.",
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Reinert et al. showed median 8.7 months lead time before radiographic recurrence.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "Median 8.7 months lead time before radiographic recurrence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]

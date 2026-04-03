@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://openonco.com/evidence/claim.schema.json",
+  "title": "Evidence Claim",
+  "description": "A structured claim extracted from the oncology evidence store.",
+  "type": "object",
+  "required": ["id", "type", "source", "scope", "finding", "extraction"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique claim identifier, e.g. CRC-DYNAMIC-001",
+      "pattern": "^[A-Z0-9][A-Z0-9-]+$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "trial_result",
+        "guideline_recommendation",
+        "diagnostic_performance",
+        "clinical_utility",
+        "methodology_note"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "description": "Bibliographic source for this claim.",
+      "required": ["source_type", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "pmid": {
+          "type": ["string", "null"],
+          "description": "PubMed ID"
+        },
+        "doi": {
+          "type": ["string", "null"],
+          "description": "Digital Object Identifier"
+        },
+        "title": {
+          "type": "string"
+        },
+        "journal": {
+          "type": ["string", "null"]
+        },
+        "year": {
+          "type": ["integer", "null"],
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "authors_short": {
+          "type": ["string", "null"],
+          "description": "Short author list, e.g. 'Tie et al.'"
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "journal-article",
+            "conference-abstract",
+            "clinical-guideline"
+          ]
+        },
+        "raw_file": {
+          "type": ["string", "null"],
+          "description": "Relative path to the raw source file, e.g. raw/papers/35657320.md"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "description": "Clinical scope: what cancer, stage, setting, and test category this claim applies to.",
+      "required": ["cancer"],
+      "additionalProperties": false,
+      "properties": {
+        "cancer": {
+          "type": "string",
+          "enum": [
+            "colorectal",
+            "breast",
+            "lung",
+            "bladder",
+            "melanoma",
+            "hematologic",
+            "cross-cancer"
+          ]
+        },
+        "stages": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          },
+          "description": "Cancer stages, e.g. ['II'], ['III', 'IV']"
+        },
+        "setting": {
+          "type": ["string", "null"],
+          "enum": [
+            "adjuvant",
+            "neoadjuvant",
+            "surveillance",
+            "metastatic",
+            "screening",
+            null
+          ]
+        },
+        "test_category": {
+          "type": ["string", "null"],
+          "enum": ["MRD", "ECD", "TDS", "HCT", null],
+          "description": "Diagnostic test category"
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "description": "The actual claim content. Fields vary by claim type; only description is always required.",
+      "required": ["description"],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable summary of the finding."
+        },
+        "trial_name": {
+          "type": ["string", "null"]
+        },
+        "endpoint": {
+          "type": ["string", "null"],
+          "description": "Clinical endpoint measured, e.g. 'recurrence-free survival'"
+        },
+        "endpoint_type": {
+          "type": ["string", "null"],
+          "enum": ["primary", "secondary", "exploratory", null]
+        },
+        "result_direction": {
+          "type": ["string", "null"],
+          "enum": ["superior", "non-inferior", "inferior", "no-difference", "positive", "negative", null],
+          "description": "Direction of the result"
+        },
+        "n": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Sample size"
+        },
+        "hr": {
+          "type": ["number", "null"],
+          "description": "Hazard ratio"
+        },
+        "or": {
+          "type": ["number", "null"],
+          "description": "Odds ratio"
+        },
+        "rr": {
+          "type": ["number", "null"],
+          "description": "Relative risk"
+        },
+        "ci_lower": {
+          "type": ["number", "null"],
+          "description": "Lower bound of confidence interval"
+        },
+        "ci_upper": {
+          "type": ["number", "null"],
+          "description": "Upper bound of confidence interval"
+        },
+        "p_value": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "sensitivity": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Diagnostic sensitivity (for diagnostic_performance claims)"
+        },
+        "specificity": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Diagnostic specificity (for diagnostic_performance claims)"
+        },
+        "ppv": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Positive predictive value"
+        },
+        "npv": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Negative predictive value"
+        },
+        "follow_up_months": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Median follow-up in months"
+        },
+        "effect_summary": {
+          "type": ["string", "null"],
+          "description": "One-line effect summary for display"
+        },
+        "guideline_body": {
+          "type": ["string", "null"],
+          "description": "Issuing guideline organization (for guideline_recommendation claims)"
+        },
+        "recommendation_strength": {
+          "type": ["string", "null"],
+          "description": "Strength of recommendation, e.g. 'strong', 'conditional'"
+        },
+        "evidence_level": {
+          "type": ["string", "null"],
+          "description": "Level of evidence, e.g. 'high', 'moderate', 'low'"
+        }
+      }
+    },
+    "extraction": {
+      "type": "object",
+      "description": "Metadata about how this claim was extracted.",
+      "required": ["extracted_by", "extracted_date"],
+      "additionalProperties": false,
+      "properties": {
+        "extracted_by": {
+          "type": "string",
+          "description": "Who or what extracted this claim, e.g. 'claude', 'human'"
+        },
+        "extracted_date": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of extraction"
+        },
+        "model_version": {
+          "type": ["string", "null"],
+          "description": "Model version used for extraction, if AI-extracted"
+        },
+        "source_quote_hash": {
+          "type": ["string", "null"],
+          "description": "Hash of the source quote used for extraction traceability"
+        }
+      }
+    },
+    "verification": {
+      "type": ["object", "null"],
+      "description": "Cross-verification by a second model or human. Optional until verified.",
+      "additionalProperties": false,
+      "properties": {
+        "verified_by": {
+          "type": ["string", "null"],
+          "description": "Who or what verified this claim"
+        },
+        "verified_date": {
+          "type": ["string", "null"],
+          "format": "date"
+        },
+        "agreement": {
+          "type": ["boolean", "null"],
+          "description": "Whether the verifier agrees with the claim"
+        },
+        "dispute_notes": {
+          "type": ["string", "null"],
+          "description": "Notes if there is a disagreement"
+        }
+      }
+    },
+    "review": {
+      "type": ["object", "null"],
+      "description": "Human review status. Optional until reviewed.",
+      "additionalProperties": false,
+      "properties": {
+        "human_reviewed": {
+          "type": "boolean",
+          "default": false
+        },
+        "review_priority": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", null]
+        },
+        "reviewer": {
+          "type": ["string", "null"]
+        },
+        "review_date": {
+          "type": ["string", "null"],
+          "format": "date"
+        }
+      }
+    }
+  }
+}

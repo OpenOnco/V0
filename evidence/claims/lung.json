@@ -1,0 +1,435 @@
+[
+  {
+    "id": "LNG-NO-EVIDENCE-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "37379158",
+      "title": "IMpower010 — ctDNA and adjuvant atezolizumab",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "I",
+        "II",
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA clearance post-surgery predicts benefit from adjuvant atezolizumab in stage IB-IIIA NSCLC.",
+      "trial_name": "IMpower010",
+      "endpoint": "DFS",
+      "endpoint_type": "secondary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA-positive patients had significantly improved DFS with adjuvant immunotherapy vs. BSC"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "TRACERx demonstrated ultrasensitive ctDNA detection using PhasED-Seq with 197 patients and 1,069 samples.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 197,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "197 pts, 1,069 samples analyzed"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "PhasED-Seq achieved LOD95 of 1 ppm versus 84 ppm for CAPP-Seq.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "LOD95 1 ppm vs. 84 ppm CAPP-Seq"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-004",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "PhasED-Seq achieved clinical sensitivity of 67% versus 28% for CAPP-Seq.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.022,
+      "follow_up_months": null,
+      "effect_summary": "clinical sensitivity 67% vs. 28%, P=0.022"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-005",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — ultrasensitive ctDNA in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Median lead time of 164 days before clinical relapse was achieved with PhasED-Seq.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "median lead time of 164 days before clinical relapse"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "AEGEAN exploratory analysis — ASCO 2025",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "conference-abstract",
+      "url": "https://www.lungcancerstoday.com/post/how-mrd-status-affects-agean-trial-regimen-in-patients-with-resectable-nsclc"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Patients without ctDNA clearance during neoadjuvant treatment or with post-surgical MRD had worse outcomes with perioperative durvalumab.",
+      "trial_name": "AEGEAN",
+      "endpoint": null,
+      "endpoint_type": "exploratory",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "worse outcomes without ctDNA clearance or with post-surgical MRD"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-007",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": null,
+      "title": "DART trial — ASCO 2025",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "conference-abstract",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Detectable ctDNA during consolidative durvalumab predicts progression 7.4 months before radiological evidence.",
+      "trial_name": "DART",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "predicts progression 7.4 months before radiological evidence"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NO-EVIDENCE-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": null,
+      "title": "NSCLC ctDNA meta-analysis — JCO Precision Oncology 2025",
+      "journal": "JCO Precision Oncology",
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": "https://ascopubs.org/doi/10.1200/PO-25-00489"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "A meta-analysis of 13 studies with 1,309 patients confirmed longitudinal ctDNA monitoring as strongest prognostic signal.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 1309,
+      "hr": 8.7,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "HR 8.70, strongest prognostic signal"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NOT-IN-GUIDELINES-001",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": null,
+      "title": "NCCN NSCLC Guidelines v3.2025",
+      "journal": null,
+      "year": 2025,
+      "authors_short": null,
+      "source_type": "clinical-guideline",
+      "url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1450"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "NCCN NSCLC Guidelines reference ctDNA as an emerging tool but do not yet include a specific MRD recommendation.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "emerging tool but no specific MRD recommendation"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-WHAT-TO-DO-POSITIVE-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — lead time in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "TRACERx showed median 164-day lead time with ultrasensitive PhasED-Seq assay.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "median 164-day lead time with ultrasensitive PhasED-Seq"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  },
+  {
+    "id": "LNG-NOT-VALIDATED-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "36108067",
+      "title": "TRACERx — Signatera validation in NSCLC",
+      "journal": null,
+      "year": null,
+      "authors_short": null,
+      "source_type": "journal-article",
+      "url": null
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "PhasED-Seq achieves LOD95 of 1 ppm with 67% clinical sensitivity versus 28% for standard SNV-based methods.",
+      "trial_name": "TRACERx",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "follow_up_months": null,
+      "effect_summary": "LOD95 1 ppm, 67% sensitivity vs. 28% standard methods"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-03",
+      "model_version": "claude-sonnet-4-20250514",
+      "seed_source": "physicianFAQ.js"
+    }
+  }
+]
