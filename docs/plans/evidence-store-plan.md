@@ -156,6 +156,31 @@ Guidelines from these bodies are peer-reviewed publications and qualify as prima
 
 No other source types are accepted. Vendor press releases, preprints, and "data on file" sources are logged to `meta/pending-publications.json` as pointers for future PubMed lookup, never as claim sources.
 
+### Test linkage (scope.tests)
+
+Claims can optionally link to specific tests in the OpenOnco test database (`data.js`). This is the bridge between "why to use MRD testing" (evidence store) and "which test to use" (test database).
+
+The `scope.tests` array is optional. Each entry has:
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `test_id` | ID from data.js (enables cross-linking) | `"mrd-1"` |
+| `test_name` | Human-readable test name | `"Signatera"` |
+| `vendor` | Vendor name | `"Natera"` |
+| `role` | How the test relates to this claim | see below |
+
+**Role values:**
+
+| Role | Meaning | Example |
+|------|---------|---------|
+| `assay_used` | This specific test/assay was used in the trial | DYNAMIC trial used Signatera |
+| `assay_validated` | Claim is about this test's validation/performance data | "Signatera sensitivity 97.3% in CRC" |
+| `named_in_guideline` | Test is specifically named in the guideline | "Signatera is NCCN-named for CRC" |
+
+**When tests is null/empty:** The claim is test-agnostic. Example: "NCCN recommends ctDNA as option for stage II adjuvant decisions" — references ctDNA testing generically, not a specific product.
+
+**Extraction rule:** The extraction agent populates `scope.tests` whenever a paper names a specific commercial assay. The agent matches test names against the OpenOnco test database to get the `test_id`. If the paper uses a generic term like "ctDNA assay" without naming the product, `tests` stays empty.
+
 ### Claim Types
 
 | Type | Description | Key fields |

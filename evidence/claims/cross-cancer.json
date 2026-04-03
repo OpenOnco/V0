@@ -215,7 +215,13 @@
       "cancer": "cross-cancer",
       "stages": null,
       "setting": "surveillance",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-6",
+          "test_name": "Guardant Reveal"
+        }
+      ]
     },
     "finding": {
       "description": "Guardant Reveal COSMOS specificity 98.2%",
@@ -254,7 +260,13 @@
       "cancer": "cross-cancer",
       "stages": null,
       "setting": "surveillance",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-6",
+          "test_name": "Guardant Reveal"
+        }
+      ]
     },
     "finding": {
       "description": "Guardant Reveal COSMOS median lead time 5.3 months",

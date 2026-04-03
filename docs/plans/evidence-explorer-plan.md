@@ -2,134 +2,163 @@
 
 ## Overview
 
-A filter-based evidence explorer for physicians. No LLM involved in the query path — purely deterministic rendering of pre-verified claims from the evidence store (Phase A).
+A search-first evidence explorer for physicians. Physician types a natural language question. An LLM router parses it into a structured query against the claims store. Pre-verified claim cards are returned. The LLM never generates clinical content — it only routes.
 
-Filters only for v1. Natural language search and LLM routing are future additions.
+### Key principle
+
+The LLM writes at most ONE framing sentence. Everything else on screen is pre-verified claim content rendered directly from the evidence store.
 
 ### Where it lives
 
 New route on the main site: `openonco.org/evidence`
 - Accessible from physician persona navigation
 - Separate from the test database (openonco.org with test cards)
-- Both linked from a shared physician landing page so docs find everything in one place
-- Eventually: `openonco.org/tests` (existing) + `openonco.org/evidence` (new) as peer sections
+- Both linked from shared physician navigation so docs find everything in one place
 
 ### What it is NOT
 
-- NOT an AI chat interface
-- NOT a literature search engine
-- NOT a replacement for the test database
-- It is a structured, filterable view of peer-reviewed evidence claims
+- NOT an AI chat — no multi-turn conversation, no follow-up questions
+- NOT a literature search engine — only returns claims from the curated store
+- NOT generating clinical guidance — every word of substance traces to a PMID
 
 ---
 
-## Data Source
-
-Reads from `evidence/claims/*.json` files (built in Phase A).
-Each claim has the schema defined in Phase A, with these filterable fields:
+## Architecture
 
 ```
-scope.cancer        → Cancer type filter
-scope.stages[]      → Stage filter
-scope.setting       → Clinical setting (adjuvant, surveillance, screening)
-type                → Claim type (trial_result, guideline_recommendation, diagnostic_performance, clinical_utility)
-source.source_type  → Source type (journal-article, conference-abstract, clinical-guideline)
-source.year         → Publication year (for recency sorting)
-finding.n           → Sample size (for evidence strength sorting)
-verification.agreement → Verification status
+Physician types question
+        │
+        ▼
+┌─────────────────────┐
+│   LLM Router        │  Lightweight Claude API call
+│   (parse only)      │  ~100 tokens output
+│                     │
+│   Input: free text  │
+│   Output: JSON      │
+│   {                 │
+│     cancer,         │
+│     stages,         │
+│     test_ids,       │
+│     claim_types,    │
+│     keywords,       │
+│     framing_sentence│
+│   }                 │
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│   Deterministic     │  Pure filter/match against
+│   Query Engine      │  claims store JSON
+│                     │
+│   No LLM involved   │
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│   Claim Cards       │  Pre-verified content
+│   rendered from     │  rendered as-is
+│   claims store      │  No generation
+└─────────────────────┘
 ```
 
 ---
 
-## Filter Design
+## LLM Router Specification
 
-### Primary filters (always visible)
+### What the router does
 
-| Filter | Type | Options | Default |
-|--------|------|---------|---------|
-| Cancer type | Single select dropdown | All cancers, Colorectal, Breast, Lung (NSCLC), Bladder, Melanoma, Hematologic, + any cancer type present in claims | All cancers |
-| Stage | Single select dropdown | All stages, Stage I, Stage II, Stage III, Stage IV | All stages |
-| Evidence type | Single select dropdown | All types, Trial results, Guidelines, Diagnostic performance, Clinical utility | All types |
+Takes physician's free-text question and outputs a structured JSON query. That's it.
 
-### Secondary filters (collapsible "More filters" row)
+### Router prompt (system)
 
-| Filter | Type | Options | Default |
-|--------|------|---------|---------|
-| Clinical setting | Single select | All, Adjuvant, Surveillance, Screening, Treatment selection | All |
-| Source type | Single select | All, Journal articles, Conference abstracts, Clinical guidelines | All |
-| Sort by | Single select | Relevance (default), Newest first, Largest trial first | Relevance |
+```
+You are a query parser for a clinical evidence database about MRD (Minimal Residual Disease) 
+and liquid biopsy testing. Parse the physician's question into structured filters.
 
-### Filter behavior
+You have access to these test names and IDs:
+{list of test_name → test_id mappings from the OpenOnco database}
 
-- Filters are AND-combined: selecting "Colorectal" + "Stage II" shows only claims matching both
-- Counts update live: each filter option shows the number of matching claims in parentheses, e.g., "Colorectal (24)"
-- Empty states: if a filter combination returns 0 claims, show "No evidence found for this combination" with a note about which cancer types have the most coverage
-- URL params: filters are reflected in the URL so physicians can bookmark/share filtered views, e.g., `/evidence?cancer=colorectal&stage=II`
+Output JSON only:
+{
+  "cancer": "colorectal" | "breast" | "lung" | "bladder" | "melanoma" | "hematologic" | null,
+  "stages": ["II"] | ["II", "III"] | null,
+  "test_ids": ["mrd-1"] | null,
+  "test_names": ["Signatera"] | null,
+  "claim_types": ["trial_result", "guideline_recommendation"] | null,
+  "keywords": ["adjuvant", "de-escalation"] | null,
+  "framing": "Showing evidence for Signatera in stage II colorectal cancer"
+}
+
+Rules:
+- If the physician mentions a specific test by name or vendor, resolve it to test_id
+- If they say "MRD test" generically, leave test_ids null (return all)
+- "framing" is ONE sentence describing what you're showing, never clinical advice
+- When unsure about a field, set it to null (broader results are better than missing results)
+- Never add information the physician didn't ask about
+```
+
+### Router examples
+
+| Physician types | Router outputs |
+|----------------|----------------|
+| "Signatera for colon cancer" | `{cancer: "colorectal", test_ids: ["mrd-1"], test_names: ["Signatera"], framing: "Showing evidence for Signatera in colorectal cancer"}` |
+| "MRD testing stage II CRC" | `{cancer: "colorectal", stages: ["II"], framing: "Showing evidence for MRD testing in stage II colorectal cancer"}` |
+| "what do I do with a positive result?" | `{claim_types: ["clinical_utility"], keywords: ["positive"], framing: "Showing evidence on clinical actions after a positive MRD result"}` |
+| "the Natera test for breast cancer" | `{cancer: "breast", test_ids: ["mrd-1"], test_names: ["Signatera"], framing: "Showing evidence for Signatera (Natera) in breast cancer"}` |
+| "is ctDNA in NCCN guidelines" | `{claim_types: ["guideline_recommendation"], keywords: ["NCCN"], framing: "Showing NCCN guideline recommendations for ctDNA testing"}` |
+| "clonoSEQ" | `{test_ids: ["mrd-5"], test_names: ["clonoSEQ"], framing: "Showing evidence for clonoSEQ"}` |
+
+### Router constraints
+
+- Claude API call with `max_tokens: 200`, `temperature: 0`
+- Model: claude-sonnet (fast, cheap, structured output is easy for it)
+- Total latency budget: <2 seconds for the router call
+- If the API call fails, fall back to keyword search over claim descriptions (no LLM needed)
+- The test name → test_id mapping is injected into the system prompt at build time from data.js
 
 ---
 
-## Claim Card Rendering
+## Query Engine
 
-Each claim renders as a card with these sections:
+### How filtering works
 
-### Card layout
+After the router outputs structured JSON, a pure JS function filters claims:
 
+```javascript
+function queryEvidence(claims, query) {
+  return claims.filter(claim => {
+    if (query.cancer && claim.scope.cancer !== query.cancer) return false;
+    if (query.stages?.length && !query.stages.some(s => claim.scope.stages?.includes(s))) return false;
+    if (query.test_ids?.length) {
+      // Include test-specific AND test-agnostic claims
+      const isTestSpecific = claim.scope.tests?.some(t => query.test_ids.includes(t.test_id));
+      const isTestAgnostic = !claim.scope.tests?.length;
+      if (!isTestSpecific && !isTestAgnostic) return false;
+    }
+    if (query.claim_types?.length && !query.claim_types.includes(claim.type)) return false;
+    if (query.keywords?.length) {
+      const text = JSON.stringify(claim).toLowerCase();
+      if (!query.keywords.some(kw => text.includes(kw.toLowerCase()))) return false;
+    }
+    return true;
+  });
+}
 ```
-┌─────────────────────────────────────────────────┐
-│ [Trial result]  [Verified ✓]                    │
-│                                                 │
-│ DYNAMIC trial: ctDNA-guided approach safely      │
-│ reduced chemotherapy in stage II CRC             │
-│                                                 │
-│ Randomized 455 stage II CRC patients. ctDNA-    │
-│ guided arm reduced adjuvant chemo from 28% to   │
-│ 15% with non-inferior recurrence-free survival. │
-│                                                 │
-│ n = 455    HR = 0.92    RFS = non-inferior      │
-│                                                 │
-│ Tie et al., NEJM 2022 · PMID 35657320          │
-└─────────────────────────────────────────────────┘
-```
 
-### Card elements
+### Test-specific vs test-agnostic behavior
 
-1. **Type badge** — color-coded by claim type:
-   - `trial_result` → amber badge
-   - `guideline_recommendation` → blue badge
-   - `diagnostic_performance` → teal badge
-   - `clinical_utility` → purple badge
-   - `methodology_note` → gray badge
+When a physician asks about a specific test (e.g., "Signatera"), the results include:
 
-2. **Verification badge** — green "Verified" if `verification.agreement: true`
+1. **Test-specific claims** — trials that used Signatera, Signatera validation data, guidelines naming Signatera
+2. **Test-agnostic claims** — general ctDNA/MRD evidence for the same cancer/stage that applies regardless of which test was used
 
-3. **Headline** — `finding.description` truncated to ~120 chars, or a generated headline from trial name + key finding
+Test-specific claims sort first. Test-agnostic claims follow under a subtle separator: "General ctDNA evidence also relevant to this query"
 
-4. **Detail text** — `finding.effect_summary` or the full description
-
-5. **Quantitative metrics row** (only for trial_result and diagnostic_performance):
-   - n, HR, CI, p-value, follow-up period, sensitivity, specificity
-   - Only show fields that have non-null values
-
-6. **Citation footer** — `source.authors_short`, journal, year, PMID as link to PubMed
-   - PMID links to `https://pubmed.ncbi.nlm.nih.gov/{pmid}/`
-   - DOI links to `https://doi.org/{doi}`
-
-### Sorting and grouping
-
-**Default sort ("Relevance"):**
-1. Guidelines first (these frame the clinical context)
-2. Trial results, sorted by sample size descending (largest evidence base first)
-3. Diagnostic performance data
-4. Clinical utility data
-5. Methodology notes last
-
-**Within each group**, sort by publication year descending (newest first).
-
-**Grouping (v1):** Flat list, no grouping headers. Future enhancement: group by source paper ("From the DYNAMIC trial: 3 claims").
+This way a doc asking about Signatera gets the full picture without us making the generalization for them.
 
 ---
 
-## Page Structure
+## Page Layout
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -137,79 +166,124 @@ Each claim renders as a card with these sections:
 ├─────────────────────────────────────────────────┤
 │                                                 │
 │  Evidence explorer                              │
-│  Peer-reviewed evidence on MRD and liquid       │
-│  biopsy testing, updated weekly.                │
+│  Peer-reviewed evidence on cancer diagnostic    │
+│  testing. Updated weekly from published         │
+│  literature.                                    │
 │                                                 │
-│  [Cancer type ▾] [Stage ▾] [Evidence type ▾]    │
-│  More filters ▾                                 │
+│  ┌─────────────────────────────────────────┐    │
+│  │ Ask a question about MRD or liquid      │    │
+│  │ biopsy testing...                       │    │
+│  └─────────────────────────────────────────┘    │
 │                                                 │
-│  24 claims from 12 sources                      │
+│  Example questions:                             │
+│  "Signatera for stage II colon cancer"          │
+│  "Is MRD testing in NCCN guidelines?"           │
+│  "What to do with a positive ctDNA result"      │
+│                                                 │
+│  ─ ─ ─ ─ (after query) ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│                                                 │
+│  Showing evidence for Signatera in stage II     │
+│  colorectal cancer                              │
+│  8 claims from 5 peer-reviewed sources          │
+│                                                 │
+│  ── Signatera-specific evidence ──              │
 │                                                 │
 │  ┌─ Claim card ─────────────────────────────┐   │
-│  │ ...                                      │   │
+│  │ [Guideline] [Signatera] [Verified]       │   │
+│  │ NCCN names Signatera for CRC...          │   │
 │  └──────────────────────────────────────────┘   │
 │  ┌─ Claim card ─────────────────────────────┐   │
-│  │ ...                                      │   │
+│  │ [Trial result] [Signatera] [Verified]    │   │
+│  │ DYNAMIC trial...                         │   │
 │  └──────────────────────────────────────────┘   │
-│  ...                                            │
+│                                                 │
+│  ── General ctDNA evidence ──                   │
+│                                                 │
+│  ┌─ Claim card ─────────────────────────────┐   │
+│  │ [Guideline] [Verified]                   │   │
+│  │ ASCO endorses ctDNA for stage II-III...  │   │
+│  └──────────────────────────────────────────┘   │
 │                                                 │
 │  ┌─ Provenance footer ──────────────────────┐   │
-│  │ All claims extracted from peer-reviewed  │   │
-│  │ publications and verified by independent │   │
-│  │ AI cross-check. Not medical advice.      │   │
-│  │ How we verify evidence →                 │   │
-│  │ Last updated: April 3, 2026              │   │
+│  │ All claims from peer-reviewed sources.  │   │
+│  │ Not medical advice. How we verify →     │   │
 │  └──────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────┘
 ```
 
-### Navigation integration
+---
 
-The physician persona header gets two peer tabs:
-- **Tests** → existing test card grid (openonco.org or /tests)
-- **Evidence** → new evidence explorer (/evidence)
+## Claim Card Rendering
 
-Both accessible from the same navigation. A physician landing page can link to both with clear descriptions of what each provides.
+(Same as before — see Phase A claim schema for fields)
+
+### Card elements
+
+1. **Type badge** — amber (trial), blue (guideline), teal (diagnostic performance), purple (clinical utility), gray (methodology)
+2. **Test badge** (when scope.tests populated) — shows test name, links to OpenOnco test detail page
+3. **Verification badge** — green "Verified"
+4. **Headline** — finding description
+5. **Detail text** — effect summary
+6. **Metrics row** (trial/performance claims only) — n, HR, CI, p-value, follow-up
+7. **Citation footer** — authors, journal, year, PMID link
+8. **View test link** — when test-linked, links to test detail page
+
+### Sorting
+
+1. Guidelines first
+2. Trial results by sample size (largest first)
+3. Diagnostic performance
+4. Clinical utility
+5. Methodology notes
+
+Within each group: newest first.
 
 ---
 
 ## Technical Implementation
 
-### Data loading
+### API endpoint
 
-**Option A (simpler, recommended for v1):** At build time, a script compiles all `evidence/claims/*.json` files into a single `src/config/evidenceClaims.js` export, similar to how data.js works. The evidence page imports this directly. No API needed.
+New Vercel serverless function: `/api/evidence-query.js`
 
-**Option B (future):** Serve claims via an API endpoint (`/api/v1/evidence?cancer=colorectal&stage=II`). Useful when the claims store grows large or if the evidence explorer becomes a standalone app.
+1. Receives physician's question as POST body
+2. Calls Claude API (Sonnet) with the router prompt + question
+3. Parses the structured JSON response
+4. Loads compiled claims from `evidenceClaims.js`
+5. Runs the deterministic query engine
+6. Returns filtered + sorted claims to the frontend
 
-Start with Option A. The claims store is unlikely to exceed a few hundred claims in the near term, which is fine as a static import.
+The router call happens server-side so the Anthropic API key stays on the server.
 
-### Build script
+### Fallback (no LLM)
 
-`evidence/scripts/compile-claims.js`:
-1. Reads all `evidence/claims/*.json` files
-2. Validates each claim against `evidence/schema/claim.schema.json`
-3. Outputs `src/config/evidenceClaims.js` as a single export
-4. This file is gitignored and regenerated as part of the build pipeline
-5. The render-faq.js script (Phase A step 9) can also trigger this compilation
+If the Claude API call fails (timeout, rate limit, error):
+1. Extract simple keywords from the question via regex (split on spaces, filter stop words)
+2. Run keyword match against claim descriptions
+3. Return results with a note: "Showing keyword-matched results"
+
+This ensures the page always returns something even if the LLM is down.
 
 ### Component structure
 
 ```
 src/
   pages/
-    EvidencePage.jsx              # Main page with filters + claim list
+    EvidencePage.jsx              # Search bar + results display
   components/
     evidence/
-      EvidenceFilters.jsx         # Filter dropdowns
+      EvidenceSearchBar.jsx       # Input + example questions
+      EvidenceResults.jsx         # Framing sentence + claim list with sections
       EvidenceClaimCard.jsx       # Individual claim card
-      EvidenceClaimMetrics.jsx    # Quantitative metrics row (n, HR, CI)
-      EvidenceCitation.jsx        # Citation footer with PMID link
-      EvidenceEmptyState.jsx      # "No claims found" with guidance
+      EvidenceClaimMetrics.jsx    # n, HR, CI row
+      EvidenceCitation.jsx        # PMID/DOI link footer
+      EvidenceEmptyState.jsx      # "No claims found" messaging
+api/
+  evidence-query.js               # Serverless function (router + query)
 ```
 
 ### Route
 
-Add to App.jsx router:
 ```jsx
 <Route path="/evidence" element={<EvidencePage />} />
 ```
@@ -218,33 +292,32 @@ Add to App.jsx router:
 
 ## Implementation Order for CC
 
-**Prerequisites:** Phase A steps 1-3 must be complete (directory structure, schema, seed from FAQ). The claims store needs data in it before the explorer has anything to show.
+**Prerequisites:** Phase A steps 1-3 complete (claims store has data).
 
-1. **Build compile-claims script** — `evidence/scripts/compile-claims.js` → outputs `src/config/evidenceClaims.js`
-2. **Create EvidenceClaimCard component** — renders a single claim with type badge, verification badge, headline, detail, metrics, citation
-3. **Create EvidenceFilters component** — three primary dropdowns with live count updates
-4. **Create EvidencePage** — assembles filters + claim list, handles filter state, URL params
-5. **Add route** — `/evidence` in App.jsx
-6. **Add navigation** — "Evidence" tab in physician persona header alongside existing "Tests"
-7. **Style consistency** — match existing site design language (Tailwind classes, color palette, card styles)
-8. **Empty states** — handle 0-result filter combinations gracefully
-9. **Provenance footer** — "How we verify evidence" link (can point to a simple markdown page explaining the cross-model verification process)
+1. **Build compile-claims script** — `evidence/scripts/compile-claims.js` → `src/config/evidenceClaims.js`
+2. **Build evidence-query API** — `/api/evidence-query.js` with Claude router + deterministic query engine + keyword fallback
+3. **Build EvidenceClaimCard** — renders one claim with all badges, metrics, citation
+4. **Build EvidenceResults** — framing sentence + test-specific/test-agnostic sections + claim list
+5. **Build EvidenceSearchBar** — input + example questions (clickable)
+6. **Build EvidencePage** — assembles search bar + results, manages query state
+7. **Add route** — `/evidence` in App.jsx
+8. **Add navigation** — "Evidence" tab in physician persona header
+9. **Empty/error states** — no results, API failure fallback, loading state
+10. **Provenance footer** — "How we verify evidence" explanation
 
 ## Design Principles
 
-- **Every word on screen traces to a PMID or DOI.** No generated text, no summaries, no interpretations.
-- **Transparency over polish.** Show claim IDs, verification status, extraction dates. Physicians should be able to audit the data.
-- **Honest about gaps.** If we have 0 claims for pancreatic cancer, say so clearly. Don't hide empty categories.
-- **Bookmarkable.** Filter state in URL params so physicians can share specific views with colleagues.
-
----
+- **Every word of substance traces to a PMID.** The LLM contributes only the framing sentence.
+- **Test-specific results come first, general evidence follows.** Doc sees what's specific to their test, then what applies broadly.
+- **Honest about gaps.** 0 results is a valid answer. Don't pad with loosely related content.
+- **Fast.** Router call <2s, page render <500ms after that. Total <3s.
+- **Graceful degradation.** API down → keyword fallback. No claims → clear empty state. Always functional.
 
 ## Future Enhancements (not in v1)
 
-- **Search bar** with LLM-as-router (natural language → structured filter query)
-- **Claim grouping** by source paper
-- **Cross-reference to test database** — "Tests relevant to this evidence" links
-- **Claim detail view** — click a claim card to see full extraction details, source quote, verification log
-- **Export** — download filtered claims as PDF or CSV for presentations/tumor boards
-- **"How we verify" page** — detailed explanation of cross-model extraction, peer-review-only gate, dispute resolution
-- **Notification signup** — physicians can subscribe to updates for specific cancer types
+- **Multi-turn refinement** — "Show me just the guideline recommendations" as a follow-up
+- **Cross-link from test database** — "View evidence" button on each test's detail page, pre-populates search with that test
+- **Shareable URLs** — encode query in URL params for bookmarking/sharing
+- **Export** — download filtered claims as PDF for tumor boards
+- **"What's new" mode** — show only claims added in the last 30 days
+- **Coverage comparison** — side-by-side claim cards for two tests

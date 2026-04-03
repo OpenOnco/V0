@@ -17,7 +17,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "COMBI-AD biomarker analysis included 597 stage III melanoma patients with 60-month median follow-up",
@@ -58,7 +64,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "Baseline ctDNA detection rate was 13% (79/597) in stage III melanoma patients",
@@ -99,7 +111,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ctDNA+ patients in placebo arm had increased recurrence risk with HR 2.91",
@@ -140,7 +158,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ctDNA+ patients in targeted therapy arm had increased recurrence risk with HR 2.98",
@@ -179,7 +203,13 @@
       "cancer": "melanoma",
       "stages": null,
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ctDNA dynamics during adjuvant immunotherapy correlate with clinical outcomes",

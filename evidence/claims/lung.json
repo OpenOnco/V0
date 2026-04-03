@@ -409,7 +409,13 @@
       "cancer": "lung",
       "stages": null,
       "setting": null,
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "PhasED-Seq achieves LOD95 of 1 ppm with 67% clinical sensitivity versus 28% for standard SNV-based methods.",

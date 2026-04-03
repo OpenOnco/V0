@@ -17,7 +17,13 @@
         "II"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "DYNAMIC trial randomized 455 stage II CRC patients to ctDNA-guided vs. standard management.",
@@ -58,7 +64,13 @@
         "II"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ctDNA-guided arm reduced adjuvant chemotherapy from 28% to 15%.",
@@ -99,7 +111,13 @@
         "II"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "2-year RFS non-inferior between ctDNA-guided vs. standard management: 93.5% vs 92.4% (HR 0.92).",
@@ -140,7 +158,13 @@
         "II"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "5-year RFS was 88% vs. 87% between ctDNA-guided vs. standard management.",
@@ -181,7 +205,13 @@
         "II"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "5-year OS was 93.8% vs 93.3% (HR 1.05; P=0.887).",
@@ -393,7 +423,13 @@
         "IV"
       ],
       "setting": "surveillance",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ALTAIR trial showed FTD/TPI vs. placebo in Signatera-positive stage I-IV CRC yielded median DFS 9.23 vs. 5.55 months (HR 0.75; 95% CI 0.55-0.98; P=0.0406).",
@@ -473,7 +509,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-6",
+          "test_name": "Guardant Reveal"
+        }
+      ]
     },
     "finding": {
       "description": "Guardant Reveal stage III study showed ctDNA+ patients had TTR HR 5.96.",
@@ -514,7 +556,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-6",
+          "test_name": "Guardant Reveal"
+        }
+      ]
     },
     "finding": {
       "description": "5-year DFS was 27.7% vs. 77.1% for ctDNA+ vs. ctDNA- patients.",
@@ -636,7 +684,13 @@
       "cancer": "colorectal",
       "stages": null,
       "setting": null,
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-6",
+          "test_name": "Guardant Reveal"
+        }
+      ]
     },
     "finding": {
       "description": "COSMOS demonstrated 98.2% specificity for ctDNA detection.",

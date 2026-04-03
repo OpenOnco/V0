@@ -54,7 +54,13 @@
       "cancer": "breast",
       "stages": null,
       "setting": "surveillance",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-9",
+          "test_name": "RaDaR"
+        }
+      ]
     },
     "finding": {
       "description": "RaDaR detected ctDNA median 1.4 months earlier than dPCR",

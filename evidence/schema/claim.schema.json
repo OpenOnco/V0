@@ -105,6 +105,25 @@
           "type": ["string", "null"],
           "enum": ["MRD", "ECD", "TDS", "HCT", null],
           "description": "Diagnostic test category"
+        },
+        "tests": {
+          "type": ["array", "null"],
+          "description": "Specific commercial tests referenced in this claim. Null/empty = test-agnostic.",
+          "items": {
+            "type": "object",
+            "required": ["test_id", "test_name"],
+            "additionalProperties": false,
+            "properties": {
+              "test_id": {
+                "type": "string",
+                "description": "Test ID from data.js, e.g. mrd-1"
+              },
+              "test_name": {
+                "type": "string",
+                "description": "Human-readable test name, e.g. Signatera"
+              }
+            }
+          }
         }
       }
     },

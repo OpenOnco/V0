@@ -18,7 +18,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "IMvigor011 Phase III trial enrolled 761 patients in ctDNA surveillance with 250 ctDNA+ patients randomized 2:1 to adjuvant atezolizumab vs placebo",
@@ -60,7 +66,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "IMvigor011 showed median OS 32.8 vs 21.1 months for atezolizumab vs placebo in ctDNA+ patients",
@@ -102,7 +114,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "IMvigor011 showed 12-month DFS 44.7% vs 30.0% for atezolizumab vs placebo in ctDNA+ patients",
@@ -144,7 +162,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "IMvigor011 showed 12-month OS 85.1% vs 70.0% for atezolizumab vs placebo in ctDNA+ patients",
@@ -186,7 +210,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "ctDNA-negative patients in IMvigor011 had 12-month DFS of 95.4% and 12-month OS of 100%",
@@ -228,7 +258,13 @@
         "III"
       ],
       "setting": "adjuvant",
-      "test_category": "MRD"
+      "test_category": "MRD",
+      "tests": [
+        {
+          "test_id": "mrd-7",
+          "test_name": "Signatera"
+        }
+      ]
     },
     "finding": {
       "description": "IMvigor011 provides the first Level 1 evidence for intervening on positive ctDNA in an adjuvant setting in any cancer type",
