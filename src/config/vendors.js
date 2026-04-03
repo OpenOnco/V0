@@ -49,7 +49,7 @@ export const VENDOR_AVAILABILITY_US = {
   
   // Tier 3: Limited
   // International-focused, regional, or newer US market entrants
-  'Burning Rock Dx': 'limited',           // China-focused, limited US
+  'Burning Rock Dx (brbiotech)': 'limited', // China-focused, limited US
   'Wuhan Ammunition Life Technology': 'limited',  // China-only
   'LIQOMICS': 'limited',                  // Germany-based, EU focus
   'Inocras': 'limited',                   // Newer entrant
@@ -66,7 +66,7 @@ export const VENDOR_AVAILABILITY_US = {
   'Allelica': 'limited',                  // Specialty
   'SOPHiA GENETICS': 'limited',           // Platform company
   'Agilent / Resolution Bioscience': 'limited',
-  'Helio Genomics, Abbott (Exact Sciences)': 'moderate',  // Joint venture, formerly Exact Sciences
+  'Helio Genomics': 'moderate',  // Joint venture with Abbott (Exact Sciences)
 };
 
 // ============================================
