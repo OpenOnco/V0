@@ -36,7 +36,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Rate of ctDNA detection by 12 months was 27.3% (44/161, 95% confidence interval 20.6% to 34.9%). Seven patients relapsed without prior ctDNA detection.\""
   },
   {
     "id": "BRC-SURVEILLANCE-002",
@@ -237,7 +238,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Of patients allocated to intervention, 72% (23/32) had metastases on staging at the time of ctDNA+, and 4 patients declined pembrolizumab.\""
   },
   {
     "id": "BRC-SURVEILLANCE-003",

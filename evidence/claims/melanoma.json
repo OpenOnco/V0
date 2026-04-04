@@ -44,7 +44,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Baseline plasma samples were available for 597 of 870 patients (331 male patients and 266 female patients) and samples for assessing the ctDNA positivity rate at landmark follow-up timepoints of 3 months, 6 months, 9 months, and 12 months after treatment initiation were available for 94 of 870 patients. Median follow-up for the biomarker analyses was 60 months (IQR 39-66) in the combination therapy group and 58 months (21-66) for the placebo group."
   },
   {
     "id": "MEL-EVIDENCE-002",
@@ -91,7 +92,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"ctDNA was detectable in 79 (13%) of 597 baseline samples.\""
   },
   {
     "id": "MEL-EVIDENCE-003",
@@ -138,7 +140,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "ctDNA detection was associated with worse recurrence-free survival (placebo group: median 3·71 months [95% CI 2·39-6·89] vs 24·41 months [17·28-43·13]; hazard ratio [HR] 2·91 [95% CI 1·99-4·25], p<0·0001)."
   },
   {
     "id": "MEL-EVIDENCE-004",
@@ -185,7 +188,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "combination therapy group: median 16·59 months [95% CI 12·02-26·80] vs 68·11 months [50·36-not reached]; HR 2·98 [1·95-4·54], p<0·0001)"
   },
   {
     "id": "MEL-EVIDENCE-005",
@@ -230,7 +234,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Post-surgery ctDNA positivity and zero-conversion are highly predictive of recurrence, offering a window for personalised modification of adjuvant therapy.\""
   },
   {
     "id": "MEL-EVIDENCE-006",
@@ -271,7 +276,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Pre-treatment ctDNA was detectable in 19/40 (48%) patients."
   },
   {
     "id": "MEL-EVIDENCE-007",

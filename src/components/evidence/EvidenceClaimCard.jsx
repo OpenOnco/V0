@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const TYPE_STYLES = {
   trial_result: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', label: 'Trial Result' },
@@ -16,25 +16,35 @@ const MetricPill = ({ label, value }) => (
 );
 
 const EvidenceClaimCard = ({ claim, onTestClick }) => {
+  const [showExcerpt, setShowExcerpt] = useState(false);
+
   const type = claim.type || 'methodology_note';
   const style = TYPE_STYLES[type] || TYPE_STYLES.methodology_note;
   const finding = claim.finding || {};
-  const metrics = finding.metrics || {};
-  const citation = claim.citation || {};
+  const source = claim.source || {};
   const tests = claim.scope?.tests || [];
   const verified = claim.verification?.agreement === true;
+  const excerpt = claim.source_excerpt || null;
 
-  const hasMetrics = metrics.n || metrics.hr || metrics.ci || metrics.p_value || metrics.follow_up;
+  // Metrics from finding fields (not nested)
+  const hasMetrics = finding.n || finding.hr || finding.p_value || finding.follow_up_months;
 
-  const pubmedUrl = citation.pmid
-    ? `https://pubmed.ncbi.nlm.nih.gov/${citation.pmid}`
+  const pubmedUrl = source.pmid
+    ? `https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/`
     : null;
 
   const citationText = [
-    citation.authors,
-    citation.journal,
-    citation.year,
+    source.authors_short,
+    source.journal,
+    source.year,
   ].filter(Boolean).join(', ');
+
+  const formatCI = () => {
+    if (finding.ci_lower != null && finding.ci_upper != null) {
+      return `${finding.ci_lower}–${finding.ci_upper}`;
+    }
+    return null;
+  };
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow">
@@ -46,11 +56,11 @@ const EvidenceClaimCard = ({ claim, onTestClick }) => {
 
         {tests.map((test) => (
           <button
-            key={test.id || test.name}
-            onClick={() => onTestClick?.(test.id)}
+            key={test.test_id || test.test_name}
+            onClick={() => onTestClick?.(test.test_id)}
             className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors cursor-pointer"
           >
-            {test.name}
+            {test.test_name}
           </button>
         ))}
 
@@ -79,33 +89,62 @@ const EvidenceClaimCard = ({ claim, onTestClick }) => {
       {/* Metrics row */}
       {hasMetrics && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {metrics.n && <MetricPill label="n" value={metrics.n.toLocaleString()} />}
-          {metrics.hr && <MetricPill label="HR" value={metrics.hr} />}
-          {metrics.ci && <MetricPill label="95% CI" value={metrics.ci} />}
-          {metrics.p_value && <MetricPill label="p" value={metrics.p_value} />}
-          {metrics.follow_up && <MetricPill label="Follow-up" value={metrics.follow_up} />}
+          {finding.n && <MetricPill label="n" value={finding.n.toLocaleString()} />}
+          {finding.hr && <MetricPill label="HR" value={finding.hr} />}
+          {formatCI() && <MetricPill label="95% CI" value={formatCI()} />}
+          {finding.p_value && <MetricPill label="p" value={finding.p_value} />}
+          {finding.follow_up_months && <MetricPill label="Follow-up" value={`${finding.follow_up_months} mo`} />}
+        </div>
+      )}
+
+      {/* Source excerpt toggle */}
+      {excerpt && (
+        <div className="mt-3">
+          <button
+            onClick={() => setShowExcerpt(!showExcerpt)}
+            className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+          >
+            <span className={`transition-transform ${showExcerpt ? 'rotate-90' : ''}`}>&#9656;</span>
+            {showExcerpt ? 'Hide source' : 'View source'}
+          </button>
+          {showExcerpt && (
+            <blockquote className="mt-2 border-l-2 border-emerald-200 pl-3 text-xs text-slate-500 italic leading-relaxed">
+              {excerpt}
+            </blockquote>
+          )}
         </div>
       )}
 
       {/* Citation footer */}
-      {citationText && (
-        <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-400">
-          {citationText}
-          {pubmedUrl && (
-            <>
-              {' \u2022 '}
-              <a
-                href={pubmedUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-600 hover:text-emerald-700 hover:underline"
-              >
-                PMID: {citation.pmid}
-              </a>
-            </>
-          )}
-        </div>
-      )}
+      <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-400">
+        {citationText || source.title || 'Source unavailable'}
+        {pubmedUrl && (
+          <>
+            {' \u2022 '}
+            <a
+              href={pubmedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-600 hover:text-emerald-700 hover:underline"
+            >
+              PMID: {source.pmid}
+            </a>
+          </>
+        )}
+        {!pubmedUrl && source.url && (
+          <>
+            {' \u2022 '}
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-600 hover:text-emerald-700 hover:underline"
+            >
+              Source
+            </a>
+          </>
+        )}
+      </div>
     </div>
   );
 };

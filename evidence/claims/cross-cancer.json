@@ -36,7 +36,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant chemotherapy use without compromising recurrence-free survival.\""
   },
   {
     "id": "XCN-EVIDENCE-002",
@@ -197,7 +198,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging (mean, 8.7 months; range, 0.8-16.5 months)."
   },
   {
     "id": "XCN-DIAGNOSTIC-001",

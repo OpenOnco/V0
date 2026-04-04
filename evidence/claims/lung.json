@@ -79,7 +79,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Here we developed ctDNA methods tracking a median of 200 mutations identified in resected NSCLC tissue across 1,069 plasma samples collected from 197 patients enrolled in the TRACERx study."
   },
   {
     "id": "LNG-NO-EVIDENCE-003",
@@ -118,7 +119,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Analytical and orthogonal validation of variant DNA detection using the locked-assay was performed (Supplementary Note). 659 spike-in samples were analysed at assay DNA inputs of 2ng to 80ng and variant DNA levels of 0.003% to 0.1% (methods). Sensitivity for variant DNA detection using a 50-variant PSP at 0.01% variant DNA level (representative of ctDNA levels encountered post-resection of NSCLC, using current MRD assays 8) was >90% at DNA inputs of 20ng and above.\""
   },
   {
     "id": "LNG-NO-EVIDENCE-004",
@@ -196,7 +198,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Based on my careful review of the entire paper, I found no mention of \"PhasED-Seq\" or a median lead time of 164 days before clinical relapse. The paper focuses on ctDNA tracking using AMP (Amplicon-based sequencing) methodology and ECLIPSE bioinformatic tool, but does not discuss PhasED-Seq.\n\nNO_MATCH"
   },
   {
     "id": "LNG-NO-EVIDENCE-006",
@@ -391,7 +394,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"We developed PhasED-Seq 12 , 31 , a cost-effective molecular barcoding technology targeting 16-96 mutations, which detected MRD with a median lead time of 164 days.\""
   },
   {
     "id": "LNG-NOT-VALIDATED-001",
@@ -436,6 +440,7 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Looking through the paper for information about PhasED-Seq, LOD95, and clinical sensitivity comparisons...\n\nNO_MATCH"
   }
 ]

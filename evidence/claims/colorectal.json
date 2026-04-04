@@ -44,7 +44,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Of the 455 patients who underwent randomization, 302 were assigned to ctDNA-guided management and 153 to standard management."
   },
   {
     "id": "CRC-DYNAMIC-002",
@@ -91,7 +92,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "A lower percentage of patients in the ctDNA-guided group than in the standard-management group received adjuvant chemotherapy (15% vs. 28%; relative risk, 1.82; 95% confidence interval [CI], 1.25 to 2.65)."
   },
   {
     "id": "CRC-DYNAMIC-003",
@@ -138,7 +140,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "In the evaluation of 2-year recurrence-free survival, ctDNA-guided management was noninferior to standard management (93.5% and 92.4%, respectively; absolute difference, 1.1 percentage points; 95% CI, -4.1 to 6.2 [noninferiority margin, -8.5 percentage points])."
   },
   {
     "id": "CRC-DYNAMIC-004",
@@ -185,7 +188,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "At a median follow-up of 59.7 months, 5-year RFS was 88% and 87% with ctDNA-guided and standard management, respectively (difference 1.1%, 95% confidence interval -5.8% to 8.0%), and 5-year overall survival is similar (93.8% versus 93.3%, hazard ratio (HR) 1.05; P = 0.887)."
   },
   {
     "id": "CRC-DYNAMIC-005",
@@ -232,7 +236,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "5-year overall survival is similar (93.8% versus 93.3%, hazard ratio (HR) 1.05; P = 0.887)."
   },
   {
     "id": "CRC-GALAXY-001",
@@ -274,7 +279,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"The GALAXY study, which is a part of the CIRCULATE-Japan project, is a large prospective, observational study that monitors ctDNA status for patients with clinical stage II to IV or recurrent CRC following curative-intent surgery. Of the 1,039 patients included in the ctDNA analysis, 18.0% (187 out of 1,039) were ctDNA positive 4 weeks after surgery, and 82.0% (852 out of 1,039) were ctDNA negative.\""
   },
   {
     "id": "CRC-GALAXY-002",
@@ -316,7 +322,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Looking through the paper for the specific hazard ratio of 0.39 for ctDNA-positive patients receiving adjuvant chemotherapy vs. observation...\n\nAfter carefully reviewing all sections discussing ctDNA-positive patients and adjuvant chemotherapy outcomes, I cannot find any mention of a hazard ratio of 0.39. The paper reports different hazard ratios for ctDNA-positive patients receiving ACT vs. observation, but none match the claimed HR of 0.39.\n\nNO_MATCH"
   },
   {
     "id": "CRC-GALAXY-003",
@@ -358,7 +365,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "In multivariate analysis for DFS in patients with pathological stage II–III disease, ctDNA positivity 4 weeks after surgery was the most significant prognostic factor associated with increased risk for recurrence (HR 10.82, 95% CI 7.07–16.6, P < 0.001)."
   },
   {
     "id": "CRC-GALAXY-004",
@@ -400,7 +408,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "postsurgical ctDNA positivity was associated with higher recurrence risk (hazard ratio (HR) 10.0, P < 0.0001) and was the most significant prognostic factor associated with recurrence risk in patients with stage II or III CRC (HR 10.82, P < 0.001)."
   },
   {
     "id": "CRC-ALTAIR-001",
@@ -750,6 +759,7 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging (mean, 8.7 months; range, 0.8-16.5 months)."
   }
 ]

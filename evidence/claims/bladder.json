@@ -45,7 +45,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "A total of 761 patients were enrolled; 250 eligible patients who tested ctDNA-positive underwent randomization (167 to the atezolizumab group and 83 to the placebo group)."
   },
   {
     "id": "BLD-EVIDENCE-002",
@@ -93,7 +94,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "The median overall survival was 32.8 months with atezolizumab, as compared with 21.1 months with placebo (hazard ratio for death, 0.59; 95% CI, 0.39 to 0.90; P = 0.01)."
   },
   {
     "id": "BLD-EVIDENCE-003",
@@ -237,7 +239,8 @@
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Among 357 patients with persistent ctDNA-negative status, disease-free survival was 95% at the end of the 1-year monitoring period and 88% at 2 years."
   },
   {
     "id": "BLD-EVIDENCE-006",

@@ -3,7 +3,7 @@
  *
  * AUTO-GENERATED — do not edit manually.
  * Source: evidence/claims/*.json
- * Generated: 2026-04-03
+ * Generated: 2026-04-04
  * Total claims: 68
  *
  * To regenerate: node evidence/scripts/compile-claims.js
@@ -56,7 +56,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "A total of 761 patients were enrolled; 250 eligible patients who tested ctDNA-positive underwent randomization (167 to the atezolizumab group and 83 to the placebo group)."
   },
   {
     "id": "BLD-EVIDENCE-002",
@@ -104,7 +105,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "The median overall survival was 32.8 months with atezolizumab, as compared with 21.1 months with placebo (hazard ratio for death, 0.59; 95% CI, 0.39 to 0.90; P = 0.01)."
   },
   {
     "id": "BLD-EVIDENCE-003",
@@ -248,7 +250,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Among 357 patients with persistent ctDNA-negative status, disease-free survival was 95% at the end of the 1-year monitoring period and 88% at 2 years."
   },
   {
     "id": "BLD-EVIDENCE-006",
@@ -335,7 +338,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Rate of ctDNA detection by 12 months was 27.3% (44/161, 95% confidence interval 20.6% to 34.9%). Seven patients relapsed without prior ctDNA detection.\""
   },
   {
     "id": "BRC-SURVEILLANCE-002",
@@ -536,7 +540,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Of patients allocated to intervention, 72% (23/32) had metastases on staging at the time of ctDNA+, and 4 patients declined pembrolizumab.\""
   },
   {
     "id": "BRC-SURVEILLANCE-003",
@@ -622,7 +627,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Of the 455 patients who underwent randomization, 302 were assigned to ctDNA-guided management and 153 to standard management."
   },
   {
     "id": "CRC-DYNAMIC-002",
@@ -669,7 +675,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "A lower percentage of patients in the ctDNA-guided group than in the standard-management group received adjuvant chemotherapy (15% vs. 28%; relative risk, 1.82; 95% confidence interval [CI], 1.25 to 2.65)."
   },
   {
     "id": "CRC-DYNAMIC-003",
@@ -716,7 +723,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "In the evaluation of 2-year recurrence-free survival, ctDNA-guided management was noninferior to standard management (93.5% and 92.4%, respectively; absolute difference, 1.1 percentage points; 95% CI, -4.1 to 6.2 [noninferiority margin, -8.5 percentage points])."
   },
   {
     "id": "CRC-DYNAMIC-004",
@@ -763,7 +771,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "At a median follow-up of 59.7 months, 5-year RFS was 88% and 87% with ctDNA-guided and standard management, respectively (difference 1.1%, 95% confidence interval -5.8% to 8.0%), and 5-year overall survival is similar (93.8% versus 93.3%, hazard ratio (HR) 1.05; P = 0.887)."
   },
   {
     "id": "CRC-DYNAMIC-005",
@@ -810,7 +819,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "5-year overall survival is similar (93.8% versus 93.3%, hazard ratio (HR) 1.05; P = 0.887)."
   },
   {
     "id": "CRC-GALAXY-001",
@@ -852,7 +862,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"The GALAXY study, which is a part of the CIRCULATE-Japan project, is a large prospective, observational study that monitors ctDNA status for patients with clinical stage II to IV or recurrent CRC following curative-intent surgery. Of the 1,039 patients included in the ctDNA analysis, 18.0% (187 out of 1,039) were ctDNA positive 4 weeks after surgery, and 82.0% (852 out of 1,039) were ctDNA negative.\""
   },
   {
     "id": "CRC-GALAXY-002",
@@ -894,7 +905,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Looking through the paper for the specific hazard ratio of 0.39 for ctDNA-positive patients receiving adjuvant chemotherapy vs. observation...\n\nAfter carefully reviewing all sections discussing ctDNA-positive patients and adjuvant chemotherapy outcomes, I cannot find any mention of a hazard ratio of 0.39. The paper reports different hazard ratios for ctDNA-positive patients receiving ACT vs. observation, but none match the claimed HR of 0.39.\n\nNO_MATCH"
   },
   {
     "id": "CRC-GALAXY-003",
@@ -936,7 +948,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "In multivariate analysis for DFS in patients with pathological stage II–III disease, ctDNA positivity 4 weeks after surgery was the most significant prognostic factor associated with increased risk for recurrence (HR 10.82, 95% CI 7.07–16.6, P < 0.001)."
   },
   {
     "id": "CRC-GALAXY-004",
@@ -978,7 +991,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "postsurgical ctDNA positivity was associated with higher recurrence risk (hazard ratio (HR) 10.0, P < 0.0001) and was the most significant prognostic factor associated with recurrence risk in patients with stage II or III CRC (HR 10.82, P < 0.001)."
   },
   {
     "id": "CRC-ALTAIR-001",
@@ -1328,7 +1342,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging (mean, 8.7 months; range, 0.8-16.5 months)."
   },
   {
     "id": "XCN-EVIDENCE-001",
@@ -1367,7 +1382,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant chemotherapy use without compromising recurrence-free survival.\""
   },
   {
     "id": "XCN-EVIDENCE-002",
@@ -1528,7 +1544,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Serial ctDNA analyses revealed disease recurrence up to 16.5 months ahead of standard-of-care radiologic imaging (mean, 8.7 months; range, 0.8-16.5 months)."
   },
   {
     "id": "XCN-DIAGNOSTIC-001",
@@ -2131,7 +2148,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Here we developed ctDNA methods tracking a median of 200 mutations identified in resected NSCLC tissue across 1,069 plasma samples collected from 197 patients enrolled in the TRACERx study."
   },
   {
     "id": "LNG-NO-EVIDENCE-003",
@@ -2170,7 +2188,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Analytical and orthogonal validation of variant DNA detection using the locked-assay was performed (Supplementary Note). 659 spike-in samples were analysed at assay DNA inputs of 2ng to 80ng and variant DNA levels of 0.003% to 0.1% (methods). Sensitivity for variant DNA detection using a 50-variant PSP at 0.01% variant DNA level (representative of ctDNA levels encountered post-resection of NSCLC, using current MRD assays 8) was >90% at DNA inputs of 20ng and above.\""
   },
   {
     "id": "LNG-NO-EVIDENCE-004",
@@ -2248,7 +2267,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Based on my careful review of the entire paper, I found no mention of \"PhasED-Seq\" or a median lead time of 164 days before clinical relapse. The paper focuses on ctDNA tracking using AMP (Amplicon-based sequencing) methodology and ECLIPSE bioinformatic tool, but does not discuss PhasED-Seq.\n\nNO_MATCH"
   },
   {
     "id": "LNG-NO-EVIDENCE-006",
@@ -2443,7 +2463,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"We developed PhasED-Seq 12 , 31 , a cost-effective molecular barcoding technology targeting 16-96 mutations, which detected MRD with a median lead time of 164 days.\""
   },
   {
     "id": "LNG-NOT-VALIDATED-001",
@@ -2488,7 +2509,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Looking through the paper for information about PhasED-Seq, LOD95, and clinical sensitivity comparisons...\n\nNO_MATCH"
   },
   {
     "id": "MEL-EVIDENCE-001",
@@ -2535,7 +2557,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Baseline plasma samples were available for 597 of 870 patients (331 male patients and 266 female patients) and samples for assessing the ctDNA positivity rate at landmark follow-up timepoints of 3 months, 6 months, 9 months, and 12 months after treatment initiation were available for 94 of 870 patients. Median follow-up for the biomarker analyses was 60 months (IQR 39-66) in the combination therapy group and 58 months (21-66) for the placebo group."
   },
   {
     "id": "MEL-EVIDENCE-002",
@@ -2582,7 +2605,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"ctDNA was detectable in 79 (13%) of 597 baseline samples.\""
   },
   {
     "id": "MEL-EVIDENCE-003",
@@ -2629,7 +2653,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "ctDNA detection was associated with worse recurrence-free survival (placebo group: median 3·71 months [95% CI 2·39-6·89] vs 24·41 months [17·28-43·13]; hazard ratio [HR] 2·91 [95% CI 1·99-4·25], p<0·0001)."
   },
   {
     "id": "MEL-EVIDENCE-004",
@@ -2676,7 +2701,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "combination therapy group: median 16·59 months [95% CI 12·02-26·80] vs 68·11 months [50·36-not reached]; HR 2·98 [1·95-4·54], p<0·0001)"
   },
   {
     "id": "MEL-EVIDENCE-005",
@@ -2721,7 +2747,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "\"Post-surgery ctDNA positivity and zero-conversion are highly predictive of recurrence, offering a window for personalised modification of adjuvant therapy.\""
   },
   {
     "id": "MEL-EVIDENCE-006",
@@ -2762,7 +2789,8 @@ export const EVIDENCE_CLAIMS = [
       "extracted_date": "2026-04-03",
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
-    }
+    },
+    "source_excerpt": "Pre-treatment ctDNA was detectable in 19/40 (48%) patients."
   },
   {
     "id": "MEL-EVIDENCE-007",

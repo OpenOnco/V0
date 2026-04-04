@@ -299,6 +299,10 @@
           "format": "date"
         }
       }
+    },
+    "source_excerpt": {
+      "type": ["string", "null"],
+      "description": "Verbatim excerpt from the source paper supporting this claim. Shown to physicians on demand."
     }
   }
 }
