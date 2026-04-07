@@ -6242,7 +6242,7 @@ export const ecdTestData = [
       "coveredIndications": [],
       "reimbursementRate": "$949 (self-pay)",
       "cptCode": null,
-      "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Pending FDA approval and congressional action (H.R. 2407, S. 2085).",
+      "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 — creates Medicare coverage pathway for FDA-approved MCED tests starting no earlier than Jan 2028. Coverage contingent on FDA PMA approval (submitted Jan 29, 2026) and CMS appropriateness determination.",
       "lastVerified": "2026-01-13"
     },
     "coverageCrossReference": {
@@ -6304,7 +6304,7 @@ export const ecdTestData = [
       "analysis": {
         "vendorClaimAccuracy": "Accurate - GRAIL acknowledges limited coverage",
         "patientGuidance": "Self-pay ($949) or employer-sponsored programs. REACH study provides Medicare coverage for enrolled participants only. Most commercial insurers consider MCED investigational. Kaiser requires MolDX criteria and FDA approval.",
-        "keyInsight": "FDA PMA submission filed Jan 2026 may unlock broader coverage. Congressional bills (H.R.2407/S.2085) pending to mandate Medicare coverage."
+        "keyInsight": "FDA PMA under review (submitted Jan 29, 2026). Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 — establishes Medicare benefit category for MCED tests starting Jan 2028, contingent on FDA approval and CMS determination."
       }
     }
   },
@@ -12276,6 +12276,16 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 7, 2026',
+    type: 'updated',
+    testId: 'ecd-2',
+    testName: 'Galleri',
+    vendor: 'GRAIL',
+    category: 'ECD',
+    description: 'Updated Medicare coverage notes: Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 (previously listed as pending congressional action). Creates Medicare coverage pathway for FDA-approved MCED tests starting Jan 2028.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 6, 2026',
     type: 'updated',
