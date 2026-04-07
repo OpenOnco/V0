@@ -1,493 +1,5 @@
 [
   {
-    "type": "unmatched_gpt",
-    "pmid": "99999999",
-    "score": null,
-    "disagreements": [
-      "No matching Claude claim found"
-    ],
-    "claude_claim": null,
-    "gpt_claim": {
-      "id": "CRC-DYNAMIC-001",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy",
-        "journal": "NEJM",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "raw_file": "raw/papers/35657320.md"
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "ctDNA-guided treatment reduced adjuvant chemotherapy use without compromising recurrence-free survival",
-        "trial_name": "DYNAMIC",
-        "endpoint": "recurrence-free survival",
-        "endpoint_type": "primary",
-        "result_direction": "non-inferior",
-        "n": 455,
-        "hr": 0.96,
-        "ci_lower": 0.51,
-        "ci_upper": 1.82,
-        "p_value": null,
-        "follow_up_months": 37,
-        "effect_summary": "HR 0.96, non-inferior"
-      },
-      "extraction": {
-        "extracted_by": "gpt-4o",
-        "extracted_date": "2026-04-03",
-        "model_version": "gpt-4o",
-        "source_quote_hash": null
-      }
-    }
-  },
-  {
-    "type": "unmatched_claude",
-    "pmid": "35657320",
-    "score": 0.42857142857142855,
-    "disagreements": [
-      "No matching GPT claim found"
-    ],
-    "claude_claim": {
-      "id": "CRC-DYNAMIC-001",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
-        "journal": "New England Journal of Medicine",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "url": null
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "DYNAMIC trial randomized 455 stage II CRC patients to ctDNA-guided vs. standard management.",
-        "trial_name": "DYNAMIC",
-        "endpoint": null,
-        "endpoint_type": null,
-        "result_direction": null,
-        "n": 455,
-        "hr": null,
-        "ci_lower": null,
-        "ci_upper": null,
-        "p_value": null,
-        "follow_up_months": null,
-        "effect_summary": "455 patients randomized to ctDNA-guided vs. standard management"
-      },
-      "extraction": {
-        "extracted_by": "claude",
-        "extracted_date": "2026-04-03",
-        "model_version": "claude-sonnet-4-20250514",
-        "seed_source": "physicianFAQ.js"
-      }
-    },
-    "gpt_claim": null
-  },
-  {
-    "type": "unmatched_claude",
-    "pmid": "35657320",
-    "score": 0.3,
-    "disagreements": [
-      "No matching GPT claim found"
-    ],
-    "claude_claim": {
-      "id": "CRC-DYNAMIC-002",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
-        "journal": "New England Journal of Medicine",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "url": null
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "ctDNA-guided arm reduced adjuvant chemotherapy from 28% to 15%.",
-        "trial_name": "DYNAMIC",
-        "endpoint": null,
-        "endpoint_type": null,
-        "result_direction": "superior",
-        "n": null,
-        "hr": null,
-        "ci_lower": null,
-        "ci_upper": null,
-        "p_value": null,
-        "follow_up_months": null,
-        "effect_summary": "Reduced adjuvant chemotherapy from 28% to 15%"
-      },
-      "extraction": {
-        "extracted_by": "claude",
-        "extracted_date": "2026-04-03",
-        "model_version": "claude-sonnet-4-20250514",
-        "seed_source": "physicianFAQ.js"
-      }
-    },
-    "gpt_claim": null
-  },
-  {
-    "type": "unmatched_claude",
-    "pmid": "35657320",
-    "score": 0.5,
-    "disagreements": [
-      "No matching GPT claim found"
-    ],
-    "claude_claim": {
-      "id": "CRC-DYNAMIC-003",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating tumor DNA analysis guiding adjuvant therapy in stage II colon cancer",
-        "journal": "New England Journal of Medicine",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "url": null
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "2-year RFS non-inferior between ctDNA-guided vs. standard management: 93.5% vs 92.4% (HR 0.92).",
-        "trial_name": "DYNAMIC",
-        "endpoint": "RFS",
-        "endpoint_type": "primary",
-        "result_direction": "non-inferior",
-        "n": null,
-        "hr": 0.92,
-        "ci_lower": null,
-        "ci_upper": null,
-        "p_value": null,
-        "follow_up_months": 24,
-        "effect_summary": "2-year RFS 93.5% vs 92.4%, HR 0.92"
-      },
-      "extraction": {
-        "extracted_by": "claude",
-        "extracted_date": "2026-04-03",
-        "model_version": "claude-sonnet-4-20250514",
-        "seed_source": "physicianFAQ.js"
-      }
-    },
-    "gpt_claim": null
-  },
-  {
-    "type": "unmatched_claude",
-    "pmid": "35657320",
-    "score": 0.14285714285714285,
-    "disagreements": [
-      "No matching GPT claim found"
-    ],
-    "claude_claim": {
-      "id": "XCN-EVIDENCE-001",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "CRC landmark",
-        "journal": "NEJM",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "url": null
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": null,
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "Landmark CRC ctDNA MRD evidence published in NEJM 2022",
-        "trial_name": null,
-        "endpoint": null,
-        "endpoint_type": null,
-        "result_direction": null,
-        "n": null,
-        "hr": null,
-        "ci_lower": null,
-        "ci_upper": null,
-        "p_value": null,
-        "follow_up_months": null,
-        "effect_summary": "Landmark CRC evidence"
-      },
-      "extraction": {
-        "extracted_by": "claude",
-        "extracted_date": "2026-04-03",
-        "model_version": "claude-sonnet-4-20250514",
-        "seed_source": "physicianFAQ.js"
-      }
-    },
-    "gpt_claim": null
-  },
-  {
-    "type": "unmatched_gpt",
-    "pmid": "35657320",
-    "score": null,
-    "disagreements": [
-      "No matching Claude claim found"
-    ],
-    "claude_claim": null,
-    "gpt_claim": {
-      "id": "1",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
-        "journal": "N Engl J Med",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "raw_file": "raw/papers/undefined.md"
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "A ctDNA-guided approach reduced adjuvant chemotherapy use without compromising recurrence-free survival.",
-        "trial_name": "DYNAMIC",
-        "endpoint": "recurrence-free survival",
-        "endpoint_type": "primary",
-        "result_direction": "non-inferior",
-        "n": 455,
-        "hr": null,
-        "or": null,
-        "rr": null,
-        "ci_lower": null,
-        "ci_upper": null,
-        "p_value": null,
-        "sensitivity": null,
-        "specificity": null,
-        "ppv": null,
-        "npv": null,
-        "follow_up_months": 37,
-        "effect_summary": "ctDNA-guided management was noninferior to standard management in recurrence-free survival.",
-        "guideline_body": null,
-        "recommendation_strength": null,
-        "evidence_level": null
-      },
-      "extraction": {
-        "extracted_by": "gpt-4o",
-        "extracted_date": "2026-04-03",
-        "model_version": "gpt-4o",
-        "source_quote_hash": null
-      },
-      "source_quote": "A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant chemotherapy use without compromising recurrence-free survival."
-    }
-  },
-  {
-    "type": "unmatched_gpt",
-    "pmid": "35657320",
-    "score": null,
-    "disagreements": [
-      "No matching Claude claim found"
-    ],
-    "claude_claim": null,
-    "gpt_claim": {
-      "id": "2",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
-        "journal": "N Engl J Med",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "raw_file": "raw/papers/undefined.md"
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "The percentage of patients receiving adjuvant chemotherapy was lower in the ctDNA-guided group (15%) compared to the standard-management group (28%).",
-        "trial_name": "DYNAMIC",
-        "endpoint": "adjuvant chemotherapy use",
-        "endpoint_type": "secondary",
-        "result_direction": "superior",
-        "n": 455,
-        "hr": null,
-        "or": null,
-        "rr": 1.82,
-        "ci_lower": 1.25,
-        "ci_upper": 2.65,
-        "p_value": null,
-        "sensitivity": null,
-        "specificity": null,
-        "ppv": null,
-        "npv": null,
-        "follow_up_months": 37,
-        "effect_summary": "Lower adjuvant chemotherapy use in ctDNA-guided group compared to standard management.",
-        "guideline_body": null,
-        "recommendation_strength": null,
-        "evidence_level": null
-      },
-      "extraction": {
-        "extracted_by": "gpt-4o",
-        "extracted_date": "2026-04-03",
-        "model_version": "gpt-4o",
-        "source_quote_hash": null
-      },
-      "source_quote": "A lower percentage of patients in the ctDNA-guided group than in the standard-management group received adjuvant chemotherapy (15% vs. 28%; relative risk, 1.82; 95% confidence interval [CI], 1.25 to 2.65)."
-    }
-  },
-  {
-    "type": "unmatched_gpt",
-    "pmid": "35657320",
-    "score": null,
-    "disagreements": [
-      "No matching Claude claim found"
-    ],
-    "claude_claim": null,
-    "gpt_claim": {
-      "id": "3",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
-        "journal": "N Engl J Med",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "raw_file": "raw/papers/undefined.md"
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "2-year recurrence-free survival was 93.5% in the ctDNA-guided group and 92.4% in the standard-management group.",
-        "trial_name": "DYNAMIC",
-        "endpoint": "recurrence-free survival",
-        "endpoint_type": "primary",
-        "result_direction": "non-inferior",
-        "n": 455,
-        "hr": null,
-        "or": null,
-        "rr": null,
-        "ci_lower": -4.1,
-        "ci_upper": 6.2,
-        "p_value": null,
-        "sensitivity": null,
-        "specificity": null,
-        "ppv": null,
-        "npv": null,
-        "follow_up_months": 24,
-        "effect_summary": "Noninferior 2-year recurrence-free survival in ctDNA-guided group compared to standard management.",
-        "guideline_body": null,
-        "recommendation_strength": null,
-        "evidence_level": null
-      },
-      "extraction": {
-        "extracted_by": "gpt-4o",
-        "extracted_date": "2026-04-03",
-        "model_version": "gpt-4o",
-        "source_quote_hash": null
-      },
-      "source_quote": "In the evaluation of 2-year recurrence-free survival, ctDNA-guided management was noninferior to standard management (93.5% and 92.4%, respectively; absolute difference, 1.1 percentage points; 95% CI, -4.1 to 6.2 [noninferiority margin, -8.5 percentage points])."
-    }
-  },
-  {
-    "type": "unmatched_gpt",
-    "pmid": "35657320",
-    "score": null,
-    "disagreements": [
-      "No matching Claude claim found"
-    ],
-    "claude_claim": null,
-    "gpt_claim": {
-      "id": "4",
-      "type": "trial_result",
-      "source": {
-        "pmid": "35657320",
-        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy in Stage II Colon Cancer.",
-        "journal": "N Engl J Med",
-        "year": 2022,
-        "authors_short": "Tie et al.",
-        "source_type": "journal-article",
-        "raw_file": "raw/papers/undefined.md"
-      },
-      "scope": {
-        "cancer": "colorectal",
-        "stages": [
-          "II"
-        ],
-        "setting": "adjuvant",
-        "test_category": "MRD"
-      },
-      "finding": {
-        "description": "3-year recurrence-free survival was 86.4% among ctDNA-positive patients who received adjuvant chemotherapy and 92.5% among ctDNA-negative patients who did not.",
-        "trial_name": "DYNAMIC",
-        "endpoint": "recurrence-free survival",
-        "endpoint_type": "secondary",
-        "result_direction": "positive",
-        "n": null,
-        "hr": 1.83,
-        "or": null,
-        "rr": null,
-        "ci_lower": 0.79,
-        "ci_upper": 4.27,
-        "p_value": null,
-        "sensitivity": null,
-        "specificity": null,
-        "ppv": null,
-        "npv": null,
-        "follow_up_months": 36,
-        "effect_summary": "Higher 3-year recurrence-free survival in ctDNA-negative patients compared to ctDNA-positive patients.",
-        "guideline_body": null,
-        "recommendation_strength": null,
-        "evidence_level": null
-      },
-      "extraction": {
-        "extracted_by": "gpt-4o",
-        "extracted_date": "2026-04-03",
-        "model_version": "gpt-4o",
-        "source_quote_hash": null
-      },
-      "source_quote": "Three-year recurrence-free survival was 86.4% among ctDNA-positive patients who received adjuvant chemotherapy and 92.5% among ctDNA-negative patients who did not."
-    }
-  },
-  {
     "type": "unmatched_claude",
     "pmid": "40055522",
     "score": 0.5,
@@ -4507,6 +4019,155 @@
         "source_quote_hash": null
       },
       "source_quote": "Among 357 patients with persistent ctDNA-negative status, disease-free survival was 95% at the end of the 1-year monitoring period and 88% at 2 years."
+    }
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "35657320",
+    "score": 0.09090909090909091,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "XCN-EVIDENCE-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "CRC landmark",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "url": null
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Landmark CRC ctDNA MRD evidence published in NEJM 2022",
+        "trial_name": null,
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": null,
+        "n": null,
+        "hr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "follow_up_months": null,
+        "effect_summary": "Landmark CRC evidence"
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-03",
+        "model_version": "claude-sonnet-4-20250514",
+        "seed_source": "physicianFAQ.js"
+      },
+      "source_excerpt": "\"A ctDNA-guided approach to the treatment of stage II colon cancer reduced adjuvant chemotherapy use without compromising recurrence-free survival.\""
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "35657320",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "CRC-DYNAMIC-002",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/35657320.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "III"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "A completely different subgroup analysis finding with unrelated terms",
+        "trial_name": "DYNAMIC",
+        "endpoint": "overall survival",
+        "endpoint_type": "secondary",
+        "result_direction": "positive",
+        "n": 200,
+        "hr": 0.65,
+        "ci_lower": 0.4,
+        "ci_upper": 0.9,
+        "p_value": 0.01,
+        "follow_up_months": 37,
+        "effect_summary": "HR 0.65"
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-03",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      }
+    }
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "99999999",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "CRC-DYNAMIC-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "35657320",
+        "title": "Circulating Tumor DNA Analysis Guiding Adjuvant Therapy",
+        "journal": "NEJM",
+        "year": 2022,
+        "authors_short": "Tie et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/35657320.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "II"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA-guided treatment reduced adjuvant chemotherapy use without compromising recurrence-free survival",
+        "trial_name": "DYNAMIC",
+        "endpoint": "recurrence-free survival",
+        "endpoint_type": "primary",
+        "result_direction": "non-inferior",
+        "n": 455,
+        "hr": 0.96,
+        "ci_lower": 0.51,
+        "ci_upper": 1.82,
+        "p_value": null,
+        "follow_up_months": 37,
+        "effect_summary": "HR 0.96, non-inferior"
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-03",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      }
     }
   }
 ]
