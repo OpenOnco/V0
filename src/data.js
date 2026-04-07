@@ -6785,8 +6785,8 @@ export const ecdTestData = [
     "fdaStatus": "LDT; FDA Breakthrough Device Designation (June 2025); selected for NCI Vanguard Study (24000 participants); Shield MCD reviewed by FDA as part of NCI investigational device exemption (IDE)",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not covered by Medicare or commercial payers; no additional cost when ordered with Shield CRC (data exchange model)",
-    "clinicalAvailability": "Launched nationally October 2025; available when ordering Shield CRC test with physician opt-in",
-    "availableRegions": ["US"],
+    "clinicalAvailability": "Launched nationally October 2025 (US); Asia launch via Manulife partnership March 2026 (Hong Kong, Singapore, Philippines — available April 2026)",
+    "availableRegions": ["US", "Hong Kong", "Singapore", "Philippines"],
     "tat": "~14 days (same blood draw as Shield CRC)",
     "sampleType": "Whole blood in Guardant cfDNA BCT tubes (same sample as Shield CRC)",
     "sampleVolume": "4 tubes (no additional blood draw required)",
@@ -12276,6 +12276,16 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 7, 2026',
+    type: 'updated',
+    testId: 'ecd-10',
+    testName: 'Shield MCD',
+    vendor: 'Guardant Health',
+    category: 'ECD',
+    description: 'Updated availableRegions and clinicalAvailability: Asia launch via Manulife partnership (Hong Kong, Singapore, Philippines) announced March 2026, available April 2026.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 7, 2026',
     type: 'updated',
