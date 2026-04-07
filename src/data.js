@@ -1477,7 +1477,7 @@ export const mrdTestData = [
     "cptCodes": "MolDX with DEX Z-code",
     "clinicalAvailability": "Clinical LDT – shipping (initial market availability)",
     "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
-    "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71); TRACERx NSCLC (Cell Dec 2025, 431 pts); CALLA cervical cancer trial",
+    "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71); TRACERx NSCLC (Cell Dec 2025, 431 pts); CALLA cervical cancer trial; PREDICT-DNA / TBCRC 040 (JCO March 2026, 227 TNBC/HER2+ pts — ctDNA post-NAT predicts 4-9x higher relapse risk)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185 | https://doi.org/10.1016/j.cell.2025.12.XXX",
     "clinicalSettings": ["Post-Surgery", "Post-Adjuvant", "Neoadjuvant", "Surveillance", "Immunotherapy monitoring"],
     "clinicalSettingsNotes": "Validated for post-surgical MRD, post-adjuvant assessment, longitudinal surveillance, and immunotherapy response monitoring (npj Precision Oncology Feb 2026). Medicare coverage specifically for breast cancer recurrence monitoring/surveillance. TRACERx: ctDNA-positive patients had 5x higher relapse risk in NSCLC.",
@@ -2012,7 +2012,7 @@ export const mrdTestData = [
     "availableRegions": ["US"],
     "clinicalAvailability": "Clinical LDT – shipping",
     "exampleTestReport": "https://learn.colontown.org/wp-content/uploads/2022/01/Reveal-Sample-Report_postsurgery-positive-2-v2.pdf",
-    "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis)",
+    "clinicalTrials": "NCCTG N0147 adjuvant FOLFOX trial (>2000; Guardant Reveal ctDNA analysis); Stage III colon cancer MRD study (JCO Feb 2026, largest published MRD study in Stage III CRC — ctDNA better predicts recurrence and OS than standard staging)",
     "clinicalSettings": ["Post-Surgery", "Surveillance", "Therapy Response"],
     "clinicalSettingsNotes": "Validated for post-surgical landmark assessment (63% sensitivity), longitudinal surveillance (81% sensitivity) in CRC, and late-stage therapy response monitoring. Medicare coverage for both post-surgical and surveillance settings.",
     "totalParticipants": 2000,
@@ -2128,7 +2128,8 @@ export const mrdTestData = [
       "Ovarian/Fallopian/Primary peritoneal",
       "Pan-solid ICI",
       "Anal (ASCC)",
-      "Head & Neck"
+      "Head & Neck",
+      "Endometrial"
     ],
     "indicationsNotes": "Natera Signatera tumor-informed MRD assay with Medicare coverage for multiple solid-tumor indications: CRC (stage II–IV & oligometastatic, adjuvant & recurrence), breast cancer (neoadjuvant and stage IIb+ adjuvant & recurrence), bladder cancer (MIBC), NSCLC (stage I–III surveillance), and ovarian/fallopian/primary peritoneal cancer (adjuvant & recurrence), plus pan-solid tumor immune-checkpoint inhibitor (ICI) response monitoring. Emerging clinical data in anal SCC (n=84, 88% vs 11.5% relapse for MRD+/MRD-) and head & neck cancer (SINERGY Phase 2: 63% response rate with MRD-guided treatment reducing chemotherapy in 74% of patients).",
     "sensitivity": 94.0,
@@ -2183,7 +2184,7 @@ export const mrdTestData = [
     "tat": 28.0,
     "tatCitations": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/faq/",
     "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
-    "fdaStatus": "CLIA LDT; PMA submitted for companion diagnostic indication (Feb 2026). Not yet FDA-cleared/approved.",
+    "fdaStatus": "CLIA LDT; PMA submitted for CDx indication in muscle-invasive bladder cancer with atezolizumab (Feb 2026, based on IMvigor011 Phase 3). Not yet FDA-cleared/approved.",
     "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
     "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
     "commercialPayers": ["UnitedHealthcare", "Cigna", "Anthem BCBS", "BCBS Louisiana", "Blue Shield of California", "Geisinger Health Plan"],
@@ -2205,8 +2206,8 @@ export const mrdTestData = [
     "independentValidation": "Yes",
     "independentValidationNotes": "Multiple peer-reviewed and prospective studies across tumors.",
     "exampleTestReport": "https://www.natera.com/resource-library/signatera/signatera-patient-test-sample-report/",
-    "clinicalTrials": "BESPOKE CRC (NCT04264702); multicentre prospective observational study of ~2,000 stage I–IV colorectal cancer patients at up to 200 U.S. sites (MRD and surveillance cohorts)",
-    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT04264702",
+    "clinicalTrials": "BESPOKE CRC (NCT04264702, ~2,000 stage I–IV CRC pts); IMvigor011 (Phase 3, MIBC ctDNA-guided adjuvant atezolizumab); ALTAIR (FTD/TPI in Signatera-positive CRC, updated ASCO GI Jan 2026); SIGNAL-EMC 101 (endometrial cancer, de-escalation of vaginal radiation in Signatera-negative pts)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT04264702 | https://www.natera.com/company/news/natera-submits-signatera-cdx-pma-to-fda/ | https://www.natera.com/company/news/natera-presents-updated-analyses-from-altair-clinical-trial-at-asco-gi/",
     "clinicalSettings": ["Neoadjuvant", "Post-Surgery", "Post-Adjuvant", "Surveillance"],
     "clinicalSettingsNotes": "Most broadly validated across clinical settings. Neoadjuvant: breast cancer (I-SPY2 trial, Medicare covered). Post-surgery: landmark ~4 weeks (75% NSCLC sens). Post-adjuvant: after chemo completion. Surveillance: longitudinal monitoring (94% NSCLC sens). Medicare covers all settings for CRC, breast, bladder, NSCLC, ovarian.",
     "totalParticipants": 2000,
@@ -12276,6 +12277,36 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 7, 2026',
+    type: 'updated',
+    testId: 'mrd-7',
+    testName: 'Signatera',
+    vendor: 'Natera',
+    category: 'MRD',
+    description: 'Updated fdaStatus to specify MIBC CDx with atezolizumab (IMvigor011). Added IMvigor011, ALTAIR (ASCO GI Jan 2026), and SIGNAL-EMC 101 (endometrial) to clinicalTrials. Added Endometrial to cancerTypes.',
+    contributor: 'Automated weekly scan'
+  },
+  {
+    date: 'Apr 7, 2026',
+    type: 'updated',
+    testId: 'mrd-6',
+    testName: 'Guardant Reveal',
+    vendor: 'Guardant Health',
+    category: 'MRD',
+    description: 'Added Stage III colon cancer MRD JCO publication (Feb 2026) to clinicalTrials — largest published MRD study in Stage III CRC.',
+    contributor: 'Automated weekly scan'
+  },
+  {
+    date: 'Apr 7, 2026',
+    type: 'updated',
+    testId: 'mrd-2',
+    testName: 'NeXT Personal Dx',
+    vendor: 'Personalis',
+    category: 'MRD',
+    description: 'Added PREDICT-DNA / TBCRC 040 breast cancer trial (JCO March 2026, 227 TNBC/HER2+ pts) to clinicalTrials.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 7, 2026',
     type: 'updated',
