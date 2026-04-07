@@ -106,6 +106,94 @@ function today() {
 // ---------------------------------------------------------------------------
 
 /**
+ * Send weekly scan summary email (heartbeat + changes + flags).
+ * @param {object} summary — {
+ *   date: string,
+ *   status: "changes_merged" | "no_changes" | "tests_failed",
+ *   commitHash?: string,
+ *   sections: { name: string, changes: string[], flagged: string[] }[],
+ *   testOutput?: string
+ * }
+ */
+export async function notifyWeeklySummary(summary) {
+  const date = summary?.date || today();
+  const status = summary?.status || "unknown";
+
+  const subjectMap = {
+    changes_merged: `[OpenOnco] Weekly scan — changes merged (${date})`,
+    no_changes: `[OpenOnco] Weekly scan — no changes (${date})`,
+    tests_failed: `[OpenOnco] Weekly scan — TESTS FAILED (${date})`,
+  };
+  const subject = subjectMap[status] || `[OpenOnco] Weekly scan — ${status} (${date})`;
+
+  const sections = summary?.sections || [];
+
+  // Build merged changes HTML
+  const mergedItems = sections.flatMap(s => (s.changes || []).map(c => `<li><strong>${escHtml(s.name)}:</strong> ${escHtml(c)}</li>`));
+  const mergedHtml = mergedItems.length > 0
+    ? `<h3 style="color: #059669;">Auto-merged to main</h3><ul>${mergedItems.join("\n")}</ul>`
+    : `<p style="color: #64748b;">No changes found across all checks.</p>`;
+
+  // Build flagged items HTML
+  const flaggedItems = sections.flatMap(s => (s.flagged || []).map(f => `<li><strong>${escHtml(s.name)}:</strong> ${escHtml(f)}</li>`));
+  const flaggedHtml = flaggedItems.length > 0
+    ? `<h3 style="color: #d97706;">Needs your input</h3>
+       <div style="background: #fefce8; padding: 12px; border-radius: 6px; border-left: 3px solid #eab308;">
+         <ul style="margin: 0; padding-left: 20px;">${flaggedItems.join("\n")}</ul>
+       </div>
+       <p style="font-size: 13px; color: #64748b;">Open Claude Code and address these items directly.</p>`
+    : "";
+
+  // Test failure block
+  const testFailHtml = status === "tests_failed"
+    ? `<div style="background: #fef2f2; padding: 12px; border-radius: 6px; border-left: 3px solid #ef4444; margin-bottom: 16px;">
+         <strong>Smoke tests failed.</strong> All changes were reverted. No code was pushed.
+         ${summary.testOutput ? `<pre style="margin-top: 8px; font-size: 12px; overflow-x: auto;">${escHtml(summary.testOutput)}</pre>` : ""}
+       </div>`
+    : "";
+
+  // Commit info
+  const commitHtml = summary.commitHash
+    ? `<p style="font-size: 13px; color: #64748b;">Commit: <a href="${GITHUB_REPO}/commit/${escHtml(summary.commitHash)}" style="color: #0ea5e9; font-family: monospace;">${escHtml(summary.commitHash.slice(0, 7))}</a></p>`
+    : "";
+
+  const html = wrap(`Weekly Scan — ${date}`, `
+    ${testFailHtml}
+    ${mergedHtml}
+    ${flaggedHtml}
+    ${commitHtml}
+  `);
+
+  return sendEmail({ subject, html });
+}
+
+/**
+ * Send watchdog alert when the weekly scan appears to have not run.
+ * @param {object} info — { date: string, lastCommitDate?: string, details?: string }
+ */
+export async function notifyWatchdogAlert(info) {
+  const date = info?.date || today();
+  const subject = `[OpenOnco] ALERT: Weekly scan may not have run (${date})`;
+
+  const html = wrap("Watchdog Alert", `
+    <div style="background: #fef2f2; padding: 12px; border-radius: 6px; border-left: 3px solid #ef4444; margin-bottom: 16px;">
+      <strong>The weekly scan did not send a summary email or push a commit yesterday.</strong>
+      <p>This likely means the trigger timed out, errored, or was not scheduled.</p>
+    </div>
+    ${info?.lastCommitDate ? `<p><strong>Last commit to main:</strong> ${escHtml(info.lastCommitDate)}</p>` : ""}
+    ${info?.details ? `<p><strong>Details:</strong> ${escHtml(info.details)}</p>` : ""}
+    <h3>What to do</h3>
+    <ul>
+      <li>Check trigger run history in Claude Code (<code>/schedule list</code>)</li>
+      <li>Manually run the weekly scan if needed (<code>/schedule run</code>)</li>
+      <li>If this keeps happening, the prompt may be too long and timing out — consider splitting sections</li>
+    </ul>
+  `);
+
+  return sendEmail({ subject, html });
+}
+
+/**
  * Notify about an evidence dispute.
  * @param {object} claim  — { id, finding: { description }, source: { title } }
  * @param {object} dispute — { dispute_notes, verified_by, verified_date }
@@ -253,13 +341,15 @@ async function main() {
   const { type } = values;
 
   if (!type) {
-    console.error("Usage: node evidence/scripts/notify.js --type <dispute|nccn|pending|audit> [options]");
+    console.error("Usage: node evidence/scripts/notify.js --type <type> [options]");
     console.error("");
     console.error("Types:");
-    console.error("  dispute  --file <disputes.json>           Send dispute notification");
-    console.error("  nccn     --guideline <name> --version <v> Send NCCN update notification");
-    console.error("  pending  --description <desc> --source <url> Send pending publication notification");
-    console.error("  audit    --file <audit-summary.json>      Send monthly audit summary");
+    console.error("  dispute         --file <disputes.json>           Send dispute notification");
+    console.error("  nccn            --guideline <name> --version <v> Send NCCN update notification");
+    console.error("  pending         --description <desc> --source <url> Send pending publication notification");
+    console.error("  audit           --file <audit-summary.json>      Send monthly audit summary");
+    console.error("  weekly-summary  --file <summary.json>            Send weekly scan summary email");
+    console.error("  watchdog        [--file <info.json>]             Send watchdog alert (missing scan)");
     process.exit(1);
   }
 
@@ -311,6 +401,27 @@ async function main() {
       const summary = JSON.parse(readFileSync(filePath, "utf-8"));
       const result = await notifyAuditSummary(summary);
       console.log(`Sent audit summary notification: ${result.id}`);
+      break;
+    }
+
+    case "weekly-summary": {
+      if (!values.file) {
+        console.error("--file required for weekly-summary notifications");
+        process.exit(1);
+      }
+      const filePath = resolve(PROJECT_ROOT, values.file);
+      const summary = JSON.parse(readFileSync(filePath, "utf-8"));
+      const result = await notifyWeeklySummary(summary);
+      console.log(`Sent weekly summary notification: ${result.id}`);
+      break;
+    }
+
+    case "watchdog": {
+      const info = values.file
+        ? JSON.parse(readFileSync(resolve(PROJECT_ROOT, values.file), "utf-8"))
+        : { date: new Date().toISOString().slice(0, 10), details: values.description || "" };
+      const result = await notifyWatchdogAlert(info);
+      console.log(`Sent watchdog alert: ${result.id}`);
       break;
     }
 
