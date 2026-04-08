@@ -8733,9 +8733,9 @@ export const cgpTestData = [
       "notes": null,
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna"],
-    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA ctDNA/Liquid Biopsy Policy, Aetna CPB 0352, EviCore MOL.TS.194.A",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. Aetna CPB 0352: covered for NSCLC and prostate cancer when tissue insufficient (up to 50 genes). Blue Shield CA: covered for stage IV lung, metastatic CRC/pancreatic/prostate. EviCore (lab benefit manager) also covers.",
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna", "UnitedHealthcare"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA ctDNA/Liquid Biopsy Policy, Aetna CPB 0352, EviCore MOL.TS.194.A. UHC Companion Diagnostic Testing Policy (eff. Jan 1, 2026) and Molecular Oncology Testing Policy (eff. Apr 1, 2026).",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue biopsy not feasible. Aetna CPB 0352: covered for NSCLC and prostate cancer when tissue insufficient (up to 50 genes). Blue Shield CA: covered for stage IV lung, metastatic CRC/pancreatic/prostate. EviCore (lab benefit manager) also covers. UnitedHealthcare: CDx policy (eff. Jan 2026) covers FoundationOne Liquid CDx for advanced breast, NSCLC, mCRPC, recurrent ovarian; Molecular Oncology Testing policy (eff. Apr 1, 2026) covers liquid biopsy when tissue infeasible and no prior NGS.",
     "coverageCrossReference": {
       "lastVerified": "2026-02-05",
       "privatePayers": {
@@ -8922,9 +8922,9 @@ export const cgpTestData = [
       "notes": null,
       "lastVerified": "2026-01-13"
     },
-    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna", "BCBS Michigan"],
-    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology ctDNA Policy, Aetna CPB 0715. BCBS Michigan policy crawl 2026-02-05.",
-    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. Humana: strict conditions (0242U code, advanced cancer, tissue infeasible). Blue Shield CA: stage IV lung, metastatic CRC/pancreatic/prostate. Aetna CPB 0715: conditionally covered for ESR1 mutations only (breast cancer). EviCore also covers per MOL.TS.194.A guidelines. BCBS Michigan: advanced solid cancers (metastatic, inoperable, refractory, recurrent, stages III-IV) for FDA-approved targeted therapies.",
+    "commercialPayers": ["Anthem BCBS", "Humana", "Blue Shield of California", "Aetna", "BCBS Michigan", "UnitedHealthcare"],
+    "commercialPayersCitations": "Policy crawl 2026-02-01: Anthem CG-GENE-14, Humana Liquid Biopsy Policy, Blue Shield CA Oncology ctDNA Policy, Aetna CPB 0715. BCBS Michigan policy crawl 2026-02-05. UHC Companion Diagnostic Testing Policy (eff. Jan 1, 2026) and Molecular Oncology Testing Policy (eff. Apr 1, 2026).",
+    "commercialPayersNotes": "Conditional coverage for advanced solid tumors when tissue insufficient. Humana: strict conditions (0242U code, advanced cancer, tissue infeasible). Blue Shield CA: stage IV lung, metastatic CRC/pancreatic/prostate. Aetna CPB 0715: conditionally covered for ESR1 mutations only (breast cancer). EviCore also covers per MOL.TS.194.A guidelines. BCBS Michigan: advanced solid cancers (metastatic, inoperable, refractory, recurrent, stages III-IV) for FDA-approved targeted therapies. UnitedHealthcare: CDx policy (eff. Jan 2026) covers FDA-approved CDx tests detecting ≥5 gene alterations; Molecular Oncology Testing policy (eff. Apr 1, 2026) covers liquid biopsy ctDNA profiling for NSCLC when tissue infeasible and no prior NGS, panel ≤50 genes or CDx.",
     "coverageCrossReference": {
       "lastVerified": "2026-02-05",
       "privatePayers": {
@@ -12277,6 +12277,26 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'tds-4',
+    testName: 'Guardant360 CDx',
+    vendor: 'Guardant Health',
+    category: 'TDS',
+    description: 'Added UnitedHealthcare to commercialPayers per CDx policy (eff. Jan 2026) and Molecular Oncology Testing policy (eff. Apr 1, 2026). Covers NSCLC liquid biopsy when tissue infeasible.',
+    contributor: 'Automated weekly scan'
+  },
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'tds-2',
+    testName: 'FoundationOne Liquid CDx',
+    vendor: 'Foundation Medicine',
+    category: 'TDS',
+    description: 'Added UnitedHealthcare to commercialPayers per CDx policy (eff. Jan 2026). Covers for advanced breast, NSCLC, mCRPC, recurrent ovarian when tissue infeasible.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 7, 2026',
     type: 'updated',
