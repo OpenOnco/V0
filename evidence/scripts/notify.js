@@ -118,14 +118,26 @@ export async function notifyWeeklySummary(summary) {
   const date = summary?.date || today();
   const status = summary?.status || "unknown";
 
-  const subjectMap = {
-    changes_merged: `[OpenOnco] Weekly scan — changes merged (${date})`,
-    no_changes: `[OpenOnco] Weekly scan — no changes (${date})`,
-    tests_failed: `[OpenOnco] Weekly scan — TESTS FAILED (${date})`,
-  };
-  const subject = subjectMap[status] || `[OpenOnco] Weekly scan — ${status} (${date})`;
+  const subject = `[OpenOnco] Weekly scan — ${date}`;
 
   const sections = summary?.sections || [];
+
+  // Status banner
+  const statusLabels = {
+    changes_merged: "Changes merged to main",
+    no_changes: "No changes found",
+    tests_failed: "TESTS FAILED — changes reverted",
+    in_progress: "Scan in progress…",
+  };
+  const statusColors = {
+    changes_merged: "#059669",
+    no_changes: "#64748b",
+    tests_failed: "#dc2626",
+    in_progress: "#2563eb",
+  };
+  const statusLabel = statusLabels[status] || status;
+  const statusColor = statusColors[status] || "#64748b";
+  const statusBannerHtml = `<p style="font-weight: 600; color: ${statusColor}; margin-bottom: 16px;">${escHtml(statusLabel)}</p>`;
 
   // Build merged changes HTML
   const mergedItems = sections.flatMap(s => (s.changes || []).map(c => `<li><strong>${escHtml(s.name)}:</strong> ${escHtml(c)}</li>`));
@@ -157,6 +169,7 @@ export async function notifyWeeklySummary(summary) {
     : "";
 
   const html = wrap(`Weekly Scan — ${date}`, `
+    ${statusBannerHtml}
     ${testFailHtml}
     ${mergedHtml}
     ${flaggedHtml}
