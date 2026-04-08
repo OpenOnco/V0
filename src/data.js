@@ -6092,7 +6092,7 @@ export const ecdTestData = [
     "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
     "commercialPayersNotes": "No commercial payer coverage yet. Government programs: VA Community Care Network covers Shield with no copay for average-risk individuals 45+; TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
     "availableRegions": ["US"],
-    "clinicalAvailability": "Commercially available in US since August 2024",
+    "clinicalAvailability": "Commercially available in US since August 2024. Available for physician ordering through Quest Diagnostics national network (March 2026).",
     "tat": "~14 days",
     "tatCitations": "https://www.stocktitan.net/news/GH/shield-crc-blood-test-demonstrates-adherence-of-95-in-new-study-of-tchgb4rvn3op.html",
     "tatNotes": "Median test turnaround time of 15 days from blood sample receipt to results report in real-world study of 20,000 patients.",
@@ -6217,7 +6217,7 @@ export const ecdTestData = [
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
     "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational. EviCore (MOL.TS.396.A): ctDNA assays not covered for screening outside clinical trials; liquid biopsy for early cancer detection considered experimental/investigational.",
     "availableRegions": ["US", "UK"],
-    "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021",
+    "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021. Also available via Hims & Hers telehealth platform (Feb 2026, $699 for Labs plan subscribers).",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "tatCitations": "https://www.galleri.com/lab-info | https://www.galleri.com/patient/faqs",
     "tatNotes": "Typically about 2 weeks from sample receipt; occasionally up to 4 weeks during high volume periods.",
@@ -8193,8 +8193,8 @@ export const ecdTestData = [
     "fdaStatusNotes": "US validation underway with Pangea Laboratory; available as LDT in Asian markets",
     "reimbursement": "Not covered",
     "reimbursementNote": "No US coverage; available in Southeast Asia",
-    "clinicalAvailability": "Commercial in Asian markets (Vietnam, Singapore, Malaysia, Thailand, Indonesia, Philippines); US launch planned",
-    "availableRegions": ["Singapore", "Vietnam", "Malaysia", "Thailand", "Indonesia", "Philippines"],
+    "clinicalAvailability": "Commercial in Asian markets (Vietnam, Singapore, Malaysia, Thailand, Indonesia, Philippines); Turkey launch announced Feb 2026 with real-world evidence (n=12,281: 78.2% sensitivity, 99.8% specificity); US validation underway with Pangea Laboratory",
+    "availableRegions": ["Singapore", "Vietnam", "Malaysia", "Thailand", "Indonesia", "Philippines", "Turkey"],
     "clinicalTrials": "K-DETEK trial",
     "clinicalTrialsCitations": "https://www.prnewswire.com/apac/news-releases/gene-solutions-leads-the-way-in-cancer-early-detection-with-asias-first-clinical-validated-multi-cancer-blood-test-302411672.html",
     "totalParticipants": 9024,
@@ -12277,6 +12277,36 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'ecd-28',
+    testName: 'SPOT-MAS',
+    vendor: 'Gene Solutions',
+    category: 'ECD',
+    description: 'Added Turkey market entry (Feb 2026, real-world evidence n=12,281: 78.2% sensitivity, 99.8% specificity). Updated availableRegions.',
+    contributor: 'Automated weekly scan'
+  },
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'ecd-2',
+    testName: 'Galleri',
+    vendor: 'GRAIL',
+    category: 'ECD',
+    description: 'Added Hims & Hers telehealth platform availability (Feb 2026, $699 for Labs plan subscribers) to clinicalAvailability.',
+    contributor: 'Automated weekly scan'
+  },
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'ecd-1',
+    testName: 'Shield',
+    vendor: 'Guardant Health',
+    category: 'ECD',
+    description: 'Added Quest Diagnostics national network distribution (March 2026) to clinicalAvailability.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 8, 2026',
     type: 'updated',
