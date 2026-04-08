@@ -36,8 +36,10 @@ const FROM = "OpenOnco <notifications@openonco.org>";
 // ---------------------------------------------------------------------------
 
 async function sendEmail({ subject, html }) {
-  const apiKey = process.env.RESEND_API_KEY || "re_b7CYy5ag_E2R76PqKJ6BfX8hzUDjiFcy4";
+  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.EVIDENCE_NOTIFY_EMAIL || "alexgdickinson@gmail.com";
+
+  if (!apiKey) throw new Error("Missing RESEND_API_KEY environment variable");
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
