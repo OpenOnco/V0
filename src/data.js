@@ -6494,9 +6494,9 @@ export const ecdTestData = [
     "npvNotes": "NPV 99.8% - high NPV indicates negative result reliably rules out CRC",
     "npvDefinition": "NPV for CRC in PREEMPT CRC average-risk screening population",
     "performanceCitations": "PREEMPT CRC JAMA June 2025 (n=48995 enrolled; 27010 analyzed)",
-    "performanceNotes": "79.2% CRC sensitivity with 57.1% Stage I; 12.5% advanced adenoma (29% for high-grade dysplasia); 91.5% specificity.",
+    "performanceNotes": "PREEMPT CRC v1: 79.2% CRC sensitivity with 57.1% Stage I; 12.5% advanced adenoma (29% for high-grade dysplasia); 91.5% specificity. Updated assay (ASCO GI Jan 2026): improved to 85% CRC sensitivity and 22% advanced precancerous lesion detection at 90% specificity, reflecting optimized reagents, workflow, and automation.",
     "leadTimeNotes": "Largest blood-based CRC screening study (PREEMPT CRC n=48995); multiomics approach combines multiple biomarker classes",
-    "fdaStatus": "PMA application submitted (final module August 2025); Exact Sciences exclusive US licensing agreement announced August 2025",
+    "fdaStatus": "PMA application submitted (final module August 2025); Exact Sciences/Abbott exclusive US licensing agreement; FDA approval expected H2 2026",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not yet established",
     "clinicalAvailability": "Not yet commercially available - pending FDA approval",
@@ -6867,7 +6867,7 @@ export const ecdTestData = [
     "reimbursement": "Self-Pay",
     "reimbursementNote": "No Medicare or commercial insurance coverage. Positioned as affordable/accessible alternative to NGS-based MCED tests.",
     "commercialPayers": [],
-    "clinicalAvailability": "Commercially available in US via CLIA-certified lab in Tucson, AZ. Physician-ordered (not direct-to-consumer).",
+    "clinicalAvailability": "Commercially available in US via CLIA/CAP-accredited lab in Tucson, AZ. Physician-ordered (not direct-to-consumer). AZOVA Health partnership (Feb 2026) enables nationwide digital access.",
     "availableRegions": ["US"],
     "tat": "5 days",
     "tatNotes": "Collection to report turnaround time (includes shipping and processing). Lab processing time is 2-3 days.",
@@ -12278,6 +12278,26 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'ecd-6',
+    testName: 'Freenome CRC Blood Test',
+    vendor: 'Freenome',
+    category: 'ECD',
+    description: 'Added updated assay performance (ASCO GI Jan 2026): improved to 85% CRC sensitivity and 22% advanced precancerous lesion detection at 90% specificity. Updated FDA timeline to H2 2026 and Exact Sciences/Abbott licensing note.',
+    contributor: 'Weekly scan (auto)'
+  },
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'ecd-11',
+    testName: 'EPISEEK',
+    vendor: 'Precision Epigenomics',
+    category: 'ECD',
+    description: 'Added AZOVA Health partnership (Feb 2026) for nationwide digital access and CAP accreditation.',
+    contributor: 'Weekly scan (auto)'
+  },
   {
     date: 'Apr 8, 2026',
     type: 'updated',
