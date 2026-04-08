@@ -6093,7 +6093,7 @@ export const ecdTestData = [
     "commercialPayersCitations": "https://investors.guardanthealth.com/press-releases/press-releases/2025/Guardant-Healths-Shield-Blood-Test-Now-Covered-for-VA-Community-Care-Beneficiaries/default.aspx",
     "commercialPayersNotes": "No commercial payer coverage yet. Government programs: VA Community Care Network covers Shield with no copay for average-risk individuals 45+; TRICARE also covers. Commercial insurance coverage pending USPSTF guideline inclusion and ACS recommendations. Once included in guidelines, expected to be covered under ACA preventive services.",
     "availableRegions": ["US"],
-    "clinicalAvailability": "Commercially available in US since August 2024. Available for physician ordering through Quest Diagnostics national network (March 2026).",
+    "clinicalAvailability": "Commercially available in US since August 2024. Available through Quest Diagnostics national ordering and collection network (March 2026). TRICARE coverage for active-duty military and families ages 45+ (Jan 2026).",
     "tat": "~14 days",
     "tatCitations": "https://www.stocktitan.net/news/GH/shield-crc-blood-test-demonstrates-adherence-of-95-in-new-study-of-tchgb4rvn3op.html",
     "tatNotes": "Median test turnaround time of 15 days from blood sample receipt to results report in real-world study of 20,000 patients.",
@@ -6218,7 +6218,7 @@ export const ecdTestData = [
     "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
     "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational. EviCore (MOL.TS.396.A): ctDNA assays not covered for screening outside clinical trials; liquid biopsy for early cancer detection considered experimental/investigational.",
     "availableRegions": ["US", "UK"],
-    "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021. Also available via Hims & Hers telehealth platform (Feb 2026, $699 for Labs plan subscribers).",
+    "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021. Also available via Hims & Hers telehealth platform (Feb 2026, $699 for Labs plan subscribers). Available through Superpower preventative health platform (April 2026). Epic EHR integration announced for broad availability by end of 2026.",
     "tat": "10-14 business days (up to 4 weeks during high volume)",
     "tatCitations": "https://www.galleri.com/lab-info | https://www.galleri.com/patient/faqs",
     "tatNotes": "Typically about 2 weeks from sample receipt; occasionally up to 4 weeks during high volume periods.",
@@ -8344,7 +8344,7 @@ export const ecdTestData = [
     "targetPopulation": "Screening and symptomatic screening adults",
     "indicationGroup": "MCED",
     "perCancerEarlyStageSensitivity": {"Head and Neck":{"pct":100.0,"n":null},"Lung":{"pct":86.7,"n":null},"Cervix":{"pct":80.0,"n":null},"Esophagus":{"pct":80.0,"n":null},"Gastric":{"pct":80.0,"n":null},"Prostate":{"pct":78.9,"n":null},"Uterus":{"pct":73.7,"n":null},"Pancreas":{"pct":71.4,"n":null},"Colon/Rectum":{"pct":62.2,"n":null},"Breast":{"pct":53.0,"n":null}},
-    "perCancerEarlyStageSensitivitySource": "Achieve 1 interim readout (Caris Life Sciences, Feb 2026); finalized results March 31, 2026",
+    "perCancerEarlyStageSensitivitySource": "Achieve 1 finalized results (Caris Life Sciences, March 31, 2026; interim Feb 2026)",
     "sensitivity": null,
     "sensitivityNotes": "FINALIZED Achieve 1 results (March 31, 2026; n=3,014 evaluable subjects): Overall all-stages sensitivity not separately reported by Caris; they report ~60.3% as combined Stage I-II sensitivity. This is NOT comparable to the overall sensitivity field used for other MCED tests (e.g., Galleri 51.5% overall, Cancerguard 64% overall, Shield MCD 60% overall). Breakdown: Stage I 56.8%, Stage IV 98.6%. Stage III not separately reported. Cancer-type-specific Stage I+II sensitivity from earlier earnings slides: lung 87%, prostate 79%, head & neck 100%. CRITICAL CAVEATS: (1) Finalized cross-validation data; blinded validation results may differ. (2) Enriched cohort — the undiagnosed population had ~7% subsequent cancer diagnosis rate, substantially higher than general screening prevalence (~0.5-1%). (3) Many cancer-specific sample counts are small, reducing precision for individual cancer type estimates. Updated from interim readout (n=2,122; Feb 26, 2026).",
     "sensitivityCitations": "https://www.prnewswire.com/news-releases/caris-life-sciences-finalizes-achieve-1-study-results-reinforcing-the-superior-sensitivity-and-specificity-of-caris-detect-302730659.html",
@@ -12305,7 +12305,7 @@ export const DATABASE_CHANGELOG = [
     testName: 'Galleri',
     vendor: 'GRAIL',
     category: 'ECD',
-    description: 'Added Hims & Hers telehealth platform availability (Feb 2026, $699 for Labs plan subscribers) to clinicalAvailability.',
+    description: 'Added Hims & Hers telehealth (Feb 2026), Superpower partnership (April 2026), and Epic EHR integration to clinicalAvailability.',
     contributor: 'Automated weekly scan'
   },
   {
@@ -12315,7 +12315,7 @@ export const DATABASE_CHANGELOG = [
     testName: 'Shield',
     vendor: 'Guardant Health',
     category: 'ECD',
-    description: 'Added Quest Diagnostics national network distribution (March 2026) to clinicalAvailability.',
+    description: 'Added Quest Diagnostics national distribution (March 2026) and TRICARE coverage (Jan 2026) to clinicalAvailability.',
     contributor: 'Automated weekly scan'
   },
   {
@@ -12385,7 +12385,7 @@ export const DATABASE_CHANGELOG = [
     testName: 'Galleri',
     vendor: 'GRAIL',
     category: 'ECD',
-    description: 'Updated Medicare coverage notes: Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 (previously listed as pending congressional action). Creates Medicare coverage pathway for FDA-approved MCED tests starting Jan 2028.',
+    description: 'Updated Medicare coverage notes: Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026. Creates Medicare coverage pathway for FDA-approved MCED tests starting Jan 2028.',
     contributor: 'Automated weekly scan'
   },
   {
