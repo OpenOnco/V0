@@ -4537,8 +4537,8 @@ export const mrdTestData = [
     "lodNotes": "3.45 ppm is the LoD95 (limit of detection at 95% confidence). Detection threshold is ~1.67 ppm. WGS-based tumor-informed tracking with up to 1,800 variants provides high sensitivity for low-burden disease.",
     "lodCitations": "https://www.personalis.com/for-clinicians/next-personal-dx/ | Personalis NeXT Personal analytical validation",
     "fdaStatus": "High-complexity LDT in CLIA/CAP lab; not FDA-approved",
-    "reimbursement": "Medicare coverage for select solid tumor indications including stage II-III breast cancer surveillance",
-    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus’ MRD portfolio and covered by Medicare for select solid tumor indications (for example, stage II–III breast cancer surveillance).",
+    "reimbursement": "Medicare coverage for select solid tumor indications including stage II-III breast cancer and stage I-III NSCLC surveillance",
+    "reimbursementNote": "Co-commercialized with Tempus AI as xM (NeXT Personal Dx), with Tempus serving as the exclusive commercial diagnostic partner for tumor-informed MRD in breast, lung, colorectal cancers and solid-tumor immunotherapy monitoring. Clinically launched within Tempus’ MRD portfolio and covered by Medicare for select solid tumor indications (breast cancer stage II-III, NSCLC stage I-III surveillance announced Feb 10, 2026).",
     "clinicalTrials": "NCT06230185 B-STRONGER I TNBC MRD/monitoring study (422); VICTORI resectable colorectal cancer MRD study (~71, interim cohort)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185",
     "totalParticipants": 493,
@@ -4554,12 +4554,13 @@ export const mrdTestData = [
       "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
       "coveredIndications": [
         "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
+        "Stage I-III NSCLC surveillance",
         "Post-treatment surveillance up to 6 years"
       ],
       "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
       "cptCode": null,
-      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025.",
-      "lastVerified": "2026-01-13",
+      "notes": "Medicare coverage: breast cancer announced Nov 2025 (eff. Oct 7, 2025); lung cancer (Stage I-III NSCLC) announced Feb 10, 2026. Based on TRACERx data published in Cell.",
+      "lastVerified": "2026-04-08",
       "reimbursementDetails": {
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
@@ -12277,6 +12278,16 @@ export const hctTestData = [
 
 // Database Changelog - OpenOnco (Cancer)
 export const DATABASE_CHANGELOG = [
+  {
+    date: 'Apr 8, 2026',
+    type: 'updated',
+    testId: 'mrd-2',
+    testName: 'NeXT Personal Dx',
+    vendor: 'Personalis',
+    category: 'MRD',
+    description: 'Added Medicare coverage for Stage I-III NSCLC surveillance (announced Feb 10, 2026, based on TRACERx data in Cell). Updated coveredIndications and notes.',
+    contributor: 'Automated weekly scan'
+  },
   {
     date: 'Apr 8, 2026',
     type: 'updated',
