@@ -1,0 +1,104 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41951687",
+      "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+      "journal": "NPJ Breast Cancer",
+      "year": 2026,
+      "authors_short": "Egle et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "II"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Baseline ctDNA positivity was significantly associated with inferior overall survival.",
+      "trial_name": "ABCSG-34",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": 145,
+      "hr": 2.12,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.043,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Baseline ctDNA positivity associated with inferior overall survival.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Baseline ctDNA positivity was significantly associated with inferior overall survival (HR 2.12, p = 0.043) and shorter survival durations across all endpoints."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41951687",
+      "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+      "journal": "NPJ Breast Cancer",
+      "year": 2026,
+      "authors_short": "Egle et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "II"
+      ],
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Trends toward improved outcomes were observed in patients who cleared ctDNA during NAT.",
+      "trial_name": "ABCSG-34",
+      "endpoint": null,
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": 145,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Trends toward improved outcomes in patients who cleared ctDNA during NAT.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Trends toward improved outcomes were observed in patients who cleared ctDNA during NAT, though statistical significance was not reached-likely due to limited sample size."
+  }
+]

@@ -47,5 +47,80 @@
     "claims_extracted": 10,
     "date": "2026-04-03T22:48:38.183Z",
     "model": "claude-sonnet-4-20250514"
+  },
+  {
+    "pmid": "41951687",
+    "cancer_type": "breast",
+    "claims_extracted": 3,
+    "claims_added": 3,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-04-13",
+    "elapsed_seconds": 17.5,
+    "claim_ids": [
+      "BRC-ABCSG34-001",
+      "BRC-ABCSG34-002",
+      "BRC-ABCSG34-003"
+    ]
+  },
+  {
+    "pmid": "41935608",
+    "cancer_type": "colorectal",
+    "claims_extracted": 3,
+    "claims_added": 3,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-04-13",
+    "elapsed_seconds": 16,
+    "claim_ids": [
+      "CRC-CTDNA-SCOPING-001",
+      "CRC-CTDNA-STAGE2-001",
+      "CRC-CTDNA-ESCALATION-001"
+    ]
+  },
+  {
+    "pmid": "41960736",
+    "cancer_type": "colorectal",
+    "claims_extracted": 7,
+    "claims_added": 7,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-04-13",
+    "elapsed_seconds": 36.5,
+    "claim_ids": [
+      "CRC-CHECKMATE577-001",
+      "CRC-CHECKMATE577-002",
+      "CRC-MATTERHORN-001",
+      "CRC-ATOMIC-001",
+      "CRC-BREAKWATER-001",
+      "CRC-DESTINY-GASTRIC04-001",
+      "CRC-DYNAMIC-III-001"
+    ]
+  },
+  {
+    "pmid": "41912863",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 1,
+    "claims_added": 1,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-04-13",
+    "elapsed_seconds": 8.5,
+    "claim_ids": [
+      "XCN-IDH-CCA-MRD-001"
+    ]
+  },
+  {
+    "pmid": "41931716",
+    "cancer_type": "colorectal",
+    "claims_extracted": 1,
+    "claims_added": 1,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-04-13",
+    "elapsed_seconds": 7,
+    "claim_ids": [
+      "CRC-N0147-ERRATUM-001"
+    ]
   }
 ]

@@ -4169,5 +4169,1219 @@
         "source_quote_hash": null
       }
     }
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41951687",
+    "score": 0.2857142857142857,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "BRC-ABCSG34-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41951687",
+        "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+        "journal": "NPJ Breast Cancer",
+        "year": 2026,
+        "authors_short": "Egle et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41951687.md"
+      },
+      "scope": {
+        "cancer": "breast",
+        "stages": null,
+        "setting": "neoadjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ABCSG-34 randomized 400 patients to chemotherapy or endocrine therapy, with or without the MUC1 vaccine tecemotide",
+        "trial_name": "ABCSG-34",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": null,
+        "n": 400,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Phase II trial randomizing 400 breast cancer patients to different treatments",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "d93b6fd6"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41951687",
+    "score": 0.2857142857142857,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "BRC-ABCSG34-002",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41951687",
+        "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+        "journal": "NPJ Breast Cancer",
+        "year": 2026,
+        "authors_short": "Egle et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41951687.md"
+      },
+      "scope": {
+        "cancer": "breast",
+        "stages": null,
+        "setting": "neoadjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Of 145 patients with ctDNA data, 109 had long-term follow-up with median 7.1 years",
+        "trial_name": "ABCSG-34",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": null,
+        "n": 109,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": 85.2,
+        "effect_summary": "109 patients with 7.1-year median follow-up",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "54e2c750"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41951687",
+    "score": 0.5555555555555556,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "BRC-ABCSG34-003",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41951687",
+        "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+        "journal": "NPJ Breast Cancer",
+        "year": 2026,
+        "authors_short": "Egle et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41951687.md"
+      },
+      "scope": {
+        "cancer": "breast",
+        "stages": null,
+        "setting": "neoadjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Baseline ctDNA positivity was significantly associated with inferior overall survival",
+        "trial_name": "ABCSG-34",
+        "endpoint": "overall survival",
+        "endpoint_type": null,
+        "result_direction": "negative",
+        "n": null,
+        "hr": 2.12,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": 0.043,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Baseline ctDNA+ associated with inferior OS (HR 2.12, p=0.043)",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "1f1ad214"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "41951687",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "1",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41951687",
+        "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+        "journal": "NPJ Breast Cancer",
+        "year": 2026,
+        "authors_short": "Egle et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "breast",
+        "stages": [
+          "II"
+        ],
+        "setting": "neoadjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Baseline ctDNA positivity was significantly associated with inferior overall survival.",
+        "trial_name": "ABCSG-34",
+        "endpoint": "overall survival",
+        "endpoint_type": "primary",
+        "result_direction": "inferior",
+        "n": 145,
+        "hr": 2.12,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": 0.043,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Baseline ctDNA positivity associated with inferior overall survival.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "Baseline ctDNA positivity was significantly associated with inferior overall survival (HR 2.12, p = 0.043) and shorter survival durations across all endpoints."
+    }
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "41951687",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "2",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41951687",
+        "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+        "journal": "NPJ Breast Cancer",
+        "year": 2026,
+        "authors_short": "Egle et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "breast",
+        "stages": [
+          "II"
+        ],
+        "setting": "neoadjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Trends toward improved outcomes were observed in patients who cleared ctDNA during NAT.",
+        "trial_name": "ABCSG-34",
+        "endpoint": null,
+        "endpoint_type": "exploratory",
+        "result_direction": "positive",
+        "n": 145,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Trends toward improved outcomes in patients who cleared ctDNA during NAT.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "Trends toward improved outcomes were observed in patients who cleared ctDNA during NAT, though statistical significance was not reached-likely due to limited sample size."
+    }
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41935608",
+    "score": 0.6666666666666666,
+    "disagreements": [
+      "endpoint_type: claude=null vs gpt=\"primary\"",
+      "result_direction: claude=\"no-difference\" vs gpt=\"non-inferior\""
+    ],
+    "claude_claim": {
+      "id": "CRC-CTDNA-STAGE2-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41935608",
+        "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+        "journal": "J Gastrointest Surg",
+        "year": 2026,
+        "authors_short": "Jiang et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41935608.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "II"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival in stage II colon cancer",
+        "trial_name": null,
+        "endpoint": "recurrence-free survival",
+        "endpoint_type": null,
+        "result_direction": "no-difference",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Reduced chemotherapy use without compromising RFS in stage II",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "48cc6a2c"
+      }
+    },
+    "gpt_claim": {
+      "id": "1",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+        "journal": "J Gastrointest Surg",
+        "year": 2026,
+        "authors_short": "Jiang et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": [
+          "II"
+        ],
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "In stage II colon cancer, ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival.",
+        "trial_name": null,
+        "endpoint": "recurrence-free survival",
+        "endpoint_type": "primary",
+        "result_direction": "non-inferior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival in stage II colon cancer.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "In stage II colon cancer, ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival."
+    }
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41935608",
+    "score": 0.5,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "CRC-CTDNA-ESCALATION-001",
+      "type": "clinical_utility",
+      "source": {
+        "pmid": "41935608",
+        "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+        "journal": "J Gastrointest Surg",
+        "year": 2026,
+        "authors_short": "Jiang et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41935608.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Escalation approaches including intensified chemotherapy or trifluridine/tipiracil have not shown definitive disease-free survival gains in ctDNA-positive patients",
+        "trial_name": null,
+        "endpoint": "disease-free survival",
+        "endpoint_type": null,
+        "result_direction": "no-difference",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "No definitive DFS benefit from escalated therapy in ctDNA+ patients",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "9cce5c1d"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_gpt",
+    "pmid": "41935608",
+    "score": null,
+    "disagreements": [
+      "No matching Claude claim found"
+    ],
+    "claude_claim": null,
+    "gpt_claim": {
+      "id": "3",
+      "type": "clinical_utility",
+      "source": {
+        "pmid": "",
+        "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+        "journal": "J Gastrointest Surg",
+        "year": 2026,
+        "authors_short": "Jiang et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA dynamics add prognostic resolution: clearance after adjuvant therapy is associated with excellent outcomes, whereas persistent positivity signals very high relapse risk.",
+        "trial_name": null,
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "positive",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "ctDNA clearance after adjuvant therapy indicates excellent outcomes; persistent positivity indicates high relapse risk.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "ctDNA dynamics add prognostic resolution: clearance after adjuvant therapy is associated with excellent outcomes, whereas persistent positivity signals very high relapse risk."
+    }
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41960736",
+    "score": 0.6666666666666666,
+    "disagreements": [
+      "result_direction: claude=\"negative\" vs gpt=\"no-difference\"",
+      "cancer: claude=\"colorectal\" vs gpt=\"esophageal\""
+    ],
+    "claude_claim": {
+      "id": "CRC-CHECKMATE577-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": null
+      },
+      "finding": {
+        "description": "Adjuvant nivolumab did not show statistically significant overall survival benefit in the intent-to-treat population for esophageal/GEJ cancer",
+        "trial_name": "CheckMate 577",
+        "endpoint": "overall survival",
+        "endpoint_type": "primary",
+        "result_direction": "negative",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "No significant OS benefit in intent-to-treat population",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "c5e108ef"
+      }
+    },
+    "gpt_claim": {
+      "id": "CHECKMATE-577-OS",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "esophageal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": null
+      },
+      "finding": {
+        "description": "CheckMate 577 reported mature overall survival (OS) data for adjuvant nivolumab in esophageal/GEJ cancer; however, OS benefit was not statistically significant in the intent-to-treat population.",
+        "trial_name": "CHECKMATE-577",
+        "endpoint": "overall survival",
+        "endpoint_type": "primary",
+        "result_direction": "no-difference",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "No significant OS benefit in ITT population for adjuvant nivolumab.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "CheckMate 577 reported mature overall survival (OS) data for adjuvant nivolumab in esophageal/GEJ cancer; however, OS benefit was not statistically significant in the intent-to-treat population."
+    }
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41960736",
+    "score": 0.3333333333333333,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "CRC-CHECKMATE577-002",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": null
+      },
+      "finding": {
+        "description": "Overall survival benefit with adjuvant nivolumab appeared restricted to PD-L1-positive tumors in esophageal/GEJ cancer",
+        "trial_name": "CheckMate 577",
+        "endpoint": "overall survival",
+        "endpoint_type": "secondary",
+        "result_direction": "positive",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "OS benefit restricted to PD-L1-positive tumors",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "7eec772e"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41960736",
+    "score": 0.6666666666666666,
+    "disagreements": [
+      "cancer: claude=\"colorectal\" vs gpt=\"gastric\"",
+      "endpoint: claude=event-free survival vs gpt=event-free survival and overall survival"
+    ],
+    "claude_claim": {
+      "id": "CRC-MATTERHORN-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "neoadjuvant",
+        "test_category": null
+      },
+      "finding": {
+        "description": "Perioperative durvalumab plus FLOT demonstrated significant improvements in event-free survival and overall survival in gastric/GEJ cancer",
+        "trial_name": "MATTERHORN",
+        "endpoint": "event-free survival",
+        "endpoint_type": "primary",
+        "result_direction": "superior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Significant improvements in EFS and OS",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "05b5d909"
+      }
+    },
+    "gpt_claim": {
+      "id": "MATTERHORN-EFS-OS",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "gastric",
+        "stages": null,
+        "setting": "perioperative",
+        "test_category": null
+      },
+      "finding": {
+        "description": "MATTERHORN demonstrated significant improvements in event-free survival and OS with perioperative durvalumab plus FLOT in gastric/GEJ cancer.",
+        "trial_name": "MATTERHORN",
+        "endpoint": "event-free survival and overall survival",
+        "endpoint_type": "primary",
+        "result_direction": "superior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Significant improvements in EFS and OS with durvalumab plus FLOT.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "MATTERHORN demonstrated significant improvements in event-free survival and OS with perioperative durvalumab plus FLOT in gastric/GEJ cancer."
+    }
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41960736",
+    "score": 0.8333333333333334,
+    "disagreements": [
+      "result_direction: claude=\"positive\" vs gpt=\"superior\""
+    ],
+    "claude_claim": {
+      "id": "CRC-BREAKWATER-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "metastatic",
+        "test_category": null
+      },
+      "finding": {
+        "description": "Encorafenib-based triplet therapy established as first-line standard for BRAF V600E-mutant metastatic colorectal cancer",
+        "trial_name": "BREAKWATER",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "positive",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Encorafenib triplet as first-line standard for BRAF V600E-mutant mCRC",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "c5a84ce4"
+      }
+    },
+    "gpt_claim": {
+      "id": "BREAKWATER-FIRSTLINE",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "metastatic",
+        "test_category": null
+      },
+      "finding": {
+        "description": "BREAKWATER established encorafenib-based triplet therapy as first-line standard for BRAF V600E-mutant metastatic colorectal cancer.",
+        "trial_name": "BREAKWATER",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "superior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Encorafenib-based triplet therapy established as first-line standard.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "BREAKWATER established encorafenib-based triplet therapy as first-line standard for BRAF V600E-mutant metastatic colorectal cancer."
+    }
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41960736",
+    "score": 0.8333333333333334,
+    "disagreements": [
+      "cancer: claude=\"colorectal\" vs gpt=\"gastric\""
+    ],
+    "claude_claim": {
+      "id": "CRC-DESTINY-GASTRIC04-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "metastatic",
+        "test_category": null
+      },
+      "finding": {
+        "description": "Trastuzumab deruxtecan confirmed as superior second-line therapy for HER2-positive gastric cancer",
+        "trial_name": "DESTINY-Gastric04",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "superior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Trastuzumab deruxtecan superior as second-line therapy for HER2+ gastric cancer",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "23ed6c1c"
+      }
+    },
+    "gpt_claim": {
+      "id": "DESTINY-GASTRIC04-SECONDLINE",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "gastric",
+        "stages": null,
+        "setting": "metastatic",
+        "test_category": null
+      },
+      "finding": {
+        "description": "DESTINY-Gastric04 confirmed trastuzumab deruxtecan as superior second-line therapy for HER2-positive gastric cancer.",
+        "trial_name": "DESTINY-GASTRIC04",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "superior",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "Trastuzumab deruxtecan confirmed as superior second-line therapy.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "DESTINY-Gastric04 confirmed trastuzumab deruxtecan as superior second-line therapy for HER2-positive gastric cancer."
+    }
+  },
+  {
+    "type": "disagreement",
+    "pmid": "41960736",
+    "score": 0.8333333333333334,
+    "disagreements": [
+      "cancer: claude=\"colorectal\" vs gpt=\"cross-cancer\""
+    ],
+    "claude_claim": {
+      "id": "CRC-DYNAMIC-III-001",
+      "type": "trial_result",
+      "source": {
+        "pmid": "41960736",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41960736.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA-guided de-escalation reduces toxicity with outcomes approaching standard care",
+        "trial_name": "DYNAMIC-III",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "positive",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "ctDNA-guided de-escalation reduces toxicity with similar outcomes",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "e2012350"
+      }
+    },
+    "gpt_claim": {
+      "id": "DYNAMIC-III-CTDNA",
+      "type": "trial_result",
+      "source": {
+        "pmid": "",
+        "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+        "journal": "Cancer Invest",
+        "year": 2026,
+        "authors_short": "Ismaili N",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/undefined.md"
+      },
+      "scope": {
+        "cancer": "cross-cancer",
+        "stages": null,
+        "setting": null,
+        "test_category": "ctDNA"
+      },
+      "finding": {
+        "description": "DYNAMIC-III trial demonstrated ctDNA-guided de-escalation reduces toxicity with outcomes approaching standard care.",
+        "trial_name": "DYNAMIC-III",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "positive",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "ctDNA-guided de-escalation reduces toxicity with comparable outcomes.",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "gpt-4o",
+        "extracted_date": "2026-04-13",
+        "model_version": "gpt-4o",
+        "source_quote_hash": null
+      },
+      "source_quote": "DYNAMIC-III trial, demonstrating ctDNA-guided de-escalation reduces toxicity with outcomes approaching standard care."
+    }
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41912863",
+    "score": null,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "XCN-IDH-CCA-MRD-001",
+      "type": "clinical_utility",
+      "source": {
+        "pmid": "41912863",
+        "title": "Circulating tumor DNA-based detection of molecular residual disease in isocitrate dehydrogenase-mutant cholangiocarcinoma for biomarker-guided therapy.",
+        "journal": "Clin Transl Oncol",
+        "year": 2026,
+        "authors_short": "Yumashev et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41912863.md"
+      },
+      "scope": {
+        "cancer": "cross-cancer",
+        "stages": null,
+        "setting": "surveillance",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "ctDNA dynamics including persistent postoperative or post-chemotherapy positivity or rising levels during treatment with IDH inhibitors are associated with poorer disease-free and overall survival in IDH-mutant cholangiocarcinoma",
+        "trial_name": null,
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": "negative",
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": "ctDNA dynamics associated with worse survival outcomes",
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "ed184835"
+      }
+    },
+    "gpt_claim": null
+  },
+  {
+    "type": "unmatched_claude",
+    "pmid": "41931716",
+    "score": null,
+    "disagreements": [
+      "No matching GPT claim found"
+    ],
+    "claude_claim": {
+      "id": "CRC-N0147-ERRATUM-001",
+      "type": "methodology_note",
+      "source": {
+        "pmid": "41931716",
+        "title": "Erratum: Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147).",
+        "journal": "J Clin Oncol",
+        "year": 2026,
+        "authors_short": "Sinicrope et al.",
+        "source_type": "journal-article",
+        "raw_file": "raw/papers/41931716.md"
+      },
+      "scope": {
+        "cancer": "colorectal",
+        "stages": null,
+        "setting": "adjuvant",
+        "test_category": "MRD"
+      },
+      "finding": {
+        "description": "Erratum published for Alliance N0147 phase III trial evaluating tissue-free circulating tumor DNA assay and patient outcomes with FOLFOX-based adjuvant chemotherapy",
+        "trial_name": "N0147",
+        "endpoint": null,
+        "endpoint_type": null,
+        "result_direction": null,
+        "n": null,
+        "hr": null,
+        "or": null,
+        "rr": null,
+        "ci_lower": null,
+        "ci_upper": null,
+        "p_value": null,
+        "sensitivity": null,
+        "specificity": null,
+        "ppv": null,
+        "npv": null,
+        "follow_up_months": null,
+        "effect_summary": null,
+        "guideline_body": null,
+        "recommendation_strength": null,
+        "evidence_level": null
+      },
+      "extraction": {
+        "extracted_by": "claude",
+        "extracted_date": "2026-04-13",
+        "model_version": "claude-sonnet-4-20250514",
+        "source_quote_hash": "3ce6b5e2"
+      }
+    },
+    "gpt_claim": null
   }
 ]

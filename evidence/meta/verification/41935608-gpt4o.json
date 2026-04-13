@@ -1,0 +1,151 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+      "journal": "J Gastrointest Surg",
+      "year": 2026,
+      "authors_short": "Jiang et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "In stage II colon cancer, ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival.",
+      "trial_name": null,
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "non-inferior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival in stage II colon cancer.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In stage II colon cancer, ctDNA-guided management reduced chemotherapy use without compromising recurrence-free survival."
+  },
+  {
+    "id": "2",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "",
+      "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+      "journal": "J Gastrointest Surg",
+      "year": 2026,
+      "authors_short": "Jiang et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Postoperative ctDNA positivity strongly predicts recurrence and often precedes radiologic relapse by ~3-10 months.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Postoperative ctDNA positivity predicts recurrence and precedes radiologic relapse by 3-10 months.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Postoperative ctDNA positivity strongly predicts recurrence and often precedes radiologic relapse by ~3-10 months."
+  },
+  {
+    "id": "3",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "",
+      "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+      "journal": "J Gastrointest Surg",
+      "year": 2026,
+      "authors_short": "Jiang et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA dynamics add prognostic resolution: clearance after adjuvant therapy is associated with excellent outcomes, whereas persistent positivity signals very high relapse risk.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA clearance after adjuvant therapy indicates excellent outcomes; persistent positivity indicates high relapse risk.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "ctDNA dynamics add prognostic resolution: clearance after adjuvant therapy is associated with excellent outcomes, whereas persistent positivity signals very high relapse risk."
+  }
+]

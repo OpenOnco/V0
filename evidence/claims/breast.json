@@ -279,5 +279,149 @@
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
     }
+  },
+  {
+    "id": "BRC-ABCSG34-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41951687",
+      "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+      "journal": "NPJ Breast Cancer",
+      "year": 2026,
+      "authors_short": "Egle et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41951687.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ABCSG-34 randomized 400 patients to chemotherapy or endocrine therapy, with or without the MUC1 vaccine tecemotide",
+      "trial_name": "ABCSG-34",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 400,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Phase II trial randomizing 400 breast cancer patients to different treatments",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-13",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "d93b6fd6"
+    }
+  },
+  {
+    "id": "BRC-ABCSG34-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41951687",
+      "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+      "journal": "NPJ Breast Cancer",
+      "year": 2026,
+      "authors_short": "Egle et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41951687.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Of 145 patients with ctDNA data, 109 had long-term follow-up with median 7.1 years",
+      "trial_name": "ABCSG-34",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 109,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 85.2,
+      "effect_summary": "109 patients with 7.1-year median follow-up",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-13",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "54e2c750"
+    }
+  },
+  {
+    "id": "BRC-ABCSG34-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41951687",
+      "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+      "journal": "NPJ Breast Cancer",
+      "year": 2026,
+      "authors_short": "Egle et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41951687.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Baseline ctDNA positivity was significantly associated with inferior overall survival",
+      "trial_name": "ABCSG-34",
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": null,
+      "hr": 2.12,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.043,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Baseline ctDNA+ associated with inferior OS (HR 2.12, p=0.043)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-13",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1f1ad214"
+    }
   }
 ]

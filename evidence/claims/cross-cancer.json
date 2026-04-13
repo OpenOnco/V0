@@ -721,5 +721,53 @@
       "model_version": "claude-sonnet-4-20250514",
       "seed_source": "physicianFAQ.js"
     }
+  },
+  {
+    "id": "XCN-IDH-CCA-MRD-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "41912863",
+      "title": "Circulating tumor DNA-based detection of molecular residual disease in isocitrate dehydrogenase-mutant cholangiocarcinoma for biomarker-guided therapy.",
+      "journal": "Clin Transl Oncol",
+      "year": 2026,
+      "authors_short": "Yumashev et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41912863.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA dynamics including persistent postoperative or post-chemotherapy positivity or rising levels during treatment with IDH inhibitors are associated with poorer disease-free and overall survival in IDH-mutant cholangiocarcinoma",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA dynamics associated with worse survival outcomes",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-04-13",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ed184835"
+    }
   }
 ]

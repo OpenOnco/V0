@@ -1,0 +1,298 @@
+[
+  {
+    "id": "CHECKMATE-577-OS",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "esophageal",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "CheckMate 577 reported mature overall survival (OS) data for adjuvant nivolumab in esophageal/GEJ cancer; however, OS benefit was not statistically significant in the intent-to-treat population.",
+      "trial_name": "CHECKMATE-577",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No significant OS benefit in ITT population for adjuvant nivolumab.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "CheckMate 577 reported mature overall survival (OS) data for adjuvant nivolumab in esophageal/GEJ cancer; however, OS benefit was not statistically significant in the intent-to-treat population."
+  },
+  {
+    "id": "MATTERHORN-EFS-OS",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "gastric",
+      "stages": null,
+      "setting": "perioperative",
+      "test_category": null
+    },
+    "finding": {
+      "description": "MATTERHORN demonstrated significant improvements in event-free survival and OS with perioperative durvalumab plus FLOT in gastric/GEJ cancer.",
+      "trial_name": "MATTERHORN",
+      "endpoint": "event-free survival and overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Significant improvements in EFS and OS with durvalumab plus FLOT.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "MATTERHORN demonstrated significant improvements in event-free survival and OS with perioperative durvalumab plus FLOT in gastric/GEJ cancer."
+  },
+  {
+    "id": "ATOMIC-ADJUVANT",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": [
+        "III"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "ATOMIC supported adjuvant atezolizumab plus chemotherapy in stage III dMMR colon cancer.",
+      "trial_name": "ATOMIC",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Positive support for adjuvant atezolizumab plus chemotherapy.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In stage III dMMR colon cancer, ATOMIC supported adjuvant atezolizumab plus chemotherapy."
+  },
+  {
+    "id": "BREAKWATER-FIRSTLINE",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "BREAKWATER established encorafenib-based triplet therapy as first-line standard for BRAF V600E-mutant metastatic colorectal cancer.",
+      "trial_name": "BREAKWATER",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Encorafenib-based triplet therapy established as first-line standard.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "BREAKWATER established encorafenib-based triplet therapy as first-line standard for BRAF V600E-mutant metastatic colorectal cancer."
+  },
+  {
+    "id": "DESTINY-GASTRIC04-SECONDLINE",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "gastric",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "DESTINY-Gastric04 confirmed trastuzumab deruxtecan as superior second-line therapy for HER2-positive gastric cancer.",
+      "trial_name": "DESTINY-GASTRIC04",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Trastuzumab deruxtecan confirmed as superior second-line therapy.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "DESTINY-Gastric04 confirmed trastuzumab deruxtecan as superior second-line therapy for HER2-positive gastric cancer."
+  },
+  {
+    "id": "DYNAMIC-III-CTDNA",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+      "journal": "Cancer Invest",
+      "year": 2026,
+      "authors_short": "Ismaili N",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "ctDNA"
+    },
+    "finding": {
+      "description": "DYNAMIC-III trial demonstrated ctDNA-guided de-escalation reduces toxicity with outcomes approaching standard care.",
+      "trial_name": "DYNAMIC-III",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA-guided de-escalation reduces toxicity with comparable outcomes.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-04-13",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "DYNAMIC-III trial, demonstrating ctDNA-guided de-escalation reduces toxicity with outcomes approaching standard care."
+  }
+]

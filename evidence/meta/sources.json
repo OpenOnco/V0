@@ -88,5 +88,55 @@
     "pmcid": null,
     "raw_file": "raw/papers/41124204.md",
     "fetched_date": "2026-04-03"
+  },
+  "41912863": {
+    "title": "Circulating tumor DNA-based detection of molecular residual disease in isocitrate dehydrogenase-mutant cholangiocarcinoma for biomarker-guided therapy.",
+    "authors_short": "Yumashev et al.",
+    "journal": "Clin Transl Oncol",
+    "year": 2026,
+    "doi": "10.1007/s12094-026-04334-4",
+    "pmcid": null,
+    "raw_file": "raw/papers/41912863.md",
+    "fetched_date": "2026-04-13"
+  },
+  "41931716": {
+    "title": "Erratum: Tissue-Free Circulating Tumor DNA Assay and Patient Outcome in a Phase III Trial of FOLFOX-Based Adjuvant Chemotherapy (Alliance N0147).",
+    "authors_short": "Sinicrope et al.",
+    "journal": "J Clin Oncol",
+    "year": 2026,
+    "doi": "10.1200/JCO-26-00709",
+    "pmcid": null,
+    "raw_file": "raw/papers/41931716.md",
+    "fetched_date": "2026-04-13"
+  },
+  "41935608": {
+    "title": "The role of ctDNA in precision adjuvant therapy for colorectal cancer: a scoping review.",
+    "authors_short": "Jiang et al.",
+    "journal": "J Gastrointest Surg",
+    "year": 2026,
+    "doi": "10.1016/j.gassur.2026.102411",
+    "pmcid": null,
+    "raw_file": "raw/papers/41935608.md",
+    "fetched_date": "2026-04-13"
+  },
+  "41951687": {
+    "title": "Long-term prognostic value of ctDNA in early breast cancer: insights from the neoadjuvant ABCSG-34 Trial.",
+    "authors_short": "Egle et al.",
+    "journal": "NPJ Breast Cancer",
+    "year": 2026,
+    "doi": "10.1038/s41523-026-00934-z",
+    "pmcid": null,
+    "raw_file": "raw/papers/41951687.md",
+    "fetched_date": "2026-04-13"
+  },
+  "41960736": {
+    "title": "Practice-Changing Trials in Gastrointestinal Cancers at ASCO 2025: A Critical Review and Clinical Context.",
+    "authors_short": "Ismaili N",
+    "journal": "Cancer Invest",
+    "year": 2026,
+    "doi": "10.1080/07357907.2026.2654136",
+    "pmcid": null,
+    "raw_file": "raw/papers/41960736.md",
+    "fetched_date": "2026-04-13"
   }
 }
