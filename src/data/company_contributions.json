@@ -1,0 +1,186 @@
+{
+  "ecd-25": {
+    "name": "Momchilo Vuyisich",
+    "company": "Viome",
+    "date": "2025-01-01",
+    "verifiedDate": "2026-02-24",
+    "note": "Vendor-verified submission. PPV/NPV values added per vendor correction (Feb 2026)."
+  },
+  "mrd-26": {
+    "name": "Sandra Balladares",
+    "company": "Inocras",
+    "date": "2026-01-06",
+    "verifiedDate": "2026-01-06",
+    "note": "Vendor-verified submission. WGS-based MRD with 1 ppm LOD using Ultima Genomics ppmSeq."
+  },
+  "ecd-27": {
+    "name": "Christophe Van Huffel",
+    "company": "OncoDNA",
+    "date": "2025-12-09",
+    "note": "Vendor submission. Multi-modal MCED (mutations + CNV + fragmentomics) from KU Leuven research. OncNGS Phase 3 finalist. Currently RUO."
+  },
+  "ecd-26": {
+    "name": "Jigar Pandya",
+    "company": "Datar Cancer Genetics",
+    "date": "2026-01-07",
+    "note": "Expert submission. CTC-based MCED for 70+ cancer types."
+  },
+  "tds-26": {
+    "name": "Kyle Dunn",
+    "company": "Cancer Cell Dx",
+    "date": "2026-01-07",
+    "verifiedDate": "2026-01-07",
+    "note": "Vendor-verified submission. CTC-based 500+ gene CGP panel."
+  },
+  "tds-27": {
+    "name": "Sandra Balladares",
+    "company": "Inocras",
+    "date": "2026-01-05",
+    "verifiedDate": "2026-01-05",
+    "note": "Vendor-verified submission. WGS CGP with ~90% clinical utility."
+  },
+  "tds-22": {
+    "name": "Jeremy Au",
+    "company": "Lucence",
+    "date": "2025-12-19",
+    "verifiedDate": "2026-01-07",
+    "note": "Vendor verified 2026-01-07. TAT updated to 7 Business Days; biomarkers clarified for cfDNA+cfRNA sources."
+  },
+  "tds-kit-12": {
+    "name": "Thomas Vetterli",
+    "company": "Hedera Dx",
+    "date": "2025-12-18"
+  },
+  "tds-20": {
+    "name": "Jeffrey Owen",
+    "company": "Genomic Testing Cooperative",
+    "date": "2025-12-17"
+  },
+  "tds-21": {
+    "name": "Jeffrey Owen",
+    "company": "Genomic Testing Cooperative",
+    "date": "2025-12-17"
+  },
+  "trm-13": {
+    "name": "Jeffrey Owen",
+    "company": "Genomic Testing Cooperative",
+    "date": "2025-12-17"
+  },
+  "ecd-21": {
+    "name": "Liankai Chi",
+    "company": "Burning Rock Dx",
+    "date": "2025-12-22"
+  },
+  "mrd-25": {
+    "name": "Liankai Chi",
+    "company": "Burning Rock Dx",
+    "date": "2025-12-22"
+  },
+  "ecd-20": {
+    "name": "Adrian Vilalta",
+    "company": "ClearNote Health",
+    "date": "2025-12-16"
+  },
+  "ecd-19": {
+    "name": "Tingting Li",
+    "company": "Wuhan Ammunition Life Technology",
+    "date": "2025-12-16"
+  },
+  "ecd-18": {
+    "name": "Tingting Li",
+    "company": "Wuhan Ammunition Life Technology",
+    "date": "2025-12-16"
+  },
+  "ecd-17": {
+    "name": "Tingting Li",
+    "company": "Wuhan Ammunition Life Technology",
+    "date": "2025-12-16"
+  },
+  "ecd-16": {
+    "name": "Tingting Li",
+    "company": "Wuhan Ammunition Life Technology",
+    "date": "2025-12-16"
+  },
+  "ecd-14": {
+    "name": "Tingting Li",
+    "company": "Wuhan Ammunition Life Technology",
+    "date": "2025-12-16"
+  },
+  "ecd-15": {
+    "name": "Christopher Sale",
+    "company": "Nonacus",
+    "date": "2025-12-16"
+  },
+  "tds-kit-1": {
+    "name": "Samyuktha Dasari",
+    "company": "Illumina",
+    "date": "2025-12-15"
+  },
+  "mrd-24": {
+    "name": "Jens Winter",
+    "company": "LIQOMICS",
+    "date": "2025-12-15",
+    "verifiedDate": "2025-12-28",
+    "note": "Vendor verified 2025-12-28"
+  },
+  "mrd-23": {
+    "name": "Jens Winter",
+    "company": "LIQOMICS",
+    "date": "2025-12-13",
+    "verifiedDate": "2025-12-28",
+    "note": "Corrected turnaround times; vendor verified 2025-12-28"
+  },
+  "mrd-15": {
+    "name": "John Truesdell",
+    "company": "Natera",
+    "date": "2025-12-13",
+    "note": "Updated LOD95 and validation data"
+  },
+  "tds-16": {
+    "name": "David Huland",
+    "company": "BillionToOne",
+    "date": "2025-12-12",
+    "note": "Updated Medicare reimbursement"
+  },
+  "trm-12": {
+    "name": "Brandon Guida PhD",
+    "company": "Guardant Health",
+    "date": "2025-12-12"
+  },
+  "mrd-6": {
+    "name": "Brandon Guida PhD",
+    "company": "Guardant Health",
+    "date": "2025-12-12",
+    "note": "Renamed from Reveal; expanded cancer types"
+  },
+  "mrd-2": {
+    "name": "Dan Norton",
+    "company": "Personalis",
+    "date": "2025-12-12",
+    "note": "Corrected turnaround times"
+  },
+  "tds-17": {
+    "name": "Brandon Guida PhD",
+    "company": "Guardant Health",
+    "date": "2025-12-11"
+  },
+  "mrd-19": {
+    "name": "Christine Hanley",
+    "company": "Adaptive Biotechnologies",
+    "verifiedDate": "2026-04-02",
+    "note": "Full vendor validation with 6 edits: numPublications (>250), clinicalTrials (190+ trials, 51K+ patients), variantsTracked, bloodVolume, fdaStatus, reimbursement"
+  },
+  "mrd-21": {
+    "name": "Sunghoon Heo",
+    "company": "IMBdx/Independent Expert",
+    "date": "2025-12-10",
+    "note": "Submission for Natera"
+  },
+  "mrd-22": {
+    "name": "Sunghoon Heo",
+    "company": "IMBdx, Inc.",
+    "date": "2025-12-10",
+    "verifiedDate": "2025-12-29",
+    "note": "Vendor verified with bloodVolume and cfdnaInput updates"
+  }
+}
