@@ -42,6 +42,18 @@
   ],
   "rewrites": [
     {
+      "source": "/api/news/:path*",
+      "destination": "https://news.openonco.org/api/news/:path*"
+    },
+    {
+      "source": "/news",
+      "destination": "https://news.openonco.org/"
+    },
+    {
+      "source": "/news/:path*",
+      "destination": "https://news.openonco.org/:path*"
+    },
+    {
       "source": "/api/v1/tests/:id",
       "destination": "/api/v1?route=tests&id=:id"
     },
@@ -334,7 +346,7 @@
       "destination": "/"
     },
     {
-      "source": "/((?!api|_next|static|favicon|@|node_modules|.*\\..*).*)",
+      "source": "/((?!api|news|_next|static|favicon|@|node_modules|.*\\..*).*)",
       "destination": "/"
     }
   ],

@@ -57,6 +57,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import DatabaseSummary from './components/DatabaseSummary';
 import OpennessAward from './components/OpennessAward';
+import NewsFirstHome from './pages/NewsFirstHome';
 import FAQPage from './pages/FAQPage';
 import LearnPage from './pages/LearnPage';
 import AboutPage from './pages/AboutPage';
@@ -1027,8 +1028,10 @@ export default function App() {
   // New plain-language URLs: /risk, /screen, /treat, /monitor
   // Legacy URLs redirect: /mrd→/monitor, /ecd→/screen, /trm→/monitor, /tds→/treat
   const pathToPage = {
-    '/': 'landing',
+    '/': 'news-home',
+    '/landing': 'landing',  // legacy: the old marketing landing page, kept for fallback
     '/database': 'home',
+    '/testdata': 'home',  // plan decision 1b: test directory relocates here
     '/submissions': 'submissions',
     '/how-it-works': 'how-it-works',
     '/data-sources': 'data-sources',
@@ -1412,6 +1415,8 @@ export default function App() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'news-home':
+        return <NewsFirstHome onNavigate={handleNavigate} />;
       case 'landing':
         return <LandingPage onNavigate={handleNavigate} />;
       case 'home':
