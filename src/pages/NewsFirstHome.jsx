@@ -9,22 +9,30 @@ import TestDetailModal from '../components/test/TestDetailModal';
 import ArticleEditor from '../components/ArticleEditor';
 
 function EditorReviewButton() {
-  const [count, setCount] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [drafts, setDrafts] = useState(0);
   useEffect(() => {
     fetch('/api/crawl-dashboard')
       .then(r => r.json())
-      .then(d => setCount(d?.desk?.editor_review || 0))
+      .then(d => {
+        setReviewCount(d?.desk?.editor_review || 0);
+        setDrafts(d?.articles?.drafts || 0);
+      })
       .catch(() => {});
   }, []);
-  if (count === 0) return null;
+  const total = reviewCount + drafts;
   return (
     <a
       href={`https://courageous-essence-production.up.railway.app/editor-review?secret=${encodeURIComponent(getEditSecret())}`}
       target="_blank"
       rel="noopener"
-      className="text-sm font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded-full transition animate-pulse"
+      className={`text-sm font-bold px-4 py-1.5 rounded-full transition ${
+        total > 0
+          ? 'text-white bg-red-600 hover:bg-red-700 animate-pulse'
+          : 'text-red-600 bg-red-50 hover:bg-red-100 border border-red-200'
+      }`}
     >
-      {count} articles need review
+      {total > 0 ? `${total} awaiting review` : 'Review queue'}
     </a>
   );
 }
