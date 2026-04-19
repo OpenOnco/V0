@@ -93,7 +93,7 @@ function ColumnSkeleton({ count = 4 }) {
 
 export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const aacr = useAacrHome();
-  const { items: newsItems, loading: newsLoading, error: newsError } = useNewsFeed({ limit: 20 });
+  const { items: newsItems, loading: newsLoading, error: newsError } = useNewsFeed({ limit: 50 });
   const { tests: allTests } = useAllTests();
   const takeoverActive = aacr.takeoverActive;
 
