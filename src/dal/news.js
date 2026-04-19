@@ -90,6 +90,38 @@ export const useVendorNews = (ticker, { limit = 5 } = {}) => {
   };
 };
 
+// --- Mutations (editor mode) ---
+
+const ARTICLE_API = '/api/article';
+
+export const pinArticle = async (id) => {
+  const resp = await fetch(`${ARTICLE_API}/${id}/pin`, { method: 'POST' });
+  if (!resp.ok) throw new Error(`pin failed: ${resp.status}`);
+  return resp.json();
+};
+
+export const unpinArticle = async (id) => {
+  const resp = await fetch(`${ARTICLE_API}/${id}/unpin`, { method: 'POST' });
+  if (!resp.ok) throw new Error(`unpin failed: ${resp.status}`);
+  return resp.json();
+};
+
+export const killArticle = async (id) => {
+  const resp = await fetch(`${ARTICLE_API}/${id}/kill`, { method: 'POST' });
+  if (!resp.ok) throw new Error(`kill failed: ${resp.status}`);
+  return resp.json();
+};
+
+export const updateArticle = async (id, { headline, deck, body_html }) => {
+  const resp = await fetch(`${ARTICLE_API}/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ headline, deck, body_html }),
+  });
+  if (!resp.ok) throw new Error(`update failed: ${resp.status}`);
+  return resp.json();
+};
+
 export const useAacrVendorNews = (vendorKey, { limit = 5 } = {}) => {
   const url = vendorKey
     ? `${AACR_API_BASE}/vendor/${encodeURIComponent(vendorKey)}?limit=${limit}`

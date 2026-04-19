@@ -1170,6 +1170,16 @@ export default function App() {
       }
     }
 
+    // Editor mode: /edit/{secret}
+    const editMatch = path.match(/^\/edit\/(.+)$/);
+    if (editMatch) {
+      const secret = editMatch[1];
+      const expectedSecret = (import.meta.env.VITE_EDIT_SECRET || 'openonco-edit-2026').toLowerCase();
+      if (secret === expectedSecret) {
+        return { page: 'news-edit', testSlug: null, testId: null, persona: null };
+      }
+    }
+
     // Standard page routing
     const urlPersona = pathToPersona[path] || null;
     return { page: pathToPage[path] || 'home', testSlug: null, testId: null, persona: urlPersona };
@@ -1417,6 +1427,8 @@ export default function App() {
     switch (currentPage) {
       case 'news-home':
         return <NewsFirstHome onNavigate={handleNavigate} />;
+      case 'news-edit':
+        return <NewsFirstHome onNavigate={handleNavigate} editMode />;
       case 'landing':
         return <LandingPage onNavigate={handleNavigate} />;
       case 'home-classic':
