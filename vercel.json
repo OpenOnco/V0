@@ -46,6 +46,10 @@
       "destination": "https://courageous-essence-production.up.railway.app/api/public-tip"
     },
     {
+      "source": "/api/editor-draft/:path*",
+      "destination": "https://courageous-essence-production.up.railway.app/api/editor-draft/:path*"
+    },
+    {
       "source": "/api/editor-draft",
       "destination": "https://courageous-essence-production.up.railway.app/api/editor-draft"
     },
