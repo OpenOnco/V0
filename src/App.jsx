@@ -1174,7 +1174,7 @@ export default function App() {
     const editMatch = path.match(/^\/edit\/(.+)$/);
     if (editMatch) {
       const secret = editMatch[1];
-      const expectedSecret = (import.meta.env.VITE_EDIT_SECRET || 'openonco-edit-2026').toLowerCase();
+      const expectedSecret = (import.meta.env.VITE_EDIT_SECRET || '').toLowerCase();
       if (secret === expectedSecret) {
         return { page: 'news-edit', testSlug: null, testId: null, persona: null };
       }

@@ -93,7 +93,7 @@ export const useVendorNews = (ticker, { limit = 5 } = {}) => {
 // --- Mutations (editor mode) ---
 
 const EDIT_API = '/api/edit';
-const EDIT_SECRET = import.meta.env.VITE_EDIT_SECRET || 'openonco-edit-2026';
+const EDIT_SECRET = import.meta.env.VITE_EDIT_SECRET || '';
 const _editHeaders = { 'X-Edit-Secret': EDIT_SECRET };
 
 export const pinArticle = async (id) => {
