@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 
 import { useAacrHome, useAacrFeed, useNewsFeed, pinArticle, unpinArticle, killArticle } from '../dal/news';
+import { getEditSecret } from '../utils/editSecret';
 import { useAllTests } from '../dal/hooks/useTests';
 import LinkedArticleText from '../components/LinkedArticleText';
 import VendorPopup from '../components/VendorPopup';
@@ -18,7 +19,7 @@ function EditorReviewButton() {
   if (count === 0) return null;
   return (
     <a
-      href="https://courageous-essence-production.up.railway.app/editor-review"
+      href={`https://courageous-essence-production.up.railway.app/editor-review?secret=${encodeURIComponent(getEditSecret())}`}
       target="_blank"
       rel="noopener"
       className="text-sm font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded-full transition animate-pulse"
