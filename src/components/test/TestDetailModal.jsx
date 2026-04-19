@@ -22,6 +22,7 @@ import CircularProgress from '../ui/CircularProgress';
 import QualityGrade from '../ui/QualityGrade';
 import MedicareCoverageDisplay from '../coverage/MedicareCoverageDisplay';
 import CoverageRealityCheck from '../coverage/CoverageRealityCheck';
+import VendorNewsSidebar from '../VendorNewsSidebar';
 
 // Create categoryMeta using imported function with BUILD_INFO sources
 const categoryMeta = createCategoryMeta(BUILD_INFO.sources);
@@ -316,6 +317,12 @@ const TestDetailModal = ({ test, category, onClose }) => {
               'text-slate-400'
             }`}>{completenessPercent}%</span>
           </div>
+
+          <VendorNewsSidebar
+            vendorName={test.vendor}
+            limit={4}
+            mode="aacr"
+          />
 
           {/* Patient View */}
           {false ? (

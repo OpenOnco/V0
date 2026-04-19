@@ -42,16 +42,28 @@
   ],
   "rewrites": [
     {
+      "source": "/api/aacr/:path*",
+      "destination": "https://courageous-essence-production.up.railway.app/api/aacr/:path*"
+    },
+    {
+      "source": "/aacr",
+      "destination": "https://courageous-essence-production.up.railway.app/aacr"
+    },
+    {
+      "source": "/aacr/:path*",
+      "destination": "https://courageous-essence-production.up.railway.app/aacr/:path*"
+    },
+    {
       "source": "/api/news/:path*",
-      "destination": "https://news.openonco.org/api/news/:path*"
+      "destination": "https://courageous-essence-production.up.railway.app/api/news/:path*"
     },
     {
       "source": "/news",
-      "destination": "https://news.openonco.org/"
+      "destination": "https://courageous-essence-production.up.railway.app/"
     },
     {
       "source": "/news/:path*",
-      "destination": "https://news.openonco.org/:path*"
+      "destination": "https://courageous-essence-production.up.railway.app/:path*"
     },
     {
       "source": "/api/v1/tests/:id",

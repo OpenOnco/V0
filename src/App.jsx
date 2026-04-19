@@ -1419,6 +1419,7 @@ export default function App() {
         return <NewsFirstHome onNavigate={handleNavigate} />;
       case 'landing':
         return <LandingPage onNavigate={handleNavigate} />;
+      case 'home-classic':
       case 'home':
         if (persona === 'patient') {
           return <PatientLandingPage onNavigate={handleNavigate} />;

@@ -11,6 +11,7 @@
 import { useEffect, useState } from 'react';
 
 const API_BASE = '/api/news';
+const AACR_API_BASE = '/api/aacr';
 
 const _fetchJson = async (url, { signal } = {}) => {
   const resp = await fetch(url, { signal, headers: { Accept: 'application/json' } });
@@ -22,8 +23,12 @@ const _fetchJson = async (url, { signal } = {}) => {
 
 // Generic hook scaffold — tracks items/loading/error + supports refetch.
 const _useEndpoint = (url) => {
-  const [state, setState] = useState({ data: null, loading: true, error: null });
+  const [state, setState] = useState({ data: null, loading: Boolean(url), error: null });
   useEffect(() => {
+    if (!url) {
+      setState({ data: null, loading: false, error: null });
+      return undefined;
+    }
     const controller = new AbortController();
     setState((s) => ({ ...s, loading: true }));
     _fetchJson(url, { signal: controller.signal })
@@ -35,6 +40,22 @@ const _useEndpoint = (url) => {
     return () => controller.abort();
   }, [url]);
   return state;
+};
+
+export const useAacrHome = () => {
+  const { data, loading, error } = _useEndpoint(`${AACR_API_BASE}/home`);
+  return {
+    takeoverActive: Boolean(data?.takeover_active),
+    conference: data?.conference ?? null,
+    officialLinks: data?.official_links ?? {},
+    hero: data?.hero ?? null,
+    latest: data?.latest ?? [],
+    lateBreakers: data?.late_breakers ?? [],
+    plenaries: data?.plenaries ?? [],
+    vendorAnnouncements: data?.vendor_announcements ?? [],
+    loading,
+    error,
+  };
 };
 
 export const useNewsFeed = ({ vertical, limit = 12 } = {}) => {
@@ -66,5 +87,19 @@ export const useVendorNews = (ticker, { limit = 5 } = {}) => {
     loading: state.loading,
     error: state.error,
     enabled: Boolean(ticker),
+  };
+};
+
+export const useAacrVendorNews = (vendorKey, { limit = 5 } = {}) => {
+  const url = vendorKey
+    ? `${AACR_API_BASE}/vendor/${encodeURIComponent(vendorKey)}?limit=${limit}`
+    : null;
+  const state = _useEndpoint(url);
+  return {
+    items: state.data?.items ?? [],
+    count: state.data?.count ?? 0,
+    loading: state.loading,
+    error: state.error,
+    enabled: Boolean(vendorKey),
   };
 };
