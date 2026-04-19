@@ -42,6 +42,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/edit/:path*",
+      "destination": "https://courageous-essence-production.up.railway.app/api/edit/:path*"
+    },
+    {
       "source": "/api/aacr/:path*",
       "destination": "https://courageous-essence-production.up.railway.app/api/aacr/:path*"
     },

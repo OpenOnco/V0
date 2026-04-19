@@ -92,30 +92,32 @@ export const useVendorNews = (ticker, { limit = 5 } = {}) => {
 
 // --- Mutations (editor mode) ---
 
-const ARTICLE_API = '/api/article';
+const EDIT_API = '/api/edit';
+const EDIT_SECRET = import.meta.env.VITE_EDIT_SECRET || 'openonco-edit-2026';
+const _editHeaders = { 'X-Edit-Secret': EDIT_SECRET };
 
 export const pinArticle = async (id) => {
-  const resp = await fetch(`${ARTICLE_API}/${id}/pin`, { method: 'POST' });
+  const resp = await fetch(`${EDIT_API}/${id}/pin`, { method: 'POST', headers: _editHeaders });
   if (!resp.ok) throw new Error(`pin failed: ${resp.status}`);
   return resp.json();
 };
 
 export const unpinArticle = async (id) => {
-  const resp = await fetch(`${ARTICLE_API}/${id}/unpin`, { method: 'POST' });
+  const resp = await fetch(`${EDIT_API}/${id}/unpin`, { method: 'POST', headers: _editHeaders });
   if (!resp.ok) throw new Error(`unpin failed: ${resp.status}`);
   return resp.json();
 };
 
 export const killArticle = async (id) => {
-  const resp = await fetch(`${ARTICLE_API}/${id}/kill`, { method: 'POST' });
+  const resp = await fetch(`${EDIT_API}/${id}/kill`, { method: 'POST', headers: _editHeaders });
   if (!resp.ok) throw new Error(`kill failed: ${resp.status}`);
   return resp.json();
 };
 
 export const updateArticle = async (id, { headline, deck, body_html }) => {
-  const resp = await fetch(`${ARTICLE_API}/${id}`, {
+  const resp = await fetch(`${EDIT_API}/${id}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...{ 'Content-Type': 'application/json' }, ..._editHeaders },
     body: JSON.stringify({ headline, deck, body_html }),
   });
   if (!resp.ok) throw new Error(`update failed: ${resp.status}`);
