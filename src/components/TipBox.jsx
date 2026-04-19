@@ -90,7 +90,7 @@ export default function TipBox({ onClose }) {
               onChange={e => setMessage(e.target.value)}
               rows={5}
               placeholder={
-                category === 'tip' ? "e.g., I heard that Company X is about to announce..."
+                category === 'tip' ? "e.g., I think that Company X is about to announce..."
                 : category === 'idea' ? "e.g., You should write about the trend in..."
                 : "e.g., In your article about X, the figure should be..."
               }

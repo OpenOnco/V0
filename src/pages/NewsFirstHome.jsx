@@ -197,7 +197,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
           </h1>
           <button
             onClick={() => setShowTipBox(true)}
-            className="flex-shrink-0 px-4 py-2 text-sm font-semibold text-brand-600 bg-white border-2 border-brand-200 hover:border-brand-400 rounded-xl transition cursor-pointer"
+            className="flex-shrink-0 px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition cursor-pointer border-none shadow-sm"
           >
             Tips, Ideas, Corrections
           </button>
