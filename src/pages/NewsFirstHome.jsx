@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 
 import { useAacrHome, useAacrFeed, useNewsFeed, pinArticle, unpinArticle, killArticle } from '../dal/news';
 import { useAllTests } from '../dal/hooks/useTests';
@@ -6,6 +6,27 @@ import LinkedArticleText from '../components/LinkedArticleText';
 import VendorPopup from '../components/VendorPopup';
 import TestDetailModal from '../components/test/TestDetailModal';
 import ArticleEditor from '../components/ArticleEditor';
+
+function EditorReviewButton() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    fetch('/api/crawl-dashboard')
+      .then(r => r.json())
+      .then(d => setCount(d?.desk?.editor_review || 0))
+      .catch(() => {});
+  }, []);
+  if (count === 0) return null;
+  return (
+    <a
+      href="https://courageous-essence-production.up.railway.app/editor-review"
+      target="_blank"
+      rel="noopener"
+      className="text-sm font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded-full transition animate-pulse"
+    >
+      {count} articles need review
+    </a>
+  );
+}
 
 function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit }) {
   const isPinned = Boolean(item.pinned_at);
@@ -153,10 +174,11 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
           OO News: All the news from NGS to LBx 🤯🤯🤯
         </h1>
         {editMode && (
-          <div className="mt-2 flex items-center gap-3">
+          <div className="mt-2 flex flex-wrap items-center gap-3">
             <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
               Editor mode
             </span>
+            <EditorReviewButton />
             <a
               href="https://courageous-essence-production.up.railway.app/dashboard"
               target="_blank"
