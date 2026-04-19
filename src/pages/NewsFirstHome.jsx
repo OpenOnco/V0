@@ -134,6 +134,14 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showTipBox, setShowTipBox] = useState(false);
   const [showDraftBox, setShowDraftBox] = useState(false);
+  const [dashStats, setDashStats] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/crawl-dashboard')
+      .then(r => r.json())
+      .then(d => setDashStats(d))
+      .catch(() => {});
+  }, []);
 
   const flatTests = useMemo(() => allTests || [], [allTests]);
 
@@ -194,6 +202,23 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             Tips, Ideas, Corrections
           </button>
         </div>
+        {dashStats && (() => {
+          const arts = dashStats.articles?.published || 0;
+          const run = dashStats.active_run;
+          const stages = run?.stages || [];
+          const collectStages = stages.filter(s => s.stage_name?.startsWith('collect'));
+          const lastCollectTime = collectStages.length > 0
+            ? new Date(collectStages[collectStages.length - 1]?.finished_at || run?.started_at || '').toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+            : null;
+          const newSignals = collectStages.reduce((sum, s) => sum + (s.metrics?.items_new || 0), 0);
+          return (
+            <p className="text-xs text-slate-400 mt-1">
+              {arts} articles published
+              {lastCollectTime && ` · last crawl ${lastCollectTime}`}
+              {newSignals > 0 && ` · ${newSignals.toLocaleString()} new signals`}
+            </p>
+          );
+        })()}
         {editMode && (
           <div className="mt-2 flex flex-wrap items-center gap-3">
             <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
