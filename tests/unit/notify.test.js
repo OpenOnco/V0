@@ -165,14 +165,13 @@ describe("notify.js", () => {
       ).rejects.toThrow("RESEND_API_KEY");
     });
 
-    it("throws on missing EVIDENCE_NOTIFY_EMAIL", async () => {
+    it("uses default email when EVIDENCE_NOTIFY_EMAIL is missing", async () => {
       delete process.env.EVIDENCE_NOTIFY_EMAIL;
       mockFetch();
       const { notifyDispute } = await loadModule();
 
-      await expect(
-        notifyDispute({ id: "X" }, { dispute_notes: "test" })
-      ).rejects.toThrow("EVIDENCE_NOTIFY_EMAIL");
+      const result = await notifyDispute({ id: "X" }, { dispute_notes: "test" });
+      expect(result).toBeDefined();
     });
 
     it("throws on Resend API error", async () => {

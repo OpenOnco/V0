@@ -118,7 +118,12 @@ export async function notifyWeeklySummary(summary) {
   const date = summary?.date || today();
   const status = summary?.status || "unknown";
 
-  const subject = `[OpenOnco] Weekly scan — ${date}`;
+  const subjectSuffix = {
+    changes_merged: "changes merged",
+    no_changes: "no changes",
+    tests_failed: "TESTS FAILED",
+  }[status] || status;
+  const subject = `[OpenOnco] Weekly scan — ${date} — ${subjectSuffix}`;
 
   const sections = summary?.sections || [];
 
