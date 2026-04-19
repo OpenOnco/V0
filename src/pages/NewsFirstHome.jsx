@@ -153,9 +153,19 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
           OpenOnco News: All the diagnostics news that's fit to print
         </h1>
         {editMode && (
-          <p className="mt-2 text-sm font-medium text-amber-600 bg-amber-50 inline-block px-3 py-1 rounded-full">
-            Editor mode active
-          </p>
+          <div className="mt-2 flex items-center gap-3">
+            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
+              Editor mode
+            </span>
+            <a
+              href="https://courageous-essence-production.up.railway.app/dashboard"
+              target="_blank"
+              rel="noopener"
+              className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
+            >
+              Pipeline Dashboard &rarr;
+            </a>
+          </div>
         )}
       </header>
 
