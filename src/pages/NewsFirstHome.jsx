@@ -150,7 +150,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
       <header className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-          OpenOnco News: All the diagnostics news that's fit to print
+          OO News: All the NGS&gt;LBx news that's fit to print 🤯🤯🤯
         </h1>
         {editMode && (
           <div className="mt-2 flex items-center gap-3">
