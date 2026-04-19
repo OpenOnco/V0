@@ -10,16 +10,13 @@ import ArticleEditor from '../components/ArticleEditor';
 function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit }) {
   const isPinned = Boolean(item.pinned_at);
   const borderClass = isPinned
-    ? 'border-amber-400 bg-amber-50/40'
+    ? 'border-2 border-brand-400 shadow-md shadow-brand-100 bg-brand-50/30'
     : accent === 'aacr'
       ? 'border-rose-200 hover:border-rose-300'
       : 'border-slate-200 hover:border-slate-300';
 
   return (
-    <div className={`p-4 rounded-xl bg-white border ${borderClass} hover:shadow-sm transition relative`}>
-      {isPinned && (
-        <span className="absolute -top-2 -left-1 text-amber-500 text-sm">pinned</span>
-      )}
+    <div className={`p-4 rounded-xl bg-white border ${borderClass} hover:shadow-sm transition`}>
       <div className="flex items-baseline justify-between gap-2 mb-1">
         <span className={`text-[11px] uppercase tracking-wide font-medium ${accent === 'aacr' ? 'text-rose-600' : 'text-brand-600'}`}>
           {item.vertical || 'news'}
