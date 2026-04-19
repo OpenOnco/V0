@@ -9,6 +9,7 @@
 // rendering happens server-side.
 
 import { useEffect, useState } from 'react';
+import { getEditSecret } from '../utils/editSecret';
 
 const API_BASE = '/api/news';
 const AACR_API_BASE = '/api/aacr';
@@ -93,8 +94,8 @@ export const useVendorNews = (ticker, { limit = 5 } = {}) => {
 // --- Mutations (editor mode) ---
 
 const EDIT_API = '/api/edit';
-const EDIT_SECRET = import.meta.env.VITE_EDIT_SECRET || '';
-const _editHeaders = { 'X-Edit-Secret': EDIT_SECRET };
+const EDIT_SECRET = getEditSecret();
+const _editHeaders = EDIT_SECRET ? { 'X-Edit-Secret': EDIT_SECRET } : {};
 
 export const pinArticle = async (id) => {
   const resp = await fetch(`${EDIT_API}/${id}/pin`, { method: 'POST', headers: _editHeaders });

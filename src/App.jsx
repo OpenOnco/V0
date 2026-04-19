@@ -73,6 +73,7 @@ import { CATEGORY_COLORS } from './config/categories';
 import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, FIELD_DEFINITIONS } from './config/testFields';
 import { PATIENT_INFO_CONTENT } from './config/patientContent';
 import { calculateTier1Metrics, calculateCategoryMetrics } from './utils/testMetrics';
+import { matchesEditSecret } from './utils/editSecret';
 import Checkbox from './components/ui/Checkbox';
 import FilterSection from './components/ui/FilterSection';
 import Badge from './components/ui/Badge';
@@ -1174,8 +1175,7 @@ export default function App() {
     const editMatch = path.match(/^\/edit\/(.+)$/);
     if (editMatch) {
       const secret = editMatch[1];
-      const expectedSecret = (import.meta.env.VITE_EDIT_SECRET || '').toLowerCase();
-      if (secret === expectedSecret) {
+      if (matchesEditSecret(secret)) {
         return { page: 'news-edit', testSlug: null, testId: null, persona: null };
       }
     }

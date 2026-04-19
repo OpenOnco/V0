@@ -194,3 +194,4 @@ plan.md
 daemon/watched-files/**/*.pdf
 daemon/watched-files/**/*.html
 !daemon/watched-files/**/.gitkeep
+.env*.local
