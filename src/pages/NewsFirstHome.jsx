@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
-import { useAacrHome, useNewsFeed, pinArticle, unpinArticle, killArticle } from '../dal/news';
+import { useAacrHome, useAacrFeed, useNewsFeed, pinArticle, unpinArticle, killArticle } from '../dal/news';
 import { useAllTests } from '../dal/hooks/useTests';
 import LinkedArticleText from '../components/LinkedArticleText';
 import VendorPopup from '../components/VendorPopup';
@@ -93,6 +93,7 @@ function ColumnSkeleton({ count = 4 }) {
 
 export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const aacr = useAacrHome();
+  const { items: aacrFeedItems, loading: aacrFeedLoading } = useAacrFeed({ limit: 50 });
   const { items: newsItems, loading: newsLoading, error: newsError } = useNewsFeed({ limit: 50 });
   const { tests: allTests } = useAllTests();
   const takeoverActive = aacr.takeoverActive;
@@ -146,10 +147,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const generalItems = (newsItems || [])
     .filter(i => i.conference_slug !== 'aacr-2026')
     .filter(i => !hiddenIds.has(i.id));
-  const aacrItems = [...(aacr.latest || [])].filter(i => !hiddenIds.has(i.id));
-  if (aacr.hero && !aacrItems.find(i => i.id === aacr.hero.id) && !hiddenIds.has(aacr.hero?.id)) {
-    aacrItems.unshift(aacr.hero);
-  }
+  const aacrItems = (aacrFeedItems.length > 0 ? aacrFeedItems : [...(aacr.latest || [])]).filter(i => !hiddenIds.has(i.id));
 
   return (
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
@@ -208,7 +206,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
               <p className="text-xs text-rose-600/70 mb-4">
                 Live from San Diego &middot; April 17–22
               </p>
-              {aacr.loading && aacrItems.length === 0 ? (
+              {(aacr.loading || aacrFeedLoading) && aacrItems.length === 0 ? (
                 <ColumnSkeleton count={3} />
               ) : aacrItems.length === 0 ? (
                 <p className="text-sm text-slate-500">No AACR coverage yet.</p>

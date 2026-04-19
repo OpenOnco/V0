@@ -124,6 +124,16 @@ export const updateArticle = async (id, { headline, deck, body_html }) => {
   return resp.json();
 };
 
+export const useAacrFeed = ({ limit = 50 } = {}) => {
+  const { data, loading, error } = _useEndpoint(`${AACR_API_BASE}/feed?limit=${limit}`);
+  return {
+    items: data?.items ?? [],
+    count: data?.count ?? 0,
+    loading,
+    error,
+  };
+};
+
 export const useAacrVendorNews = (vendorKey, { limit = 5 } = {}) => {
   const url = vendorKey
     ? `${AACR_API_BASE}/vendor/${encodeURIComponent(vendorKey)}?limit=${limit}`
