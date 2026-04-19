@@ -42,6 +42,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api/public-tip",
+      "destination": "https://courageous-essence-production.up.railway.app/api/public-tip"
+    },
+    {
+      "source": "/api/editor-draft",
+      "destination": "https://courageous-essence-production.up.railway.app/api/editor-draft"
+    },
+    {
       "source": "/api/crawl-dashboard",
       "destination": "https://courageous-essence-production.up.railway.app/api/crawl-dashboard"
     },

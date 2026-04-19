@@ -7,6 +7,8 @@ import LinkedArticleText from '../components/LinkedArticleText';
 import VendorPopup from '../components/VendorPopup';
 import TestDetailModal from '../components/test/TestDetailModal';
 import ArticleEditor from '../components/ArticleEditor';
+import TipBox from '../components/TipBox';
+import EditorDraftBox from '../components/EditorDraftBox';
 
 function EditorReviewButton() {
   const [reviewCount, setReviewCount] = useState(0);
@@ -130,6 +132,8 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [editingArticle, setEditingArticle] = useState(null);
   const [hiddenIds, setHiddenIds] = useState(new Set());
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showTipBox, setShowTipBox] = useState(false);
+  const [showDraftBox, setShowDraftBox] = useState(false);
 
   const flatTests = useMemo(() => allTests || [], [allTests]);
 
@@ -179,14 +183,28 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   return (
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
       <header className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-          OO News: All the news from NGS to LBx 🤯🤯🤯
-        </h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+            OO News: All the news from NGS to LBx 🤯🤯🤯
+          </h1>
+          <button
+            onClick={() => setShowTipBox(true)}
+            className="flex-shrink-0 px-4 py-2 text-sm font-semibold text-brand-600 bg-white border-2 border-brand-200 hover:border-brand-400 rounded-xl transition cursor-pointer"
+          >
+            Tips, Ideas, Corrections
+          </button>
+        </div>
         {editMode && (
           <div className="mt-2 flex flex-wrap items-center gap-3">
             <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
               Editor mode
             </span>
+            <button
+              onClick={() => setShowDraftBox(true)}
+              className="text-sm font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded-full transition cursor-pointer border-none"
+            >
+              Quick Draft
+            </button>
             <EditorReviewButton />
             <a
               href="https://courageous-essence-production.up.railway.app/dashboard"
@@ -285,6 +303,8 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       {editingArticle && (
         <ArticleEditor article={editingArticle} onSave={handleEditorSave} onClose={() => setEditingArticle(null)} />
       )}
+      {showTipBox && <TipBox onClose={() => setShowTipBox(false)} />}
+      {showDraftBox && <EditorDraftBox onClose={() => setShowDraftBox(false)} />}
     </main>
   );
 }
