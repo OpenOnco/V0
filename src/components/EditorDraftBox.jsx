@@ -88,7 +88,7 @@ export default function EditorDraftBox({ onClose }) {
               <h2 className="text-lg font-bold text-slate-900">Quick Draft</h2>
               <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none bg-transparent border-none cursor-pointer">&times;</button>
             </div>
-            <p className="text-sm text-slate-500 mt-1">Describe the article. Opus will draft it with corpus enrichment, then you review before publish.</p>
+            <p className="text-sm text-slate-500 mt-1">Paste content to publish directly, or describe what you want and let Opus draft it.</p>
           </div>
           <div className="p-6">
             <textarea
@@ -96,18 +96,39 @@ export default function EditorDraftBox({ onClose }) {
               onChange={e => setContent(e.target.value)}
               rows={6}
               autoFocus
-              placeholder="e.g., Write about Illumina's new NGS performance data compared to MGI — what does this mean for competition from China?"
+              placeholder="Paste an article or LinkedIn post to publish as-is, or describe what you want Opus to write..."
               className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 resize-y"
             />
           </div>
           <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer border-none">Cancel</button>
             <button
+              onClick={() => {
+                if (!content.trim() || content.trim().length < 20) {
+                  alert('Content too short (20+ chars).');
+                  return;
+                }
+                const lines = content.trim().split('\n').filter(l => l.trim());
+                const headline = lines[0]?.slice(0, 120) || 'Untitled';
+                const bodyLines = lines.slice(1).join('\n').trim();
+                const bodyHtml = bodyLines
+                  ? bodyLines.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('\n')
+                  : `<p>${content.trim()}</p>`;
+                setDraft({ headline, deck: '', body_html: bodyHtml, entity: null });
+                setTipId('direct-publish-' + Date.now());
+                setStep(STEPS.REVIEW);
+              }}
+              disabled={content.trim().length < 20}
+              className="px-5 py-2 text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg cursor-pointer border border-brand-200 disabled:opacity-50"
+            >
+              Publish As-Is
+            </button>
+            <button
               onClick={handleDraft}
               disabled={content.trim().length < 20}
               className="px-5 py-2 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg cursor-pointer border-none disabled:opacity-50"
             >
-              Draft Article
+              AI Draft
             </button>
           </div>
         </div>
