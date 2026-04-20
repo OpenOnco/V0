@@ -42,6 +42,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/kv-save",
+      "destination": "https://courageous-essence-production.up.railway.app/api/kv-save"
+    },
+    {
       "source": "/api/stocks",
       "destination": "https://courageous-essence-production.up.railway.app/api/stocks"
     },

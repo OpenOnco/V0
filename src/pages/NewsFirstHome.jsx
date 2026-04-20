@@ -280,7 +280,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             <button
               onClick={async () => {
                 try {
-                  const resp = await fetch('/api/edit/save-backup', {
+                  const resp = await fetch('/api/kv-save', {
                     method: 'POST',
                     headers: { 'X-Edit-Secret': getEditSecret() },
                   });
