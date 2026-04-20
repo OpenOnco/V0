@@ -268,8 +268,12 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
                     method: 'POST',
                     headers: { 'X-Edit-Secret': getEditSecret() },
                   });
+                  if (!resp.ok) {
+                    alert('Backup failed: HTTP ' + resp.status);
+                    return;
+                  }
                   const d = await resp.json();
-                  alert(d.ok ? 'KV backup saved' : 'Backup failed');
+                  alert(d.ok ? 'KV backup saved' : ('Backup failed: ' + (d.error || 'unknown')));
                 } catch (e) { alert('Backup failed: ' + e.message); }
               }}
               className="text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition cursor-pointer border-none"
