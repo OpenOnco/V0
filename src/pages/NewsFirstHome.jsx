@@ -199,7 +199,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             onClick={() => setShowTipBox(true)}
             className="flex-shrink-0 px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition cursor-pointer border-none shadow-sm"
           >
-            Tips, Ideas, Corrections
+            Click for Tips, Ideas, Corrections
           </button>
         </div>
         {dashStats && (() => {
