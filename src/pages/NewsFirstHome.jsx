@@ -142,6 +142,18 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showTipBox, setShowTipBox] = useState(false);
   const [showDraftBox, setShowDraftBox] = useState(false);
+  const [prefillDraft, setPrefillDraft] = useState('');
+
+  // Check for draft content from editor review page
+  useEffect(() => {
+    const saved = localStorage.getItem('oo_draft_content');
+    if (saved && editMode) {
+      setPrefillDraft(saved);
+      setShowDraftBox(true);
+      localStorage.removeItem('oo_draft_content');
+      localStorage.removeItem('oo_draft_tip_id');
+    }
+  }, [editMode]);
   const [dashStats, setDashStats] = useState(null);
   const [stocks, setStocks] = useState(() =>
     SEED_TICKERS.map(s => ({ ...s, flash: false }))
@@ -413,7 +425,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
         <ArticleEditor article={editingArticle} onSave={handleEditorSave} onClose={() => setEditingArticle(null)} />
       )}
       {showTipBox && <TipBox onClose={() => setShowTipBox(false)} />}
-      {showDraftBox && <EditorDraftBox onClose={() => setShowDraftBox(false)} />}
+      {showDraftBox && <EditorDraftBox onClose={() => { setShowDraftBox(false); setPrefillDraft(''); }} initialContent={prefillDraft} />}
     </main>
   );
 }

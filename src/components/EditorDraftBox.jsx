@@ -3,9 +3,9 @@ import { getEditSecret } from '../utils/editSecret';
 
 const STEPS = { INPUT: 0, DRAFTING: 1, REVIEW: 2, PUBLISHED: 3 };
 
-export default function EditorDraftBox({ onClose }) {
+export default function EditorDraftBox({ onClose, initialContent = '' }) {
   const [step, setStep] = useState(STEPS.INPUT);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(initialContent);
   const [draft, setDraft] = useState(null);
   const [tipId, setTipId] = useState('');
   const [draftMode, setDraftMode] = useState('ai'); // 'ai' or 'format'
