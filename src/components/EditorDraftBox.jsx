@@ -93,7 +93,7 @@ export default function EditorDraftBox({ onClose, initialContent = '' }) {
             </div>
             <p className="text-sm text-slate-500 mt-1">Paste content to publish directly, or describe what you want and let Opus draft it.</p>
           </div>
-          <div className="p-6">
+          <div className="p-6 space-y-3">
             <textarea
               value={content}
               onChange={e => setContent(e.target.value)}
@@ -102,6 +102,35 @@ export default function EditorDraftBox({ onClose, initialContent = '' }) {
               placeholder="Paste an article or LinkedIn post to publish as-is, or describe what you want Opus to write..."
               className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 resize-y"
             />
+            <div className="flex items-center gap-2">
+              <label className="text-xs text-slate-500">Attach PDF:</label>
+              <input
+                type="file"
+                accept=".pdf"
+                className="text-xs"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const formData = new FormData();
+                  formData.append('file', file);
+                  try {
+                    const resp = await fetch('/api/editor-review/upload-pdf-extract', {
+                      method: 'POST',
+                      headers: { 'X-Edit-Secret': getEditSecret() },
+                      body: formData,
+                    });
+                    if (resp.ok) {
+                      const d = await resp.json();
+                      setContent(prev => prev + (prev ? '\n\n' : '') + '--- PDF: ' + file.name + ' ---\n' + d.text);
+                    } else {
+                      alert('PDF extraction failed');
+                    }
+                  } catch (err) {
+                    alert('PDF upload failed: ' + err.message);
+                  }
+                }}
+              />
+            </div>
           </div>
           <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer border-none">Cancel</button>
