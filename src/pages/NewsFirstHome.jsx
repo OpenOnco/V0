@@ -259,6 +259,21 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
               Quick Draft
             </button>
             <EditorReviewButton />
+            <button
+              onClick={async () => {
+                try {
+                  const resp = await fetch('/api/edit/kv-backup', {
+                    method: 'POST',
+                    headers: { 'X-Edit-Secret': getEditSecret() },
+                  });
+                  const d = await resp.json();
+                  alert(d.ok ? 'KV backup saved' : 'Backup failed');
+                } catch (e) { alert('Backup failed: ' + e.message); }
+              }}
+              className="text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition cursor-pointer border-none"
+            >
+              Save to KV
+            </button>
             <a
               href="https://courageous-essence-production.up.railway.app/dashboard"
               target="_blank"
