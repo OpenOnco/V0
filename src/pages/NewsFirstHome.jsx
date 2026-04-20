@@ -40,7 +40,7 @@ function EditorReviewButton() {
   );
 }
 
-function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit }) {
+function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit, onMoveUp, onMoveDown }) {
   const isPinned = Boolean(item.pinned_at);
   const borderClass = isPinned
     ? 'border-2 border-brand-400 shadow-md shadow-brand-100 bg-brand-50/30 animate-pulse-border'
@@ -94,6 +94,16 @@ function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode
       {/* Edit controls */}
       {editMode && (
         <div className="mt-2 pt-2 border-t border-slate-100 flex items-center gap-2">
+          <button
+            onClick={() => onMoveUp && onMoveUp(item)}
+            className="px-1.5 py-1 text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-200 rounded border border-slate-200 cursor-pointer leading-none"
+            title="Move up"
+          >&#9650;</button>
+          <button
+            onClick={() => onMoveDown && onMoveDown(item)}
+            className="px-1.5 py-1 text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-200 rounded border border-slate-200 cursor-pointer leading-none"
+            title="Move down"
+          >&#9660;</button>
           <button
             onClick={() => onPin(item)}
             className="px-2 py-1 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 cursor-pointer"
@@ -251,10 +261,60 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   }, []);
 
   // Filter hidden (killed) items
-  const generalItems = (newsItems || [])
+  const [localOrder, setLocalOrder] = useState(null);
+  const baseGeneralItems = (newsItems || [])
     .filter(i => i.conference_slug !== 'aacr-2026')
     .filter(i => !hiddenIds.has(i.id));
+  const generalItems = localOrder
+    ? localOrder.map(id => baseGeneralItems.find(i => i.id === id)).filter(Boolean)
+    : baseGeneralItems;
   const aacrItems = (aacrFeedItems.length > 0 ? aacrFeedItems : [...(aacr.latest || [])]).filter(i => !hiddenIds.has(i.id));
+
+  // Reset local order when feed data changes
+  useEffect(() => { setLocalOrder(null); }, [newsItems]);
+
+  const handleMoveUp = useCallback((item) => {
+    const ids = (localOrder || baseGeneralItems.map(i => i.id));
+    const idx = ids.indexOf(item.id);
+    if (idx <= 0) return;
+    const newIds = [...ids];
+    [newIds[idx - 1], newIds[idx]] = [newIds[idx], newIds[idx - 1]];
+    setLocalOrder(newIds);
+    // Persist: swap news_at between the two articles
+    const otherId = ids[idx - 1];
+    const other = baseGeneralItems.find(i => i.id === otherId);
+    if (other) {
+      fetch('/api/edit/' + encodeURIComponent(item.id), {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Edit-Secret': getEditSecret() },
+        body: JSON.stringify({ news_at: other.news_at || other.published_at }),
+      }).catch(() => {});
+      fetch('/api/edit/' + encodeURIComponent(otherId), {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Edit-Secret': getEditSecret() },
+        body: JSON.stringify({ news_at: item.news_at || item.published_at }),
+      }).catch(() => {});
+    }
+  }, [localOrder, baseGeneralItems]);
+
+  const handleMoveDown = useCallback((item) => {
+    const ids = (localOrder || baseGeneralItems.map(i => i.id));
+    const idx = ids.indexOf(item.id);
+    if (idx < 0 || idx >= ids.length - 1) return;
+    const newIds = [...ids];
+    [newIds[idx], newIds[idx + 1]] = [newIds[idx + 1], newIds[idx]];
+    setLocalOrder(newIds);
+    const otherId = ids[idx + 1];
+    const other = baseGeneralItems.find(i => i.id === otherId);
+    if (other) {
+      fetch('/api/edit/' + encodeURIComponent(item.id), {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Edit-Secret': getEditSecret() },
+        body: JSON.stringify({ news_at: other.news_at || other.published_at }),
+      }).catch(() => {});
+      fetch('/api/edit/' + encodeURIComponent(otherId), {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Edit-Secret': getEditSecret() },
+        body: JSON.stringify({ news_at: item.news_at || item.published_at }),
+      }).catch(() => {});
+    }
+  }, [localOrder, baseGeneralItems]);
 
   return (
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
@@ -405,6 +465,8 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
                   onPin={handlePin}
                   onKill={handleKill}
                   onEdit={handleEdit}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
                 />
               ))}
             </div>
