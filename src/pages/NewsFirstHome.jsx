@@ -51,9 +51,16 @@ function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode
   return (
     <div className={`p-4 rounded-xl bg-white border ${borderClass} hover:shadow-sm transition`}>
       <div className="flex items-baseline justify-between gap-2 mb-1">
-        <span className={`text-[11px] uppercase tracking-wide font-medium ${accent === 'aacr' ? 'text-rose-600' : 'text-brand-600'}`}>
-          {item.vertical || 'news'}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`text-[11px] uppercase tracking-wide font-medium ${accent === 'aacr' ? 'text-rose-600' : 'text-brand-600'}`}>
+            {item.vertical || 'news'}
+          </span>
+          {item.format === 'brief' && (
+            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">
+              Brief
+            </span>
+          )}
+        </div>
         {item.entity && (
           <span className="text-[11px] text-slate-500">
             {item.entity_ticker || item.entity}
@@ -239,7 +246,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       <header className="mb-8">
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-            OO News
+            OpenOnco News
           </h1>
           <button
             onClick={() => setShowTipBox(true)}

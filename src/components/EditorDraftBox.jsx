@@ -57,6 +57,7 @@ export default function EditorDraftBox({ onClose }) {
           deck: draft.deck,
           body_html: draft.body_html,
           entity: draft.entity,
+          format: draft.format || 'article',
           tip_id: tipId,
         }),
       });
