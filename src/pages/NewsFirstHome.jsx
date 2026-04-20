@@ -80,7 +80,7 @@ function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode
         </p>
       )}
       <p className="mt-2 text-[11px] text-slate-500">
-        {item.published_at?.slice(0, 10)}
+        {item.published_at?.slice(0, 16).replace('T', ' ')}
       </p>
 
       {/* Edit controls */}
@@ -193,7 +193,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       <header className="mb-8">
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-            OO News: All the news from NGS to LBx 🤯🤯🤯
+            OO News
           </h1>
           <button
             onClick={() => setShowTipBox(true)}
