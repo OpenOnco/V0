@@ -42,6 +42,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/stocks",
+      "destination": "https://courageous-essence-production.up.railway.app/api/stocks"
+    },
+    {
       "source": "/api/public-tip",
       "destination": "https://courageous-essence-production.up.railway.app/api/public-tip"
     },

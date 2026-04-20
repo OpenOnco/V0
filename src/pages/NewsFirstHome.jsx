@@ -139,6 +139,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [stocks, setStocks] = useState(() =>
     SEED_TICKERS.map(s => ({ ...s, flash: false }))
   );
+  const prevStocksRef = React.useRef({});
 
   useEffect(() => {
     fetch('/api/crawl-dashboard')
@@ -147,18 +148,26 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       .catch(() => {});
   }, []);
 
+  // Fetch real stock quotes every 60 seconds
   useEffect(() => {
-    const id = setInterval(() => {
-      setStocks(prev => prev.map(s => {
-        const d = (Math.random() - 0.5) * 0.25;
-        return {
-          ...s,
-          px:    +(s.px + s.px * d / 100).toFixed(2),
-          chg:   +(s.chg + d).toFixed(2),
-          flash: Math.random() > 0.85,
-        };
-      }));
-    }, 1800);
+    const fetchStocks = () => {
+      fetch('/api/stocks')
+        .then(r => r.json())
+        .then(d => {
+          if (d.tickers && d.tickers.length > 0) {
+            const prev = prevStocksRef.current;
+            setStocks(d.tickers.map(s => {
+              const oldChg = prev[s.t];
+              const flash = oldChg !== undefined && Math.abs(s.chg - oldChg) > 0.05;
+              prev[s.t] = s.chg;
+              return { ...s, flash };
+            }));
+          }
+        })
+        .catch(() => {});
+    };
+    fetchStocks();
+    const id = setInterval(fetchStocks, 60000);
     return () => clearInterval(id);
   }, []);
 
@@ -263,10 +272,47 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       </header>
 
       <div className="grid gap-6 md:grid-cols-7 md:items-start">
-        {/* Stock gadget — left rail on desktop, hidden on mobile */}
-        <div className="hidden md:block md:col-span-1 order-1 sticky top-20" style={{ maxWidth: 150 }}>
-          <StockGadget live={stocks} />
-        </div>
+        {/* AACR or empty — left on desktop, first on mobile */}
+        {takeoverActive && (
+          <div className="md:col-span-2 order-1">
+            <a href="#general-news" className="md:hidden block mb-3 text-center text-sm text-brand-600 hover:underline">
+              Skip to all other news &darr;
+            </a>
+            <div className="rounded-2xl border-2 border-rose-200 bg-rose-50/30 p-4">
+              <div className="mb-3">
+                <h2 className="text-lg font-semibold text-rose-700">AACR 2026</h2>
+              </div>
+              <p className="text-xs text-rose-600/70 mb-4">
+                Live from San Diego &middot; April 17&ndash;22
+              </p>
+              {(aacr.loading || aacrFeedLoading) && aacrItems.length === 0 ? (
+                <ColumnSkeleton count={3} />
+              ) : aacrItems.length === 0 ? (
+                <p className="text-sm text-slate-500">No AACR coverage yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {aacrItems.map(item => (
+                    <ArticleCard
+                      key={item.id}
+                      item={item}
+                      accent="aacr"
+                      tests={flatTests}
+                      onTestClick={handleTestClick}
+                      onVendorClick={handleVendorClick}
+                      editMode={editMode}
+                      onPin={handlePin}
+                      onKill={handleKill}
+                      onEdit={handleEdit}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        {!takeoverActive && (
+          <div className="md:col-span-2 order-1" />
+        )}
 
         {/* General news — center on desktop, second on mobile */}
         <div className="md:col-span-4 order-2" id="general-news">
@@ -298,48 +344,10 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
           )}
         </div>
 
-        {/* AACR — right on desktop, first on mobile */}
-        {takeoverActive && (
-          <div className="md:col-span-2 order-1 md:order-3">
-            <a href="#general-news" className="md:hidden block mb-3 text-center text-sm text-brand-600 hover:underline">
-              Skip to all other news &darr;
-            </a>
-            <div className="rounded-2xl border-2 border-rose-200 bg-rose-50/30 p-4">
-              <div className="mb-3">
-                <h2 className="text-lg font-semibold text-rose-700">AACR 2026</h2>
-              </div>
-              <p className="text-xs text-rose-600/70 mb-4">
-                Live from San Diego &middot; April 17–22
-              </p>
-              {(aacr.loading || aacrFeedLoading) && aacrItems.length === 0 ? (
-                <ColumnSkeleton count={3} />
-              ) : aacrItems.length === 0 ? (
-                <p className="text-sm text-slate-500">No AACR coverage yet.</p>
-              ) : (
-                <div className="space-y-3">
-                  {aacrItems.map(item => (
-                    <ArticleCard
-                      key={item.id}
-                      item={item}
-                      accent="aacr"
-                      tests={flatTests}
-                      onTestClick={handleTestClick}
-                      onVendorClick={handleVendorClick}
-                      editMode={editMode}
-                      onPin={handlePin}
-                      onKill={handleKill}
-                      onEdit={handleEdit}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {!takeoverActive && (
-          <div className="md:col-span-2 order-1 md:order-3" />
-        )}
+        {/* Stock gadget — right rail on desktop, hidden on mobile */}
+        <div className="hidden md:block md:col-span-1 order-3 sticky top-20" style={{ maxWidth: 160 }}>
+          <StockGadget live={stocks} />
+        </div>
       </div>
 
       {/* Popups */}
