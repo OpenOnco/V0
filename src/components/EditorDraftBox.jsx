@@ -8,6 +8,7 @@ export default function EditorDraftBox({ onClose }) {
   const [content, setContent] = useState('');
   const [draft, setDraft] = useState(null);
   const [tipId, setTipId] = useState('');
+  const [draftMode, setDraftMode] = useState('ai'); // 'ai' or 'format'
   const [publishing, setPublishing] = useState(false);
   const [publishedSlug, setPublishedSlug] = useState('');
 
@@ -16,6 +17,7 @@ export default function EditorDraftBox({ onClose }) {
       alert('Please describe the article you want (20+ chars).');
       return;
     }
+    setDraftMode('ai');
     setStep(STEPS.DRAFTING);
     try {
       const resp = await fetch('/api/editor-draft', {
@@ -103,20 +105,40 @@ export default function EditorDraftBox({ onClose }) {
           <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer border-none">Cancel</button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (!content.trim() || content.trim().length < 20) {
                   alert('Content too short (20+ chars).');
                   return;
                 }
-                const lines = content.trim().split('\n').filter(l => l.trim());
-                const headline = lines[0]?.slice(0, 120) || 'Untitled';
-                const bodyLines = lines.slice(1).join('\n').trim();
-                const bodyHtml = bodyLines
-                  ? bodyLines.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('\n')
-                  : `<p>${content.trim()}</p>`;
-                setDraft({ headline, deck: '', body_html: bodyHtml, entity: null });
-                setTipId('direct-publish-' + Date.now());
-                setStep(STEPS.REVIEW);
+                setDraftMode('format');
+                setStep(STEPS.DRAFTING);
+                try {
+                  const resp = await fetch('/api/editor-draft/format', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-Edit-Secret': getEditSecret(),
+                    },
+                    body: JSON.stringify({ content: content.trim() }),
+                  });
+                  const data = await resp.json();
+                  if (!resp.ok || !data.ok) {
+                    alert('Format failed: ' + (data.error || data.detail || resp.status));
+                    setStep(STEPS.INPUT);
+                    return;
+                  }
+                  setDraft({
+                    headline: data.headline || '',
+                    deck: data.deck || '',
+                    body_html: data.body_html || '',
+                    entity: data.entity || null,
+                  });
+                  setTipId('direct-publish-' + Date.now());
+                  setStep(STEPS.REVIEW);
+                } catch (e) {
+                  alert('Format failed: ' + e.message);
+                  setStep(STEPS.INPUT);
+                }
               }}
               disabled={content.trim().length < 20}
               className="px-5 py-2 text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg cursor-pointer border border-brand-200 disabled:opacity-50"
@@ -145,8 +167,14 @@ export default function EditorDraftBox({ onClose }) {
           <div className="mb-4">
             <div className="inline-block w-10 h-10 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Opus is writing...</h2>
-          <p className="text-sm text-slate-500">Enriching with entity profile, prior articles, and knowledge base. Usually 15-30 seconds.</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">
+            {draftMode === 'ai' ? 'Opus is writing...' : 'Formatting...'}
+          </h2>
+          <p className="text-sm text-slate-500">
+            {draftMode === 'ai'
+              ? 'Enriching with entity profile, prior articles, and knowledge base. Usually 15-30 seconds.'
+              : 'Cleaning up formatting for publication. Just a moment.'}
+          </p>
         </div>
       </div>
     );
