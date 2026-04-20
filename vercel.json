@@ -82,6 +82,10 @@
       "destination": "https://courageous-essence-production.up.railway.app/aacr/:path*"
     },
     {
+      "source": "/api/analytics/:path*",
+      "destination": "https://courageous-essence-production.up.railway.app/api/analytics/:path*"
+    },
+    {
       "source": "/api/news/:path*",
       "destination": "https://courageous-essence-production.up.railway.app/api/news/:path*"
     },
