@@ -11,18 +11,17 @@ import TipBox from '../components/TipBox';
 import EditorDraftBox from '../components/EditorDraftBox';
 
 function EditorReviewButton() {
-  const [reviewCount, setReviewCount] = useState(0);
-  const [drafts, setDrafts] = useState(0);
+  const [total, setTotal] = useState(0);
   useEffect(() => {
-    fetch('/api/crawl-dashboard')
-      .then(r => r.json())
-      .then(d => {
-        setReviewCount(d?.desk?.editor_review || 0);
-        setDrafts(d?.articles?.drafts || 0);
-      })
-      .catch(() => {});
+    Promise.all([
+      fetch('/api/crawl-dashboard').then(r => r.json()).catch(() => ({})),
+      fetch('/api/editor-review/tips').then(r => r.json()).catch(() => ({ items: [] })),
+    ]).then(([dash, tips]) => {
+      const clusters = dash?.desk?.editor_review || 0;
+      const activeTips = (tips?.items || []).filter(t => t.status !== 'dismissed').length;
+      setTotal(clusters + activeTips);
+    });
   }, []);
-  const total = reviewCount + drafts;
   return (
     <a
       href={`https://courageous-essence-production.up.railway.app/editor-review?secret=${encodeURIComponent(getEditSecret())}`}
