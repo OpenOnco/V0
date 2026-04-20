@@ -139,6 +139,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [stocks, setStocks] = useState(() =>
     SEED_TICKERS.map(s => ({ ...s, flash: false }))
   );
+  const [marketOpen, setMarketOpen] = useState(false);
   const prevStocksRef = React.useRef({});
 
   useEffect(() => {
@@ -148,17 +149,18 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       .catch(() => {});
   }, []);
 
-  // Fetch real stock quotes every 60 seconds
+  // Fetch stock quotes — every 60s when market open, once when closed
   useEffect(() => {
     const fetchStocks = () => {
       fetch('/api/stocks')
         .then(r => r.json())
         .then(d => {
           if (d.tickers && d.tickers.length > 0) {
+            setMarketOpen(!!d.market_open);
             const prev = prevStocksRef.current;
             setStocks(d.tickers.map(s => {
               const oldChg = prev[s.t];
-              const flash = oldChg !== undefined && Math.abs(s.chg - oldChg) > 0.05;
+              const flash = d.market_open && oldChg !== undefined && Math.abs(s.chg - oldChg) > 0.05;
               prev[s.t] = s.chg;
               return { ...s, flash };
             }));
@@ -280,7 +282,15 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
               rel="noopener"
               className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
             >
-              Pipeline Dashboard &rarr;
+              Pipeline &rarr;
+            </a>
+            <a
+              href="https://courageous-essence-production.up.railway.app/analytics-dash"
+              target="_blank"
+              rel="noopener"
+              className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
+            >
+              Analytics &rarr;
             </a>
           </div>
         )}
@@ -361,7 +371,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
 
         {/* Stock gadget — right rail on desktop, hidden on mobile */}
         <div className="hidden md:block md:col-span-1 order-3 sticky top-20" style={{ maxWidth: 160 }}>
-          <StockGadget live={stocks} />
+          <StockGadget live={stocks} marketOpen={marketOpen} />
         </div>
       </div>
 

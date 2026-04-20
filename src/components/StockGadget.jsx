@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function StockGadget({ live }) {
+export function StockGadget({ live, marketOpen }) {
   const sorted    = [...live].sort((a, b) => b.chg - a.chg);
   const gains     = sorted.filter(s => s.chg >= 0);
   const losses    = sorted.filter(s => s.chg <  0);
@@ -14,7 +14,12 @@ export function StockGadget({ live }) {
     <div className="sg">
       <div className="sg-head">
         <div className="sg-ttl">WATCH</div>
-        <div className="sg-sub mono"><span className="dot-live" />LIVE</div>
+        <div className="sg-sub mono">
+          {marketOpen
+            ? <><span className="dot-live" />LIVE</>
+            : <span style={{ color: '#94a3b8' }}>CLOSED</span>
+          }
+        </div>
       </div>
       <div className="sg-tot mono">
         <span className="up">+{Math.round(gainSum)}%</span>
