@@ -144,14 +144,17 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [showDraftBox, setShowDraftBox] = useState(false);
   const [prefillDraft, setPrefillDraft] = useState('');
 
-  // Check for draft content from editor review page
+  // Check for draft content from editor review page (URL param)
   useEffect(() => {
-    const saved = localStorage.getItem('oo_draft_content');
-    if (saved && editMode) {
-      setPrefillDraft(saved);
+    const params = new URLSearchParams(window.location.search);
+    const draftContent = params.get('draft');
+    if (draftContent && editMode) {
+      setPrefillDraft(draftContent);
       setShowDraftBox(true);
-      localStorage.removeItem('oo_draft_content');
-      localStorage.removeItem('oo_draft_tip_id');
+      // Clean URL
+      params.delete('draft');
+      const clean = params.toString();
+      window.history.replaceState({}, '', window.location.pathname + (clean ? '?' + clean : ''));
     }
   }, [editMode]);
   const [dashStats, setDashStats] = useState(null);
