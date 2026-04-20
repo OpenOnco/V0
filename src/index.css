@@ -69,3 +69,12 @@
 .animate-pulse-border {
   animation: pulse-border 3s ease-in-out infinite;
 }
+
+@keyframes teeter {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+.animate-teeter {
+  animation: teeter 2.5s ease-in-out infinite;
+  transform-origin: center center;
+}
