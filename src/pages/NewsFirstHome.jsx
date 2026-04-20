@@ -9,6 +9,8 @@ import TestDetailModal from '../components/test/TestDetailModal';
 import ArticleEditor from '../components/ArticleEditor';
 import TipBox from '../components/TipBox';
 import EditorDraftBox from '../components/EditorDraftBox';
+import StockGadget from '../components/StockGadget';
+import { SEED_TICKERS } from '../data/stocks';
 
 function EditorReviewButton() {
   const [total, setTotal] = useState(0);
@@ -134,12 +136,30 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [showTipBox, setShowTipBox] = useState(false);
   const [showDraftBox, setShowDraftBox] = useState(false);
   const [dashStats, setDashStats] = useState(null);
+  const [stocks, setStocks] = useState(() =>
+    SEED_TICKERS.map(s => ({ ...s, flash: false }))
+  );
 
   useEffect(() => {
     fetch('/api/crawl-dashboard')
       .then(r => r.json())
       .then(d => setDashStats(d))
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setStocks(prev => prev.map(s => {
+        const d = (Math.random() - 0.5) * 0.25;
+        return {
+          ...s,
+          px:    +(s.px + s.px * d / 100).toFixed(2),
+          chg:   +(s.chg + d).toFixed(2),
+          flash: Math.random() > 0.85,
+        };
+      }));
+    }, 1800);
+    return () => clearInterval(id);
   }, []);
 
   const flatTests = useMemo(() => allTests || [], [allTests]);
@@ -242,9 +262,14 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
         )}
       </header>
 
-      <div className="grid gap-8 md:grid-cols-5 md:items-start">
-        {/* General news — left on desktop, second on mobile */}
-        <div className="md:col-span-3 order-2 md:order-1" id="general-news">
+      <div className="grid gap-6 md:grid-cols-7 md:items-start">
+        {/* Stock gadget — left rail on desktop, hidden on mobile */}
+        <div className="hidden md:block md:col-span-1 order-1 sticky top-20" style={{ maxWidth: 150 }}>
+          <StockGadget live={stocks} />
+        </div>
+
+        {/* General news — center on desktop, second on mobile */}
+        <div className="md:col-span-4 order-2" id="general-news">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-slate-900">Latest</h2>
           </div>
@@ -275,7 +300,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
 
         {/* AACR — right on desktop, first on mobile */}
         {takeoverActive && (
-          <div className="md:col-span-2 order-1 md:order-2">
+          <div className="md:col-span-2 order-1 md:order-3">
             <a href="#general-news" className="md:hidden block mb-3 text-center text-sm text-brand-600 hover:underline">
               Skip to all other news &darr;
             </a>
@@ -313,7 +338,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
         )}
 
         {!takeoverActive && (
-          <div className="md:col-span-2 order-1 md:order-2" />
+          <div className="md:col-span-2 order-1 md:order-3" />
         )}
       </div>
 
