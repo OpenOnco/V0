@@ -20,7 +20,7 @@ export default function EditorDraftBox({ onClose }) {
     setDraftMode('ai');
     setStep(STEPS.DRAFTING);
     try {
-      const resp = await fetch('/api/editor-draft', {
+      const resp = await fetch('https://courageous-essence-production.up.railway.app/api/editor-draft', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

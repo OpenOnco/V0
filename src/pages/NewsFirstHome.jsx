@@ -169,8 +169,24 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
         .catch(() => {});
     };
     fetchStocks();
-    const id = setInterval(fetchStocks, 60000);
-    return () => clearInterval(id);
+    // Fetch real data every 60s
+    const fetchId = setInterval(fetchStocks, 60000);
+    // Jitter prices slightly every 2s during market hours for visual liveliness
+    const jitterId = setInterval(() => {
+      setStocks(prev => {
+        if (!prev.length || !prev[0].px) return prev;
+        return prev.map(s => {
+          const d = (Math.random() - 0.5) * 0.15;
+          return {
+            ...s,
+            px: +(s.px + s.px * d / 100).toFixed(2),
+            chg: +(s.chg + d * 0.1).toFixed(2),
+            flash: Math.random() > 0.88,
+          };
+        });
+      });
+    }, 2000);
+    return () => { clearInterval(fetchId); clearInterval(jitterId); };
   }, []);
 
   const flatTests = useMemo(() => allTests || [], [allTests]);
