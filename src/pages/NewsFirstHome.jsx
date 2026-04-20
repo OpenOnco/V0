@@ -41,7 +41,7 @@ function EditorReviewButton() {
 function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit }) {
   const isPinned = Boolean(item.pinned_at);
   const borderClass = isPinned
-    ? 'border-2 border-brand-400 shadow-md shadow-brand-100 bg-brand-50/30'
+    ? 'border-2 border-brand-400 shadow-md shadow-brand-100 bg-brand-50/30 animate-pulse-border'
     : accent === 'aacr'
       ? 'border-rose-200 hover:border-rose-300'
       : 'border-slate-200 hover:border-slate-300';
