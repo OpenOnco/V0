@@ -395,6 +395,14 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             >
               Analytics &rarr;
             </a>
+            <a
+              href={`https://courageous-essence-production.up.railway.app/drafts-review?secret=${encodeURIComponent(getEditSecret())}`}
+              target="_blank"
+              rel="noopener"
+              className="text-sm font-medium text-amber-700 bg-amber-50 px-3 py-1 rounded-full hover:bg-amber-100 transition"
+            >
+              Drafts &rarr;
+            </a>
           </div>
         )}
       </header>
