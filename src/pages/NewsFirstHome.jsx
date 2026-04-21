@@ -203,8 +203,9 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
     fetchStocks();
     // Fetch real data every 60s
     const fetchId = setInterval(fetchStocks, 60000);
-    // Jitter prices slightly every 2s during market hours for visual liveliness
+    // Jitter only during market hours
     const jitterId = setInterval(() => {
+      if (!marketOpen) return;
       setStocks(prev => {
         if (!prev.length || !prev[0].px) return prev;
         return prev.map(s => {
@@ -219,7 +220,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       });
     }, 2000);
     return () => { clearInterval(fetchId); clearInterval(jitterId); };
-  }, []);
+  }, [marketOpen]);
 
   const flatTests = useMemo(() => allTests || [], [allTests]);
 

@@ -66,7 +66,7 @@ export function StockGadget({ live, marketOpen }) {
         </div>
       </div>
 
-      <div className="sg-foot mono">{sorted.length} TICKERS</div>
+      <div className="sg-foot mono">{sorted.length} TICKERS {!marketOpen && '· PREV CLOSE'}</div>
     </div>
   );
 }
