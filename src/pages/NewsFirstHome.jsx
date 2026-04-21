@@ -15,9 +15,10 @@ import { SEED_TICKERS } from '../data/stocks';
 function EditorReviewButton() {
   const [total, setTotal] = useState(0);
   useEffect(() => {
+    const secret = getEditSecret();
     Promise.all([
       fetch('/api/crawl-dashboard').then(r => r.json()).catch(() => ({})),
-      fetch('/api/editor-review/tips').then(r => r.json()).catch(() => ({ items: [] })),
+      fetch('/api/editor-review/tips', { headers: { 'X-Edit-Secret': secret } }).then(r => r.json()).catch(() => ({ items: [] })),
     ]).then(([dash, tips]) => {
       const clusters = dash?.desk?.editor_review || 0;
       const activeTips = (tips?.items || []).filter(t => t.status !== 'dismissed').length;
@@ -388,7 +389,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
               Pipeline &rarr;
             </a>
             <a
-              href="https://courageous-essence-production.up.railway.app/analytics-dash"
+              href={`https://courageous-essence-production.up.railway.app/analytics-dash?secret=${encodeURIComponent(getEditSecret())}`}
               target="_blank"
               rel="noopener"
               className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
