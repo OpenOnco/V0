@@ -154,6 +154,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
   const [showTipBox, setShowTipBox] = useState(false);
   const [showDraftBox, setShowDraftBox] = useState(false);
   const [prefillDraft, setPrefillDraft] = useState('');
+  const [editorPanel, setEditorPanel] = useState(null); // null, 'pipeline', 'analytics', 'drafts', 'review'
 
   // Check for draft content from editor review page (URL param)
   useEffect(() => {
@@ -380,33 +381,56 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             >
               Save to KV
             </button>
-            <a
-              href="https://courageous-essence-production.up.railway.app/dashboard"
-              target="_blank"
-              rel="noopener"
-              className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
-            >
-              Pipeline &rarr;
-            </a>
-            <a
-              href={`https://courageous-essence-production.up.railway.app/analytics-dash?secret=${encodeURIComponent(getEditSecret())}`}
-              target="_blank"
-              rel="noopener"
-              className="text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full hover:bg-brand-100 transition"
-            >
-              Analytics &rarr;
-            </a>
-            <a
-              href={`https://courageous-essence-production.up.railway.app/drafts-review?secret=${encodeURIComponent(getEditSecret())}`}
-              target="_blank"
-              rel="noopener"
-              className="text-sm font-medium text-amber-700 bg-amber-50 px-3 py-1 rounded-full hover:bg-amber-100 transition"
-            >
-              Drafts &rarr;
-            </a>
+            {['review', 'drafts', 'pipeline', 'analytics'].map(panel => {
+              const labels = { review: 'Review', drafts: 'Drafts', pipeline: 'Pipeline', analytics: 'Analytics' };
+              const isActive = editorPanel === panel;
+              return (
+                <button
+                  key={panel}
+                  onClick={() => setEditorPanel(isActive ? null : panel)}
+                  className={`text-sm font-medium px-3 py-1 rounded-full transition cursor-pointer border-none ${
+                    isActive
+                      ? 'text-white bg-brand-600'
+                      : panel === 'drafts'
+                        ? 'text-amber-700 bg-amber-50 hover:bg-amber-100'
+                        : 'text-brand-600 bg-brand-50 hover:bg-brand-100'
+                  }`}
+                >
+                  {labels[panel]} {isActive ? '✕' : '↓'}
+                </button>
+              );
+            })}
           </div>
         )}
       </header>
+
+      {/* Editor panel (iframe) */}
+      {editMode && editorPanel && (() => {
+        const secret = encodeURIComponent(getEditSecret());
+        const urls = {
+          review: `https://courageous-essence-production.up.railway.app/editor-review?secret=${secret}`,
+          drafts: `https://courageous-essence-production.up.railway.app/drafts-review?secret=${secret}`,
+          pipeline: `https://courageous-essence-production.up.railway.app/dashboard`,
+          analytics: `https://courageous-essence-production.up.railway.app/analytics-dash?secret=${secret}`,
+        };
+        return (
+          <div className="mb-6 rounded-xl border-2 border-brand-200 overflow-hidden bg-white">
+            <div className="flex items-center justify-between px-4 py-2 bg-brand-50 border-b border-brand-200">
+              <span className="text-sm font-semibold text-brand-700 capitalize">{editorPanel}</span>
+              <button
+                onClick={() => setEditorPanel(null)}
+                className="text-brand-400 hover:text-brand-600 text-lg leading-none bg-transparent border-none cursor-pointer"
+              >&times;</button>
+            </div>
+            <iframe
+              src={urls[editorPanel]}
+              className="w-full border-none"
+              style={{ height: '70vh' }}
+              title={editorPanel}
+            />
+          </div>
+        );
+      })()}
 
       <div className="grid gap-6 md:grid-cols-7 md:items-start">
         {/* AACR or empty — left on desktop, first on mobile */}
