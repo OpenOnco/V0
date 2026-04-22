@@ -94,6 +94,10 @@
       "destination": "https://courageous-essence-production.up.railway.app/api/news/:path*"
     },
     {
+      "source": "/feed.xml",
+      "destination": "https://courageous-essence-production.up.railway.app/feed.xml"
+    },
+    {
       "source": "/news",
       "destination": "https://courageous-essence-production.up.railway.app/"
     },
