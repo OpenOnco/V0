@@ -24,7 +24,16 @@ const EDITOR_PANELS = [
 ];
 
 function EditorButtonRow({ editorPanel, setEditorPanel, setShowDraftBox }) {
-  const counts = useEditorCounts();
+  // Tick whenever a panel closes so the counts hook refetches — the iframe
+  // panels mutate state (approve/redraft/kill), so the buttons need to
+  // reflect the new totals as soon as the editor steps back out.
+  const [refreshKey, setRefreshKey] = useState(0);
+  const counts = useEditorCounts(refreshKey);
+  const togglePanel = (id) => {
+    const wasOpen = editorPanel === id;
+    setEditorPanel(wasOpen ? null : id);
+    if (wasOpen) setRefreshKey(k => k + 1);
+  };
   return (
     <div className="mt-2 flex flex-wrap items-center gap-3">
       <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
@@ -43,7 +52,7 @@ function EditorButtonRow({ editorPanel, setEditorPanel, setShowDraftBox }) {
         return (
           <button
             key={id}
-            onClick={() => setEditorPanel(isActive ? null : id)}
+            onClick={() => togglePanel(id)}
             className={`text-sm font-medium px-3 py-1.5 rounded-full transition cursor-pointer border-none ${
               isActive
                 ? 'text-white bg-brand-600'
@@ -60,27 +69,42 @@ function EditorButtonRow({ editorPanel, setEditorPanel, setShowDraftBox }) {
   );
 }
 
-// Pulls editor-desk + drafts counts to surface inside the panel-toggle buttons.
-function useEditorCounts() {
+// Pulls editor-desk + drafts counts to surface inside the panel-toggle
+// buttons. Refetches every 30s while editor mode is open and re-runs
+// whenever ``refreshKey`` ticks — call sites bump the key when an editor
+// panel closes so counts update once the editor finishes reviewing.
+const COUNTS_POLL_MS = 30_000;
+
+function useEditorCounts(refreshKey = 0) {
   const [counts, setCounts] = useState({
     clustersPendingReview: 0,
     draftsAwaitingPublish: 0,
   });
   useEffect(() => {
+    let cancelled = false;
     const secret = getEditSecret();
-    Promise.all([
-      fetch('/api/crawl-dashboard').then(r => r.json()).catch(() => ({})),
-      fetch('/api/editor-review/tips', { headers: { 'X-Edit-Secret': secret } }).then(r => r.json()).catch(() => ({ items: [] })),
-    ]).then(([dash, tips]) => {
-      const clusters = dash?.desk?.editor_review || 0;
-      const activeTips = (tips?.items || []).filter(t => t.status !== 'dismissed').length;
-      const drafts = dash?.articles?.drafts || 0;
-      setCounts({
-        clustersPendingReview: clusters + activeTips,
-        draftsAwaitingPublish: drafts,
+    const fetchCounts = () => {
+      Promise.all([
+        fetch('/api/crawl-dashboard').then(r => r.json()).catch(() => ({})),
+        fetch('/api/editor-review/tips', { headers: { 'X-Edit-Secret': secret } }).then(r => r.json()).catch(() => ({ items: [] })),
+      ]).then(([dash, tips]) => {
+        if (cancelled) return;
+        const clusters = dash?.desk?.editor_review || 0;
+        const activeTips = (tips?.items || []).filter(t => t.status !== 'dismissed').length;
+        const drafts = dash?.articles?.drafts || 0;
+        setCounts({
+          clustersPendingReview: clusters + activeTips,
+          draftsAwaitingPublish: drafts,
+        });
       });
-    });
-  }, []);
+    };
+    fetchCounts();
+    const interval = setInterval(fetchCounts, COUNTS_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [refreshKey]);
   return counts;
 }
 
