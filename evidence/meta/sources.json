@@ -138,5 +138,45 @@
     "pmcid": null,
     "raw_file": "raw/papers/41960736.md",
     "fetched_date": "2026-04-13"
+  },
+  "41973053": {
+    "title": "Circulating tumor DNA dynamics in patients with liver-limited metastatic colorectal cancer resected after first-line systemic treatment.",
+    "authors_short": "Moretto et al.",
+    "journal": "Clin Cancer Res",
+    "year": 2026,
+    "doi": "10.1158/1078-0432.CCR-25-4641",
+    "pmcid": null,
+    "raw_file": "raw/papers/41973053.md",
+    "fetched_date": "2026-04-25"
+  },
+  "41979332": {
+    "title": "Interim assessment by circulating tumor DNA in primary mediastinal large B-cell lymphoma: a multicenter LYSA study.",
+    "authors_short": "Camus et al.",
+    "journal": "Blood Adv",
+    "year": 2026,
+    "doi": "10.1182/bloodadvances.2025019108",
+    "pmcid": null,
+    "raw_file": "raw/papers/41979332.md",
+    "fetched_date": "2026-04-25"
+  },
+  "41990293": {
+    "title": "Circulating Tumor DNA for Minimal Residual Disease in Colon Cancer: Ready for Prime Time?",
+    "authors_short": "Wu YL, Manji GA",
+    "journal": "J Clin Oncol",
+    "year": 2026,
+    "doi": "10.1200/JCO-26-00369",
+    "pmcid": null,
+    "raw_file": "raw/papers/41990293.md",
+    "fetched_date": "2026-04-25"
+  },
+  "42002075": {
+    "title": "LAMPAD: An Integrated ctDNA-Based Model for Predicting Potential Cure in Resected NSCLC Patients.",
+    "authors_short": "Zhang et al.",
+    "journal": "J Thorac Oncol",
+    "year": 2026,
+    "doi": "10.1016/j.jtho.2026.103729",
+    "pmcid": null,
+    "raw_file": "raw/papers/42002075.md",
+    "fetched_date": "2026-04-25"
   }
 }
