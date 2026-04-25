@@ -12,8 +12,60 @@ import EditorDraftBox from '../components/EditorDraftBox';
 import StockGadget from '../components/StockGadget';
 import { SEED_TICKERS } from '../data/stocks';
 
-function EditorReviewButton() {
-  const [total, setTotal] = useState(0);
+// Single consolidated button row for the editor mode header. Replaces the
+// older mix of Quick Draft + duplicate review-queue button + Save to KV +
+// per-panel toggles. All panel toggles share one style; queues with items
+// to process show their count inside the button label.
+const EDITOR_PANELS = [
+  { id: 'review',    label: 'Clusters Pending Review', countKey: 'clustersPendingReview' },
+  { id: 'drafts',    label: 'Drafts Awaiting Publish', countKey: 'draftsAwaitingPublish' },
+  { id: 'pipeline',  label: 'Pipeline Status' },
+  { id: 'analytics', label: 'Analytics' },
+];
+
+function EditorButtonRow({ editorPanel, setEditorPanel, setShowDraftBox }) {
+  const counts = useEditorCounts();
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-3">
+      <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
+        Editor mode
+      </span>
+      <button
+        onClick={() => setShowDraftBox(true)}
+        className="text-sm font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded-full transition cursor-pointer border-none"
+      >
+        Write Article
+      </button>
+      {EDITOR_PANELS.map(({ id, label, countKey }) => {
+        const isActive = editorPanel === id;
+        const count = countKey ? counts[countKey] : 0;
+        const hasWork = count > 0;
+        return (
+          <button
+            key={id}
+            onClick={() => setEditorPanel(isActive ? null : id)}
+            className={`text-sm font-medium px-3 py-1.5 rounded-full transition cursor-pointer border-none ${
+              isActive
+                ? 'text-white bg-brand-600'
+                : hasWork
+                  ? 'text-white bg-red-600 hover:bg-red-700'
+                  : 'text-brand-600 bg-brand-50 hover:bg-brand-100'
+            }`}
+          >
+            {label}{hasWork ? ` (${count})` : ''} {isActive ? '✕' : '↓'}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Pulls editor-desk + drafts counts to surface inside the panel-toggle buttons.
+function useEditorCounts() {
+  const [counts, setCounts] = useState({
+    clustersPendingReview: 0,
+    draftsAwaitingPublish: 0,
+  });
   useEffect(() => {
     const secret = getEditSecret();
     Promise.all([
@@ -22,23 +74,14 @@ function EditorReviewButton() {
     ]).then(([dash, tips]) => {
       const clusters = dash?.desk?.editor_review || 0;
       const activeTips = (tips?.items || []).filter(t => t.status !== 'dismissed').length;
-      setTotal(clusters + activeTips);
+      const drafts = dash?.articles?.drafts || 0;
+      setCounts({
+        clustersPendingReview: clusters + activeTips,
+        draftsAwaitingPublish: drafts,
+      });
     });
   }, []);
-  return (
-    <a
-      href={`https://courageous-essence-production.up.railway.app/editor-review?secret=${encodeURIComponent(getEditSecret())}`}
-      target="_blank"
-      rel="noopener"
-      className={`text-sm font-bold px-4 py-1.5 rounded-full transition ${
-        total > 0
-          ? 'text-white bg-red-600 hover:bg-red-700 animate-pulse'
-          : 'text-red-600 bg-red-50 hover:bg-red-100 border border-red-200'
-      }`}
-    >
-      {total > 0 ? `${total} awaiting review` : 'Review queue'}
-    </a>
-  );
+  return counts;
 }
 
 function ArticleCard({ item, accent, tests, onTestClick, onVendorClick, editMode, onPin, onKill, onEdit, onMoveUp, onMoveDown }) {
@@ -350,58 +393,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
             </p>
           );
         })()}
-        {editMode && (
-          <div className="mt-2 flex flex-wrap items-center gap-3">
-            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
-              Editor mode
-            </span>
-            <button
-              onClick={() => setShowDraftBox(true)}
-              className="text-sm font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded-full transition cursor-pointer border-none"
-            >
-              Quick Draft
-            </button>
-            <EditorReviewButton />
-            <button
-              onClick={async () => {
-                try {
-                  const resp = await fetch('/api/kv-save', {
-                    method: 'POST',
-                    headers: { 'X-Edit-Secret': getEditSecret() },
-                  });
-                  if (!resp.ok) {
-                    alert('Backup failed: HTTP ' + resp.status);
-                    return;
-                  }
-                  const d = await resp.json();
-                  alert(d.ok ? 'KV backup saved' : ('Backup failed: ' + (d.error || 'unknown')));
-                } catch (e) { alert('Backup failed: ' + e.message); }
-              }}
-              className="text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition cursor-pointer border-none"
-            >
-              Save to KV
-            </button>
-            {['review', 'drafts', 'pipeline', 'analytics'].map(panel => {
-              const labels = { review: 'Review', drafts: 'Drafts', pipeline: 'Pipeline', analytics: 'Analytics' };
-              const isActive = editorPanel === panel;
-              return (
-                <button
-                  key={panel}
-                  onClick={() => setEditorPanel(isActive ? null : panel)}
-                  className={`text-sm font-medium px-3 py-1 rounded-full transition cursor-pointer border-none ${
-                    isActive
-                      ? 'text-white bg-brand-600'
-                      : panel === 'drafts'
-                        ? 'text-amber-700 bg-amber-50 hover:bg-amber-100'
-                        : 'text-brand-600 bg-brand-50 hover:bg-brand-100'
-                  }`}
-                >
-                  {labels[panel]} {isActive ? '✕' : '↓'}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        {editMode && <EditorButtonRow editorPanel={editorPanel} setEditorPanel={setEditorPanel} setShowDraftBox={setShowDraftBox} />}
       </header>
 
       {/* Editor panel (iframe) */}
