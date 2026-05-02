@@ -178,5 +178,105 @@
     "pmcid": null,
     "raw_file": "raw/papers/42002075.md",
     "fetched_date": "2026-04-25"
+  },
+  "41544704": {
+    "title": "ctDNA-guided immunotherapy following radical cystectomy for muscle-invasive bladder cancer: results from the TOMBOLA trial.",
+    "authors_short": "Dyrskjøt et al.",
+    "journal": "Ann Oncol",
+    "year": 2026,
+    "doi": "10.1016/j.annonc.2025.12.018",
+    "pmcid": null,
+    "raw_file": "raw/papers/41544704.md",
+    "fetched_date": "2026-05-02"
+  },
+  "42062251": {
+    "title": "Peripheral blood cfDNA detection using clonoSEQ assay in multiple myeloma is concordant with bone marrow and clinical biomarkers.",
+    "authors_short": "Wiedmeier-Nutor et al.",
+    "journal": "Blood Cancer J",
+    "year": 2026,
+    "doi": "10.1038/s41408-026-01508-9",
+    "pmcid": null,
+    "raw_file": "raw/papers/42062251.md",
+    "fetched_date": "2026-05-02"
+  },
+  "42062528": {
+    "title": "Preoperative ctDNA and tumor volume predict colorectal cancer recurrence after metastasis resection.",
+    "authors_short": "Oyoshi et al.",
+    "journal": "NPJ Precis Oncol",
+    "year": 2026,
+    "doi": "10.1038/s41698-026-01450-w",
+    "pmcid": null,
+    "raw_file": "raw/papers/42062528.md",
+    "fetched_date": "2026-05-02"
+  },
+  "42066238": {
+    "title": "Beyond Routine Surveillance Imaging for Melanoma: Emerging Technologies for Detecting Early Recurrence and Guiding Clinical Management.",
+    "authors_short": "de Souza Carvalho et al.",
+    "journal": "Am Soc Clin Oncol Educ Book",
+    "year": 2026,
+    "doi": "10.1200/EDBK-26-520544",
+    "pmcid": null,
+    "raw_file": "raw/papers/42066238.md",
+    "fetched_date": "2026-05-02"
+  },
+  "42059900": {
+    "title": "Early ctDNA stratifies survival in locally advanced and oligometastatic lung cancer treated with radiotherapy.",
+    "authors_short": "Hashmi et al.",
+    "journal": "Clin Cancer Res",
+    "year": 2026,
+    "doi": "10.1158/1078-0432.CCR-25-4983",
+    "pmcid": null,
+    "raw_file": "raw/papers/42059900.md",
+    "fetched_date": "2026-05-02"
+  },
+  "42035227": {
+    "title": "Failure of the Galleri multi-cancer detection trial to meet its primary endpoint.",
+    "authors_short": "Diamandis EP",
+    "journal": "Diagnosis (Berl)",
+    "year": 2026,
+    "doi": "10.1515/dx-2026-0055",
+    "pmcid": null,
+    "raw_file": "raw/papers/42035227.md",
+    "fetched_date": "2026-05-02"
+  },
+  "41731061": {
+    "title": "Innovative approaches for lung cancer screening and interception.",
+    "authors_short": "Zhang et al.",
+    "journal": "Nat Rev Clin Oncol",
+    "year": 2026,
+    "doi": "10.1038/s41571-026-01131-4",
+    "pmcid": "PMC7618895",
+    "raw_file": "raw/papers/41731061.md",
+    "fetched_date": "2026-05-02"
+  },
+  "41980102": {
+    "title": "A plasma-based DNA test for quantification of disease burden in AML patients undergoing bone marrow transplantation.",
+    "authors_short": "Wang et al.",
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2026,
+    "doi": "10.1073/pnas.2537987123",
+    "pmcid": "PMC13099560",
+    "raw_file": "raw/papers/41980102.md",
+    "fetched_date": "2026-05-02"
+  },
+  "41790338": {
+    "title": "Clinical development of molecular residual disease (MRD) and multi-cancer early detection (MCED) using liquid biopsy multiomics with artificial intelligence (AI).",
+    "authors_short": "Shibuki et al.",
+    "journal": "Int J Clin Oncol",
+    "year": 2026,
+    "doi": "10.1007/s10147-026-03001-6",
+    "pmcid": "PMC13102821",
+    "raw_file": "raw/papers/41790338.md",
+    "fetched_date": "2026-05-02"
+  },
+  "41720942": {
+    "title": "Evolving roles of liquid biopsy in precision medicine for colorectal cancer: from single-gene analysis to broad genomic profiling.",
+    "authors_short": "Martini et al.",
+    "journal": "Nat Rev Clin Oncol",
+    "year": 2026,
+    "doi": "10.1038/s41571-026-01126-1",
+    "pmcid": null,
+    "raw_file": "raw/papers/41720942.md",
+    "fetched_date": "2026-05-02"
   }
 }

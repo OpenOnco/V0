@@ -1,5 +1,15 @@
 [
   {
+    "date": "May 2, 2026",
+    "type": "updated",
+    "testId": "tds-4",
+    "testName": "Guardant360 CDx",
+    "vendor": "Guardant Health",
+    "category": "TDS",
+    "description": "Updated fdaCompanionDxCount from 7 to 8: FDA approved Guardant360 CDx as companion diagnostic for vepdegestrant (Veppanu) in ESR1-mutated ER+/HER2- advanced breast cancer (May 1, 2026, VERITAC-2 Phase 3).",
+    "contributor": "Weekly scan (auto)"
+  },
+  {
     "date": "Apr 8, 2026",
     "type": "updated",
     "testId": "ecd-6",
