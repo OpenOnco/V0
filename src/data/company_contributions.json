@@ -167,6 +167,7 @@
   "mrd-19": {
     "name": "Christine Hanley",
     "company": "Adaptive Biotechnologies",
+    "date": "2026-04-02",
     "verifiedDate": "2026-04-02",
     "note": "Full vendor validation with 6 edits: numPublications (>250), clinicalTrials (190+ trials, 51K+ patients), variantsTracked, bloodVolume, fdaStatus, reimbursement"
   },
