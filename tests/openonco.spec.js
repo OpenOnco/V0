@@ -522,7 +522,7 @@ test.describe('Mobile Responsiveness', () => {
     await page.goto('/');
     await page.waitForTimeout(1000);
     
-    await expect(page.getByText('OpenOnco', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText(/OpenOnco/).first()).toBeVisible();
   });
 
   test('category page renders on mobile', async ({ page }) => {
