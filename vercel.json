@@ -398,15 +398,7 @@
       "destination": "/"
     },
     {
-      "source": "/demo",
-      "destination": "https://23andme-mced-demo.vercel.app"
-    },
-    {
-      "source": "/demo/:path*",
-      "destination": "https://23andme-mced-demo.vercel.app/:path*"
-    },
-    {
-      "source": "/((?!api|news|_next|static|favicon|@|node_modules|demo|.*\\..*).*)",
+      "source": "/((?!api|news|_next|static|favicon|@|node_modules|.*\\..*).*)",
       "destination": "/"
     }
   ],
