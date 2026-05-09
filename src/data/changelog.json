@@ -1,5 +1,35 @@
 [
   {
+    "date": "May 9, 2026",
+    "type": "updated",
+    "testId": "ecd-1",
+    "testName": "Shield",
+    "vendor": "Guardant Health",
+    "category": "ECD",
+    "description": "Updated sampleTubeCount from 4 to 2: FDA approved reduced blood draw requirement (Q1 2026).",
+    "contributor": "Weekly scan (auto)"
+  },
+  {
+    "date": "May 9, 2026",
+    "type": "updated",
+    "testId": "ecd-10",
+    "testName": "Shield MCD",
+    "vendor": "Guardant Health",
+    "category": "ECD",
+    "description": "Added Nancy Gardner Sewell MCED Act (signed Feb 3, 2026) to reimbursementNote — creates Medicare coverage pathway for FDA-approved MCED tests starting 2028.",
+    "contributor": "Weekly scan (auto)"
+  },
+  {
+    "date": "May 9, 2026",
+    "type": "updated",
+    "testId": "ecd-22",
+    "testName": "Cancerguard",
+    "vendor": "Abbott (Exact Sciences)",
+    "category": "ECD",
+    "description": "Added Nancy Gardner Sewell MCED Act (signed Feb 3, 2026) to reimbursementNote — creates Medicare coverage pathway for FDA-approved MCED tests starting 2028.",
+    "contributor": "Weekly scan (auto)"
+  },
+  {
     "date": "May 2, 2026",
     "type": "updated",
     "testId": "tds-4",
