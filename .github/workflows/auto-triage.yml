@@ -60,6 +60,12 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
           BATCH_SIZE: '5'
 
+      - name: Verify pipeline state (post-condition gate)
+        # Always run, even on dry runs, so we catch drift before any push.
+        # Fails the workflow if sources.json, raw/papers, and claims are
+        # inconsistent — preventing optimistic summaries on broken runs.
+        run: node evidence/scripts/verify-pipeline-state.js
+
       - name: Run smoke tests
         if: steps.orchestrator.outputs.changes_made == 'true'
         run: |
@@ -83,7 +89,15 @@ jobs:
           EOF
           )"
           git push origin "$BRANCH_NAME"
+          # Read the REAL commit hash from git after the push, never from an LLM.
+          PUSHED_SHA=$(node evidence/scripts/git-state.js --short)
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "pushed_sha=$PUSHED_SHA" >> $GITHUB_OUTPUT
+          # Hard post-condition: HEAD must match upstream (push actually landed)
+          # AND any sources.json adds must have on-disk paper counterparts.
+          node evidence/scripts/verify-pipeline-state.js \
+            --expected-head "$PUSHED_SHA" \
+            --require-clean-push
         id: create_branch
 
       - name: Create Pull Request
@@ -110,6 +124,12 @@ jobs:
           echo "## Auto-Triage Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.orchestrator.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+          # Append ground-truth git state so the summary is anchored to reality,
+          # not LLM narration. If pushed_sha is empty no commit was made.
+          if [ -n "${{ steps.create_branch.outputs.pushed_sha }}" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Pushed HEAD (verified): \`${{ steps.create_branch.outputs.pushed_sha }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
           if [ -n "${{ steps.create_pr.outputs.pr_url }}" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "PR: ${{ steps.create_pr.outputs.pr_url }}" >> $GITHUB_STEP_SUMMARY
