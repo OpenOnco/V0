@@ -92,3 +92,835 @@
     },
     "sampleCollectionNotes": "FDA approved reduction from 4 to 2 tubes (Q1 2026)."
   },
+  {
+    "id": "ecd-2",
+    "sampleCategory": "Blood/Plasma",
+    "sampleVolumeMl": 20,
+    "sampleTubeType": "Streck cfDNA BCT",
+    "sampleTubeCount": 2,
+    "sampleCitations": "https://www.galleri.com/patient/faqs | https://grail.com/wp-content/uploads/2022/05/GRAIL-OUS-4-tube-Standard-Kit-Specimen-Collection-Instructions.pdf",
+    "name": "Galleri",
+    "vendor": "GRAIL",
+    "testScope": "Multi-cancer (MCED)",
+    "approach": "Blood-based cfDNA methylation MCED (plasma)",
+    "method": "Tumor-naïve cfDNA methylation profiling with targeted NGS + machine-learning classifier; predicts cancer signal and tissue of origin (CSO)",
+    "cancerTypes": [
+      "50+ cancer types including colorectal, lung, pancreas, ovary, liver, head & neck, lymphoma, esophagus, stomach, bile duct, etc."
+    ],
+    "detectedCancerTypes": [
+      "Anus",
+      "Bladder",
+      "Breast",
+      "Cervix",
+      "Colon/Rectum",
+      "Esophagus",
+      "Gallbladder",
+      "Gastric",
+      "Head and Neck",
+      "Kidney",
+      "Leukemia",
+      "Liver",
+      "Lung",
+      "Lymphoma",
+      "Melanoma",
+      "Multiple Myeloma",
+      "Ovary",
+      "Pancreas",
+      "Prostate",
+      "Sarcoma",
+      "Thyroid",
+      "Uterus"
+    ],
+    "targetPopulation": "Asymptomatic adults ≥50 years as adjunct to standard single-cancer screening",
+    "indicationGroup": "MCED",
+    "sensitivity": 51.5,
+    "sensitivityCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/",
+    "sensitivityType": "observed (case-control)",
+    "incidenceAdjustedSensitivity": 48.1,
+    "incidenceAdjustedSensitivityNotes": "Calculated IAS: CCGA-3 cancer-type-specific observed sensitivities (Table S5) weighted by SEER 2021 incidence proportions across 21 cancer types. Lower than observed sensitivity (51.5%) because high-incidence cancers (breast 30.5%, prostate 11.2%) have low detection rates. See scripts/calculate-ias.js for full methodology. Note: IAS values are not directly comparable across tests with different specificities. Galleri operates at 99.5% specificity.",
+    "incidenceAdjustedSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34176681/ | https://seer.cancer.gov/statfacts/",
+    "cancerTypeSensitivity": [
+      {
+        "cancerType": "Anus",
+        "stageI": {
+          "detected": 1,
+          "total": 4
+        },
+        "stageII": {
+          "detected": 3,
+          "total": 4
+        },
+        "stageIII": {
+          "detected": 13,
+          "total": 13
+        },
+        "stageIV": {
+          "detected": 1,
+          "total": 1
+        },
+        "overall": {
+          "detected": 18,
+          "total": 22
+        }
+      },
+      {
+        "cancerType": "Bladder",
+        "stageI": {
+          "detected": 2,
+          "total": 6
+        },
+        "stageII": {
+          "detected": 1,
+          "total": 11
+        },
+        "stageIII": {
+          "detected": 3,
+          "total": 4
+        },
+        "stageIV": {
+          "detected": 2,
+          "total": 2
+        },
+        "overall": {
+          "detected": 8,
+          "total": 23
+        }
+      },
+      {
+        "cancerType": "Breast",
+        "stageI": {
+          "detected": 7,
+          "total": 265
+        },
+        "stageII": {
+          "detected": 86,
+          "total": 181
+        },
+        "stageIII": {
+          "detected": 47,
+          "total": 55
+        },
+        "stageIV": {
+          "detected": 20,
+          "total": 22
+        },
+        "overall": {
+          "detected": 160,
+          "total": 524
+        }
+      },
+      {
+        "cancerType": "Cervix",
+        "stageI": {
+          "detected": 7,
+          "total": 12
+        },
+        "stageII": {
+          "detected": 5,
+          "total": 5
+        },
+        "stageIII": {
+          "detected": 7,
+          "total": 7
+        },
+        "stageIV": {
+          "detected": 1,
+          "total": 1
+        },
+        "overall": {
+          "detected": 20,
+          "total": 25
+        }
+      },
+      {
+        "cancerType": "Colon/Rectum",
+        "stageI": {
+          "detected": 13,
+          "total": 30
+        },
+        "stageII": {
+          "detected": 34,
+          "total": 40
+        },
+        "stageIII": {
+          "detected": 58,
+          "total": 66
+        },
+        "stageIV": {
+          "detected": 61,
+          "total": 64
+        },
+        "overall": {
+          "detected": 169,
+          "total": 206
+        }
+      },
+      {
+        "cancerType": "Esophagus",
+        "stageI": {
+          "detected": 1,
+          "total": 8
+        },
+        "stageII": {
+          "detected": 11,
+          "total": 17
+        },
+        "stageIII": {
+          "detected": 32,
+          "total": 34
+        },
+        "stageIV": {
+          "detected": 40,
+          "total": 40
+        },
+        "overall": {
+          "detected": 85,
+          "total": 100
+        }
+      },
+      {
+        "cancerType": "Gallbladder",
+        "stageI": {
+          "detected": 0,
+          "total": 2
+        },
+        "stageII": {
+          "detected": 1,
+          "total": 3
+        },
+        "stageIII": {
+          "detected": 3,
+          "total": 4
+        },
+        "stageIV": {
+          "detected": 8,
+          "total": 8
+        },
+        "overall": {
+          "detected": 12,
+          "total": 17
+        }
+      },
+      {
+        "cancerType": "Head and Neck",
+        "stageI": {
+          "detected": 12,
+          "total": 19
+        },
+        "stageII": {
+          "detected": 14,
+          "total": 17
+        },
+        "stageIII": {
+          "detected": 16,
+          "total": 19
+        },
+        "stageIV": {
+          "detected": 48,
+          "total": 50
+        },
+        "overall": {
+          "detected": 90,
+          "total": 105
+        }
+      },
+      {
+        "cancerType": "Kidney",
+        "stageI": {
+          "detected": 3,
+          "total": 61
+        },
+        "stageII": {
+          "detected": 2,
+          "total": 9
+        },
+        "stageIII": {
+          "detected": 1,
+          "total": 7
+        },
+        "stageIV": {
+          "detected": 12,
+          "total": 22
+        },
+        "overall": {
+          "detected": 18,
+          "total": 99
+        }
+      },
+      {
+        "cancerType": "Liver/Bile-duct",
+        "stageI": {
+          "detected": 6,
+          "total": 6
+        },
+        "stageII": {
+          "detected": 7,
+          "total": 10
+        },
+        "stageIII": {
+          "detected": 9,
+          "total": 9
+        },
+        "stageIV": {
+          "detected": 20,
+          "total": 20
+        },
+        "overall": {
+          "detected": 43,
+          "total": 46
+        }
+      },
+      {
+        "cancerType": "Lung",
+        "stageI": {
+          "detected": 21,
+          "total": 96
+        },
+        "stageII": {
+          "detected": 35,
+          "total": 44
+        },
+        "stageIII": {
+          "detected": 107,
+          "total": 118
+        },
+        "stageIV": {
+          "detected": 138,
+          "total": 145
+        },
+        "overall": {
+          "detected": 302,
+          "total": 404
+        }
+      },
+      {
+        "cancerType": "Lymphoma",
+        "stageI": {
+          "detected": 9,
+          "total": 33
+        },
+        "stageII": {
+          "detected": 28,
+          "total": 48
+        },
+        "stageIII": {
+          "detected": 33,
+          "total": 46
+        },
+        "stageIV": {
+          "detected": 28,
+          "total": 46
+        },
+        "overall": {
+          "detected": 98,
+          "total": 174
+        }
+      },
+      {
+        "cancerType": "Lymphoid Leukemia",
+        "overall": {
+          "detected": 21,
+          "total": 51
+        }
+      },
+      {
+        "cancerType": "Melanoma",
+        "stageI": {
+          "detected": 0,
+          "total": 2
+        },
+        "stageII": {
+          "detected": 0,
+          "total": 2
+        },
+        "stageIII": {
+          "detected": 0,
+          "total": 3
+        },
+        "stageIV": {
+          "detected": 6,
+          "total": 6
+        },
+        "overall": {
+          "detected": 6,
+          "total": 13
+        }
+      },
+      {
+        "cancerType": "Myeloid Neoplasm",
+        "overall": {
+          "detected": 2,
+          "total": 10
+        }
+      },
+      {
+        "cancerType": "Ovary",
+        "stageI": {
+          "detected": 5,
+          "total": 10
+        },
+        "stageII": {
+          "detected": 4,
+          "total": 5
+        },
+        "stageIII": {
+          "detected": 27,
+          "total": 31
+        },
+        "stageIV": {
+          "detected": 18,
+          "total": 19
+        },
+        "overall": {
+          "detected": 54,
+          "total": 65
+        }
+      },
+      {
+        "cancerType": "Pancreas",
+        "stageI": {
+          "detected": 13,
+          "total": 21
+        },
+        "stageII": {
+          "detected": 12,
+          "total": 20
+        },
+        "stageIII": {
+          "detected": 18,
+          "total": 21
+        },
+        "stageIV": {
+          "detected": 70,
+          "total": 73
+        },
+        "overall": {
+          "detected": 113,
+          "total": 135
+        }
+      },
+      {
+        "cancerType": "Plasma Cell Neoplasm",
+        "stageI": {
+          "detected": 11,
+          "total": 17
+        },
+        "stageII": {
+          "detected": 14,
+          "total": 16
+        },
+        "stageIII": {
+          "detected": 9,
+          "total": 14
+        },
+        "overall": {
+          "detected": 34,
+          "total": 47
+        }
+      },
+      {
+        "cancerType": "Prostate",
+        "stageI": {
+          "detected": 3,
+          "total": 95
+        },
+        "stageII": {
+          "detected": 12,
+          "total": 243
+        },
+        "stageIII": {
+          "detected": 7,
+          "total": 50
+        },
+        "stageIV": {
+          "detected": 25,
+          "total": 30
+        },
+        "overall": {
+          "detected": 47,
+          "total": 420
+        }
+      },
+      {
+        "cancerType": "Sarcoma",
+        "stageI": {
+          "detected": 4,
+          "total": 10
+        },
+        "stageII": {
+          "detected": 2,
+          "total": 2
+        },
+        "stageIII": {
+          "detected": 5,
+          "total": 10
+        },
+        "stageIV": {
+          "detected": 6,
+          "total": 7
+        },
+        "overall": {
+          "detected": 18,
+          "total": 30
+        }
+      },
+      {
+        "cancerType": "Stomach",
+        "stageI": {
+          "detected": 1,
+          "total": 6
+        },
+        "stageII": {
+          "detected": 3,
+          "total": 6
+        },
+        "stageIII": {
+          "detected": 4,
+          "total": 5
+        },
+        "stageIV": {
+          "detected": 12,
+          "total": 12
+        },
+        "overall": {
+          "detected": 20,
+          "total": 30
+        }
+      },
+      {
+        "cancerType": "Thyroid",
+        "stageI": {
+          "detected": 0,
+          "total": 11
+        },
+        "stageII": {
+          "detected": 0,
+          "total": 1
+        },
+        "stageIII": {
+          "detected": 0,
+          "total": 1
+        },
+        "stageIV": {
+          "detected": 0,
+          "total": 1
+        },
+        "overall": {
+          "detected": 0,
+          "total": 14
+        }
+      },
+      {
+        "cancerType": "Uterus",
+        "stageI": {
+          "detected": 20,
+          "total": 120
+        },
+        "stageII": {
+          "detected": 3,
+          "total": 10
+        },
+        "stageIII": {
+          "detected": 17,
+          "total": 23
+        },
+        "stageIV": {
+          "detected": 4,
+          "total": 4
+        },
+        "overall": {
+          "detected": 44,
+          "total": 157
+        }
+      }
+    ],
+    "cancerTypeSensitivityCitations": "Klein EA et al. Ann Oncol. 2021;32(9):1167-1177. CCGA3 Table S5.",
+    "perCancerEarlyStageSensitivity": {
+      "Liver": {
+        "pct": 85,
+        "n": 16
+      },
+      "Ovary": {
+        "pct": 65,
+        "n": 15
+      },
+      "Pancreas": {
+        "pct": 61,
+        "n": 41
+      },
+      "Head and Neck": {
+        "pct": 56,
+        "n": 36
+      },
+      "Multiple Myeloma": {
+        "pct": 55,
+        "n": 33
+      },
+      "Lymphoma": {
+        "pct": 40,
+        "n": 81
+      },
+      "Esophagus": {
+        "pct": 38.5,
+        "n": 25
+      },
+      "Gastric": {
+        "pct": 35,
+        "n": 12
+      },
+      "Colon/Rectum": {
+        "pct": 33,
+        "n": 70
+      },
+      "Cervix": {
+        "pct": 30,
+        "n": 17
+      },
+      "Sarcoma": {
+        "pct": 28,
+        "n": 12
+      },
+      "Lung": {
+        "pct": 24,
+        "n": 140
+      },
+      "Endometrial": {
+        "pct": 18,
+        "n": 130
+      },
+      "Bladder": {
+        "pct": 15,
+        "n": 17
+      },
+      "Melanoma": {
+        "pct": 10,
+        "n": 4
+      },
+      "Breast": {
+        "pct": 8.5,
+        "n": 446
+      },
+      "Kidney": {
+        "pct": 8,
+        "n": 70
+      },
+      "Thyroid": {
+        "pct": 5,
+        "n": 12
+      },
+      "Prostate": {
+        "pct": 4.2,
+        "n": 338
+      }
+    },
+    "perCancerEarlyStageSensitivitySource": "CCGA3 Stage I-II (Klein et al., Annals of Oncology, 2021)",
+    "stageISensitivity": 16.8,
+    "stageISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34176681/ | https://www.annalsofoncology.org/article/s0923-7534(21)02046-9/fulltext",
+    "stageIISensitivity": 40.4,
+    "stageIISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34176681/ | https://www.annalsofoncology.org/article/s0923-7534(21)02046-9/fulltext",
+    "stageIIISensitivity": 77,
+    "stageIIISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34176681/ | https://www.annalsofoncology.org/article/s0923-7534(21)02046-9/fulltext",
+    "stageIVSensitivity": 90.1,
+    "stageIVSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/34176681/ | https://www.annalsofoncology.org/article/s0923-7534(21)02046-9/fulltext",
+    "specificity": 99.5,
+    "specificityCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/",
+    "specificityNotes": "99.5% specificity (0.5% false positive rate). In a screening population of 100,000 with ~1% cancer prevalence, expect ~495 false positives. Lower false positive rate than most MCED competitors.",
+    "ppv": 61.6,
+    "ppvCitations": "https://www.galleri.com/hcp/galleri-test-performance",
+    "ppvDefinition": "PPV for any cancer among participants with Cancer Signal Detected",
+    "npv": 99.1,
+    "npvCitations": "https://www.galleri.com/hcp/galleri-test-performance",
+    "npvDefinition": "NPV for remaining cancer-free after No Cancer Signal Detected (12-month follow-up)",
+    "tumorOriginAccuracy": 93,
+    "tumorOriginAccuracyNotes": "Cancer Signal Origin (CSO) prediction accuracy: 93% top-1 prediction, 97% top-2 predictions in CCGA validation studies",
+    "performanceCitations": "https://www.galleri.com/hcp/galleri-test-performance | https://pmc.ncbi.nlm.nih.gov/articles/PMC11024170/ | https://grail.com/press-releases/final-results-from-pathfinder-study-of-grails-multi-cancer-early-detection-blood-test-published-in-the-lancet/ | PATHFINDER-2 ESMO 2025",
+    "performanceNotes": "Overall cancer signal sensitivity ~51.5% with stage-specific sensitivity rising from ~17% at stage I to ~90% at stage IV; specificity ~99.5-99.6%. PATHFINDER-2 (Oct 2025, n=23,000+): Galleri detected cancers ~7× more often than USPSTF A/B standard screening; ~62% of positive tests (Cancer Signal Detected) confirmed as cancer in follow-up, substantially higher PPV than earlier versions. >50% of Galleri-detected cancers were early-stage; ~75% of Galleri-detected cancers were types without recommended standard screenings. NHS-Galleri (Feb 2026, n=142,000): Annual Galleri screening achieved 4× overall cancer detection rate vs standard of care alone with substantial reduction in stage IV diagnoses and increased stage I-II detection for 12 deadly cancer types. However, primary endpoint (statistically significant reduction in stage III-IV diagnoses) was NOT met. Stage IV diagnoses in the 12 prespecified deadly cancers decreased with each year of sequential screening, with >20% reduction in the second and third screening rounds. Fewer cancers detected via emergency presentation.",
+    "leadTimeNotes": "PATHFINDER and PATHFINDER 2 show ~7-fold increase in cancers detected when added to USPSTF A/B screening; median diagnostic resolution ~1.5 months",
+    "fdaStatus": "LDT performed in CLIA-certified CAP-accredited lab; Breakthrough Device designation; PMA submission filed January 29, 2026 for multi-cancer early detection indication",
+    "fdaStatusNotes": "GRAIL submitted premarket approval (PMA) application to FDA on January 29, 2026. This is a major regulatory milestone for the MCED category.",
+    "reimbursement": "Coverage Varies",
+    "reimbursementNote": "Generally self-pay; most insurers and Medicare do not cover MCED as of 2025; TRICARE covers for ≥50 with elevated risk. REACH study: Medicare covers Galleri test and related workup for enrolled REACH participants (coverage of research, not general NCD).",
+    "commercialPayersNotes": "Limited commercial coverage. Curative Insurance and Fountain Health offer $0 copay coverage. Alignment Health Plan (Medicare Advantage) covers in select CA/NC plans. Government programs: TRICARE covers with prior authorization for eligible beneficiaries ≥50. Most major commercial insurers consider investigational. EviCore (MOL.TS.396.A): ctDNA assays not covered for screening outside clinical trials; liquid biopsy for early cancer detection considered experimental/investigational.",
+    "reimbursementCitations": "https://grail.com/press-releases/grail-announces-first-participant-enrolled-in-reach-study-evaluating-clinical-impact-of-galleri-multi-cancer-early-detection-mced-test-in-the-medicare-population/",
+    "commercialPayers": [
+      "Curative Insurance",
+      "Fountain Health",
+      "Alignment Health Plan"
+    ],
+    "commercialPayersCitations": "https://grail.com/press-releases/curative-insurance-company-adds-grails-galleri-test-to-member-benefits-for-multi-cancer-early-detection/",
+    "availableRegions": [
+      "US",
+      "UK"
+    ],
+    "clinicalAvailability": "Commercially available in US and some international markets as CLIA test since June 2021. Also available via Hims & Hers telehealth platform (Feb 2026, $699 for Labs plan subscribers). Available through Superpower preventative health platform (April 2026). Epic EHR integration announced for broad availability by end of 2026.",
+    "tat": "10-14 business days (up to 4 weeks during high volume)",
+    "tatCitations": "https://www.galleri.com/lab-info | https://www.galleri.com/patient/faqs",
+    "tatNotes": "Typically about 2 weeks from sample receipt; occasionally up to 4 weeks during high volume periods.",
+    "sampleType": "Whole blood in Streck cfDNA BCT tubes",
+    "sampleVolume": "2 tubes",
+    "sampleStability": "7 days at ambient temperature (1-40°C); do not refrigerate/freeze",
+    "cptCode": "Proprietary",
+    "listPrice": 949,
+    "listPriceCitations": "https://www.galleri.com/hcp/faqs",
+    "screeningInterval": "Annual recommended",
+    "clinicalTrials": "NCT05611632 NHS-Galleri randomized screening trial (~140000); NCT05155605 PATHFINDER 2 safety/performance study (~23000+, results Oct 2025); NCT03934866 SUMMIT high-risk lung cohort (13035); REACH study (Medicare coverage of research)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866 | https://grail.com/press-releases/grail-pathfinder-2-results-show-galleri-multi-cancer-early-detection-blood-test-increased-cancer-detection-more-than-seven-fold-when-added-to-uspstf-a-and-b-recommended-screenings/",
+    "totalParticipants": 188535,
+    "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
+    "numPublications": 20,
+    "numPublicationsPlus": true,
+    "financialAssistance": "Billing support available. Contact: (833) 694-2553",
+    "medicareCoverage": {
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": "$949 (self-pay)",
+      "cptCode": null,
+      "notes": "NOT covered by Medicare. REACH study (IDE) provides coverage for 50,000 study participants only. Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 — creates Medicare coverage pathway for FDA-approved MCED tests starting no earlier than Jan 2028. Coverage contingent on FDA PMA approval (submitted Jan 29, 2026) and CMS appropriateness determination.",
+      "lastVerified": "2026-01-13"
+    },
+    "coverageCrossReference": {
+      "lastVerified": "2026-02-02",
+      "privatePayers": {
+        "evicore": {
+          "status": "NOT_COVERED",
+          "policy": "MOL.TS.396.A",
+          "policyUrl": "https://www.evicore.com/sites/default/files/clinical-guidelines/2025-12/MOL.TS_.396.A_Multi-Cancer%20Early%20Detection%20Screening_V1.0.2026_Eff01.01.2026_Pub09.26.2025_Upd12.08.2025_0.pdf",
+          "coveredIndications": [],
+          "notes": "Multi-Cancer Early Detection Screening considered experimental/investigational. ctDNA assays not covered for cancer screening outside clinical trials. Insufficient evidence of clinical validity and utility.",
+          "lastReviewed": "2026-02-01"
+        },
+        "highmark": {
+          "status": "NOT_COVERED",
+          "policy": "L-123-006",
+          "policyUrl": "https://secure.highmark.com/ldap/medicalpolicy/wpa-highmark/L-123-006.html",
+          "coveredIndications": [],
+          "notes": "All liquid biopsy testing for solid tumors considered experimental/investigational. Policy acknowledges analytical validity but notes clinical utility data still emerging.",
+          "lastReviewed": "2026-02-01"
+        },
+        "aetna": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "ctDNA/liquid biopsy screening tests considered experimental/investigational",
+          "lastReviewed": "2026-02-05"
+        },
+        "united": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "MCED/screening tests listed as unproven and not medically necessary",
+          "lastReviewed": "2026-02-05"
+        },
+        "kaiser": {
+          "status": "PARTIAL",
+          "coveredIndications": [
+            "Tests meeting Medicare MolDX program criteria with FDA approval"
+          ],
+          "notes": "Must meet Medicare MolDX program criteria. FDA approval required for covered tests.",
+          "lastReviewed": "2026-02-05"
+        },
+        "blueCrossNC": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "NSCLC patients when tissue-based testing infeasible only. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
+        },
+        "regence": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Advanced/metastatic cancers only. Tissue-based testing must not be performable. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
+        },
+        "bcbsMichigan": {
+          "status": "NOT_COVERED",
+          "coveredIndications": [],
+          "notes": "Advanced solid cancers (metastatic, inoperable, refractory, recurrent, stages III-IV) only. MCED screening not covered.",
+          "lastReviewed": "2026-02-05"
+        }
+      },
+      "analysis": {
+        "vendorClaimAccuracy": "Accurate - GRAIL acknowledges limited coverage",
+        "patientGuidance": "Self-pay ($949) or employer-sponsored programs. REACH study provides Medicare coverage for enrolled participants only. Most commercial insurers consider MCED investigational. Kaiser requires MolDX criteria and FDA approval.",
+        "keyInsight": "FDA PMA under review (submitted Jan 29, 2026). Nancy Gardner Sewell MCED Act signed into law Feb 3, 2026 — establishes Medicare benefit category for MCED tests starting Jan 2028, contingent on FDA approval and CMS determination."
+      }
+    }
+  },
+  {
+    "id": "ecd-3",
+    "sampleCategory": "Stool",
+    "name": "Cologuard Plus",
+    "vendor": "Abbott (Exact Sciences)",
+    "testScope": "Single-cancer (CRC)",
+    "approach": "Stool-based multitarget DNA test",
+    "method": "Multitarget stool DNA assay with 5 novel methylation markers + hemoglobin immunoassay; streamlined from original 11 markers",
+    "cancerTypes": [
+      "Colorectal cancer; Advanced precancerous lesions (APL); High-grade dysplasia"
+    ],
+    "targetPopulation": "Average-risk adults 45-75 years for CRC screening at home",
+    "indicationGroup": "CRC",
+    "sensitivity": 93.9,
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992 | https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
+    "advancedAdenomaSensitivity": 43.4,
+    "advancedAdenomaSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "advancedAdenomaSensitivityNotes": "43% sensitivity for advanced precancerous lesions (APL) including advanced adenomas and sessile serrated lesions ≥1cm; significantly outperforms FIT (23% for APL).",
+    "stageISensitivity": 87,
+    "stageISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "stageIISensitivity": 94,
+    "stageIISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "stageIIISensitivity": 97,
+    "stageIIISensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "stageIVSensitivity": 100,
+    "stageIVSensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "specificity": 91,
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992 | https://investor.exactsciences.com/investor-relations/press-releases/press-release-details/2024/FDA-Approves-Exact-Sciences-Cologuard-Plus-Test-Setting-a-New-Benchmark-in-Non-Invasive-Colorectal-Cancer-Screening/default.aspx",
+    "ppv": 3.2,
+    "ppvCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "ppvDefinition": "PPV for colorectal cancer (CRC) in BLUE-C average-risk screening population",
+    "npv": 99.98,
+    "npvCitations": "https://pubmed.ncbi.nlm.nih.gov/38477992/",
+    "npvDefinition": "NPV for absence of CRC in BLUE-C average-risk screening population",
+    "performanceCitations": "BLUE-C pivotal trial NEJM 2024 (n=20000+); DeeP-C studies; FDA PMA labeling 2024",
+    "performanceNotes": "Pivotal BLUE-C trial: 94% sensitivity for CRC and 43% for APL; significantly outperforms FIT (94% vs 67% for CRC; 43% vs 23% for APL). FDA-approved label (Oct 2024) and March 2025 launch materials emphasize **95% CRC sensitivity at 94% specificity** in the U.S. screening population, with ~40% fewer false positives vs original Cologuard.",
+    "leadTimeNotes": "Non-invasive alternative to colonoscopy; 30% lower false positive rate vs original Cologuard; significantly improved adherence vs colonoscopy",
+    "fdaStatus": "FDA-approved PMA October 4 2024",
+    "reimbursement": "Medicare",
+    "reimbursementNote": "Medicare coverage; $0 out-of-pocket for eligible; broad commercial payer coverage",
+    "commercialPayers": [
+      "Humana"
+    ],
+    "commercialPayersCitations": "https://www.cologuard.com/insurance",
+    "commercialPayersNotes": "Cologuard Plus confirmed coverage: Medicare Part B and Humana Medicare Advantage. Government programs: TRICARE expected based on legacy Cologuard coverage. Other major commercial payers (UnitedHealthcare, Aetna, Cigna, Anthem BCBS) anticipated to extend legacy Cologuard coverage to Plus but should be validated per plan.",
+    "clinicalAvailability": "Commercially launched late March 2025 via ExactNexus (350+ health systems)",
+    "tat": "3-5 days from receipt",
+    "sampleType": "At-home stool collection with enhanced preservatives",
+    "sampleVolume": "Stool sample",
+    "sampleStability": "Extended return window vs original",
+    "cptCode": "0464U",
+    "medicareRate": 591.92,
+    "medicareStatus": "Priced",
+    "medicareEffective": "2025-Q4",
+    "adltStatus": true,
+    "listPrice": 790,
+    "screeningInterval": "Every 3 years",
+    "clinicalTrials": "NCT04144738 BLUE-C pivotal Cologuard Plus CRC screening trial (26758)",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT04144738",
+    "totalParticipants": 26758,
+    "numPublications": 2,
+    "numPublicationsPlus": true,
+    "nccnNamedInGuidelines": true,
+    "nccnGuidelineReference": "NCCN Colorectal Cancer Screening Guidelines",
+    "nccnGuidelinesNotes": "Multitarget stool DNA (mt-sDNA) testing is standard of care inclusion in NCCN CRC Screening guidelines. Cologuard Plus is the FDA-approved mt-sDNA test from Exact Sciences.",
+    "nccnGuidelinesCitations": "https://www.nccn.org/guidelines/guidelines-detail?category=2&id=1429",
+    "medicareCoverage": {
+      "status": "UNKNOWN",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Need to verify coverage - different from original Cologuard",
+      "lastVerified": "2026-01-13"
+    }
+  }
