@@ -278,5 +278,195 @@
     "pmcid": null,
     "raw_file": "raw/papers/41720942.md",
     "fetched_date": "2026-05-02"
+  },
+  "42090629": {
+    "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+    "authors_short": "Lei et al.",
+    "journal": "JCO Precis Oncol",
+    "year": 2026,
+    "doi": "10.1200/PO-25-00977",
+    "pmcid": null,
+    "raw_file": "raw/papers/42090629.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42086163": {
+    "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+    "authors_short": "Liu et al.",
+    "journal": "J Thorac Cardiovasc Surg",
+    "year": 2026,
+    "doi": "10.1016/j.jtcvs.2026.04.014",
+    "pmcid": null,
+    "raw_file": "raw/papers/42086163.md",
+    "fetched_date": "2026-05-09"
+  },
+  "41817436": {
+    "title": "More Questions Than Answers in Trial of GRAIL's Galleri.",
+    "authors_short": "Cancer Discovery News",
+    "journal": "Cancer Discov",
+    "year": 2026,
+    "doi": "10.1158/2159-8290.CD-NW2026-0025",
+    "pmcid": null,
+    "raw_file": "raw/papers/41817436.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42066685": {
+    "title": "Impact of treatment discontinuation among patients with MSI/dMMR mCRC treated with ICIs.",
+    "authors_short": "Ros et al.",
+    "journal": "ESMO Open",
+    "year": 2026,
+    "doi": "10.1016/j.esmoop.2026.107694",
+    "pmcid": "PMC13145382",
+    "raw_file": "raw/papers/42066685.md",
+    "fetched_date": "2026-05-09"
+  },
+  "41443411": {
+    "title": "Cetuximab rechallenge in molecularly selected mCRC: the randomized CAVE-2 GOIM trial.",
+    "authors_short": "Ciardiello et al.",
+    "journal": "Ann Oncol",
+    "year": 2025,
+    "doi": "10.1016/j.annonc.2025.12.014",
+    "pmcid": null,
+    "raw_file": "raw/papers/41443411.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42069955": {
+    "title": "Plasmonic microarray-based liquid biopsy for KRAS codon mutation detection in early CRC.",
+    "authors_short": "Lee et al.",
+    "journal": "NPJ Precis Oncol",
+    "year": 2026,
+    "doi": "10.1038/s41698-026-01452-8",
+    "pmcid": null,
+    "raw_file": "raw/papers/42069955.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42092284": {
+    "title": "Multimodal liquid biopsy surveillance after pancreatectomy for PDAC.",
+    "authors_short": "Feng et al.",
+    "journal": "Cancer Treat Res Commun",
+    "year": 2026,
+    "doi": "10.1016/j.ctarc.2026.101226",
+    "pmcid": null,
+    "raw_file": "raw/papers/42092284.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42087549": {
+    "title": "Liquid biopsy for biliary tract cancer: available evidence and future directions.",
+    "authors_short": "Erul et al.",
+    "journal": "Expert Rev Mol Diagn",
+    "year": 2026,
+    "doi": "10.1080/14737159.2026.2670701",
+    "pmcid": null,
+    "raw_file": "raw/papers/42087549.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42095156": {
+    "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy in advanced NSCLC.",
+    "authors_short": "Ranghiero et al.",
+    "journal": "J Liq Biopsy",
+    "year": 2026,
+    "doi": "10.1016/j.jlb.2026.100470",
+    "pmcid": "PMC13141799",
+    "raw_file": "raw/papers/42095156.md",
+    "fetched_date": "2026-05-09"
+  },
+  "41789684": {
+    "title": "Circulating tumor DNA in HPV-negative head and neck squamous cell carcinoma.",
+    "authors_short": "Galot et al.",
+    "journal": "Curr Opin Oncol",
+    "year": 2026,
+    "doi": "10.1097/CCO.0000000000001210",
+    "pmcid": null,
+    "raw_file": "raw/papers/41789684.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42036772": {
+    "title": "Minimal Residual Disease as a Biological Trait: Rethinking Disease Persistence in Hematologic Malignancies.",
+    "authors_short": "Caserta et al.",
+    "journal": "Eur J Haematol",
+    "year": 2026,
+    "doi": "10.1111/ejh.70203",
+    "pmcid": null,
+    "raw_file": "raw/papers/42036772.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42055889": {
+    "title": "RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+    "authors_short": "Kropf-Sanchen et al.",
+    "journal": "Clin Lung Cancer",
+    "year": 2026,
+    "doi": "10.1016/j.cllc.2026.03.005",
+    "pmcid": null,
+    "raw_file": "raw/papers/42055889.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42067191": {
+    "title": "Accurate detection of cholangiocarcinoma in PSC by DNA methylation biomarkers in bile and plasma.",
+    "authors_short": "Vedeld et al.",
+    "journal": "JHEP Rep",
+    "year": 2026,
+    "doi": "10.1016/j.jhepr.2026.101876",
+    "pmcid": null,
+    "raw_file": "raw/papers/42067191.md",
+    "fetched_date": "2026-05-09"
+  },
+  "41697472": {
+    "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+    "authors_short": "Ryu et al.",
+    "journal": "Ann Surg Oncol",
+    "year": 2026,
+    "doi": "10.1245/s10434-026-19243-7",
+    "pmcid": null,
+    "raw_file": "raw/papers/41697472.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42048620": {
+    "title": "Chemotherapy Declination Among Patients With Early-Stage HR+/HER2- Breast Cancer and High Oncotype DX RS.",
+    "authors_short": "Jackson et al.",
+    "journal": "JCO Oncol Pract",
+    "year": 2026,
+    "doi": "10.1200/OP-25-01106",
+    "pmcid": null,
+    "raw_file": "raw/papers/42048620.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42023873": {
+    "title": "Beyond mutations: epigenetic and fragmentomic landscapes of cfDNA in lung cancer.",
+    "authors_short": "Liu et al.",
+    "journal": "Expert Rev Mol Diagn",
+    "year": 2026,
+    "doi": "10.1080/14737159.2026.2665256",
+    "pmcid": null,
+    "raw_file": "raw/papers/42023873.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42066072": {
+    "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing.",
+    "authors_short": "Wylie et al.",
+    "journal": "Sci Adv",
+    "year": 2026,
+    "doi": "10.1126/sciadv.adu0031",
+    "pmcid": "PMC13134590",
+    "raw_file": "raw/papers/42066072.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42092730": {
+    "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+    "authors_short": "Currie et al.",
+    "journal": "J Mol Diagn",
+    "year": 2026,
+    "doi": "10.1016/j.jmoldx.2026.04.003",
+    "pmcid": null,
+    "raw_file": "raw/papers/42092730.md",
+    "fetched_date": "2026-05-09"
+  },
+  "42054640": {
+    "title": "Liquid Biopsy Biomarkers in Patients With mCRPC Receiving PSMA Radioligand Therapy (LOOPS protocol).",
+    "authors_short": "Michalski et al.",
+    "journal": "JMIR Res Protoc",
+    "year": 2026,
+    "doi": "10.2196/86737",
+    "pmcid": "PMC13128046",
+    "raw_file": "raw/papers/42054640.md",
+    "fetched_date": "2026-05-09"
   }
 }
