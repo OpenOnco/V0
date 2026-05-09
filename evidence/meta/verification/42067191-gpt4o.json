@@ -1,0 +1,296 @@
+[
+  {
+    "id": "1",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Four biomarkers demonstrated perfect discrimination (AUC=1.00) between PSC-associated CCA and PSC alone in tissue samples.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 19,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Perfect discrimination between PSC-associated CCA and PSC alone in tissue samples.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Four biomarkers demonstrated perfect discrimination (AUC=1.00) between PSC-associated CCA (PSC-CCA) and PSC alone in tissue samples."
+  },
+  {
+    "id": "2",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "In bile, all four biomarkers achieved an AUC >0.9 for distinguishing PSC-CCA from PSC alone.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 227,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "High AUC >0.9 for distinguishing PSC-CCA from PSC alone in bile.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In bile, all four biomarkers achieved an AUC >0.9 for distinguishing PSC-CCA (n=20) from PSC alone (n=207)."
+  },
+  {
+    "id": "3",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "A two-biomarker panel (5-42952178 and PRKCB) achieved 95% sensitivity and 90% specificity in bile.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 0.95,
+      "specificity": 0.9,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Two-biomarker panel achieved 95% sensitivity and 90% specificity in bile.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A two-biomarker panel (5-42952178 and PRKCB) achieved 95% sensitivity and 90% specificity."
+  },
+  {
+    "id": "4",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Adding KCNA6 and ZFP82 increased specificity to 97% with sensitivity maintained at 90% in bile.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 0.9,
+      "specificity": 0.97,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Specificity increased to 97% with sensitivity at 90% by adding KCNA6 and ZFP82.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Adding KCNA6 and ZFP82 increased specificity to 97% with sensitivity maintained at 90%."
+  },
+  {
+    "id": "5",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "The two-biomarker bile panel detected all eight CCA cases (100% sensitivity) in samples collected 3-12 months prior to diagnosis.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 8,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 1,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "100% sensitivity in detecting CCA cases 3-12 months before diagnosis.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "The two-biomarker bile panel successfully detected all eight CCA cases (100% sensitivity) in samples collected 3-12 months prior to diagnosis by conventional methods."
+  },
+  {
+    "id": "6",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "In plasma, a two-biomarker panel (KCNA6 and PRKCB) achieved 70% sensitivity and 90% specificity for distinguishing PSC-CCA and PSC alone.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 118,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 0.7,
+      "specificity": 0.9,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "70% sensitivity and 90% specificity in plasma for distinguishing PSC-CCA and PSC alone.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Performance was lower in plasma, where an alternative two-biomarker panel (KCNA6 and PRKCB) achieved 70% sensitivity and 90% specificity for distinguishing PSC-CCA (n=17) and PSC alone (n=101)."
+  }
+]

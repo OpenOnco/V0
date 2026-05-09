@@ -1,0 +1,366 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "10.9% of patients with RS > 25 declined chemotherapy.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 30326,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Among 30,326 patients with RS > 25, 10.9% declined CT."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Higher RS was associated with lower odds of CT declination (aOR, 0.97; 95% CI, 0.96 to 0.97).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": 0.97,
+      "rr": null,
+      "ci_lower": 0.96,
+      "ci_upper": 0.97,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Higher RS was associated with lower odds of CT declination (adjusted odds ratio [aOR], 0.97; 95% CI, 0.96 to 0.97)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Hispanic race was associated with lower odds of CT declination (aOR, 0.83; 95% CI, 0.70 to 0.98).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": 0.83,
+      "rr": null,
+      "ci_lower": 0.7,
+      "ci_upper": 0.98,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A more recent year of diagnosis and Hispanic race (aOR, 0.83; 95% CI, 0.70 to 0.98) were associated with lower odds of CT declination."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Older age and Black race were associated with higher odds of CT declination (aOR, 1.29; 95% CI, 1.15 to 1.45).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": 1.29,
+      "rr": null,
+      "ci_lower": 1.15,
+      "ci_upper": 1.45,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Older age and Black race (aOR, 1.29; 95% CI, 1.15 to 1.45) were associated with higher odds."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients on Medicaid had higher odds of CT declination compared with those on private insurance (aOR, 1.53; 95% CI, 1.31 to 1.79).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": 1.53,
+      "rr": null,
+      "ci_lower": 1.31,
+      "ci_upper": 1.79,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Patients on Medicaid (aOR, 1.53; 95% CI, 1.31 to 1.79) had higher odds of declination compared with those on private insurance."
+  },
+  {
+    "id": "6",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients on Medicare had higher odds of CT declination compared with those on private insurance (aOR, 1.19; 95% CI, 1.05 to 1.34).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": 1.19,
+      "rr": null,
+      "ci_lower": 1.05,
+      "ci_upper": 1.34,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Patients on Medicaid (aOR, 1.53; 95% CI, 1.31 to 1.79) and Medicare (aOR, 1.19; 95% CI, 1.05 to 1.34) had higher odds of declination compared with those on private insurance."
+  },
+  {
+    "id": "7",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "CT declination was associated with an increased risk of death (aHR, 1.43; 95% CI, 1.20 to 1.69).",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 1.43,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.2,
+      "ci_upper": 1.69,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Notably, CT declination was associated with an increased risk of death (aHR, 1.43; 95% CI, 1.20 to 1.69)."
+  }
+]

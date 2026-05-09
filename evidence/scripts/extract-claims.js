@@ -248,7 +248,7 @@ async function main() {
 
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: 8192,
+    max_tokens: 16384,
     messages: [{ role: 'user', content: prompt }],
   });
 

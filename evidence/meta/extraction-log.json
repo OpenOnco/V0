@@ -122,5 +122,349 @@
     "claim_ids": [
       "CRC-N0147-ERRATUM-001"
     ]
+  },
+  {
+    "pmid": "42090629",
+    "cancer_type": "lung",
+    "claims_extracted": 7,
+    "claims_added": 7,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 33.8,
+    "claim_ids": [
+      "LNG-MRD-NSCLC-001",
+      "LNG-MRD-NSCLC-002",
+      "LNG-MRD-NSCLC-003",
+      "LNG-MRD-NSCLC-004",
+      "LNG-MRD-NSCLC-005",
+      "LNG-MRD-NSCLC-006",
+      "LNG-MRD-NSCLC-007"
+    ]
+  },
+  {
+    "pmid": "42086163",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 6,
+    "claims_added": 6,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 40,
+    "claim_ids": [
+      "XCN-PRESIDIO-ESCC-001",
+      "XCN-PRESIDIO-ESCC-002",
+      "XCN-PRESIDIO-ESCC-003",
+      "XCN-PRESIDIO-ESCC-004",
+      "XCN-PRESIDIO-ESCC-005",
+      "XCN-PRESIDIO-ESCC-006"
+    ]
+  },
+  {
+    "pmid": "41817436",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 1,
+    "claims_added": 1,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 6.8,
+    "claim_ids": [
+      "XCN-NHS-GALLERI-001"
+    ]
+  },
+  {
+    "pmid": "41443411",
+    "cancer_type": "colorectal",
+    "claims_extracted": 6,
+    "claims_added": 6,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 38.7,
+    "claim_ids": [
+      "CRC-CAVE-2-001",
+      "CRC-CAVE-2-002",
+      "CRC-CAVE-2-003",
+      "CRC-CAVE-2-004",
+      "CRC-CAVE-2-005",
+      "CRC-CAVE-2-006"
+    ]
+  },
+  {
+    "pmid": "42069955",
+    "cancer_type": "colorectal",
+    "claims_extracted": 3,
+    "claims_added": 3,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 19.6,
+    "claim_ids": [
+      "CRC-PLASMONIC-ARRAY-001",
+      "CRC-PLASMONIC-ARRAY-002",
+      "CRC-PLASMONIC-ARRAY-003"
+    ]
+  },
+  {
+    "pmid": "42092284",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 3,
+    "claims_added": 3,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 19.8,
+    "claim_ids": [
+      "XCN-PDAC-LB-REVIEW-001",
+      "XCN-PDAC-LB-REVIEW-002",
+      "XCN-PDAC-LB-REVIEW-003"
+    ]
+  },
+  {
+    "pmid": "42087549",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 1,
+    "claims_added": 1,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 7.8,
+    "claim_ids": [
+      "XCN-BTC-LB-REVIEW-001"
+    ]
+  },
+  {
+    "pmid": "42095156",
+    "cancer_type": "lung",
+    "claims_extracted": 10,
+    "claims_added": 10,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 60.5,
+    "claim_ids": [
+      "LNG-RADIOGEN-NSCLC-001",
+      "LNG-RADIOGEN-NSCLC-002",
+      "LNG-RADIOGEN-NSCLC-003",
+      "LNG-RADIOGEN-NSCLC-004",
+      "LNG-RADIOGEN-NSCLC-005",
+      "LNG-RADIOGEN-NSCLC-006",
+      "LNG-RADIOGEN-NSCLC-007",
+      "LNG-RADIOGEN-NSCLC-008",
+      "LNG-RADIOGEN-NSCLC-009",
+      "LNG-RADIOGEN-NSCLC-010"
+    ]
+  },
+  {
+    "pmid": "41789684",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 5,
+    "claims_added": 5,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 26.8,
+    "claim_ids": [
+      "XCN-HNSCC-CTDNA-001",
+      "XCN-HNSCC-CTDNA-002",
+      "XCN-HNSCC-CTDNA-003",
+      "XCN-HNSCC-CTDNA-004",
+      "XCN-HNSCC-CTDNA-005"
+    ]
+  },
+  {
+    "pmid": "42036772",
+    "cancer_type": "hematologic",
+    "claims_extracted": 1,
+    "claims_added": 1,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 8.8,
+    "claim_ids": [
+      "HEM-MRD-TRAIT-001"
+    ]
+  },
+  {
+    "pmid": "42055889",
+    "cancer_type": "lung",
+    "claims_extracted": 10,
+    "claims_added": 10,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 58.2,
+    "claim_ids": [
+      "LNG-NNGM-RETFUSION-001",
+      "LNG-NNGM-RETFUSION-002",
+      "LNG-NNGM-RETFUSION-003",
+      "LNG-NNGM-RETFUSION-004",
+      "LNG-NNGM-RETFUSION-005",
+      "LNG-NNGM-RETFUSION-006",
+      "LNG-NNGM-RETFUSION-007",
+      "LNG-NNGM-RETFUSION-008",
+      "LNG-NNGM-RETFUSION-009",
+      "LNG-NNGM-RETFUSION-010"
+    ]
+  },
+  {
+    "pmid": "42067191",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 7,
+    "claims_added": 7,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 37.6,
+    "claim_ids": [
+      "XCN-PSC-CCA-METHYLATION-001",
+      "XCN-PSC-CCA-METHYLATION-002",
+      "XCN-PSC-CCA-METHYLATION-003",
+      "XCN-PSC-CCA-METHYLATION-004",
+      "XCN-PSC-CCA-METHYLATION-005",
+      "XCN-PSC-CCA-METHYLATION-006",
+      "XCN-PSC-CCA-METHYLATION-007"
+    ]
+  },
+  {
+    "pmid": "41697472",
+    "cancer_type": "breast",
+    "claims_extracted": 6,
+    "claims_added": 6,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 34.1,
+    "claim_ids": [
+      "BRC-ONCOTYPE-MULTI-001",
+      "BRC-ONCOTYPE-MULTI-002",
+      "BRC-ONCOTYPE-MULTI-003",
+      "BRC-ONCOTYPE-MULTI-004",
+      "BRC-ONCOTYPE-MULTI-005",
+      "BRC-ONCOTYPE-MULTI-006"
+    ]
+  },
+  {
+    "pmid": "42048620",
+    "cancer_type": "breast",
+    "claims_extracted": 8,
+    "claims_added": 8,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 45.7,
+    "claim_ids": [
+      "BRC-CT-DECLINE-HIGH-RS-001",
+      "BRC-CT-DECLINE-HIGH-RS-002",
+      "BRC-CT-DECLINE-HIGH-RS-003",
+      "BRC-CT-DECLINE-HIGH-RS-004",
+      "BRC-CT-DECLINE-HIGH-RS-005",
+      "BRC-CT-DECLINE-HIGH-RS-006",
+      "BRC-CT-DECLINE-HIGH-RS-007",
+      "BRC-CT-DECLINE-HIGH-RS-008"
+    ]
+  },
+  {
+    "pmid": "42023873",
+    "cancer_type": "lung",
+    "claims_extracted": 2,
+    "claims_added": 2,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 13,
+    "claim_ids": [
+      "LNG-CFNDA-EPIFRAQ-001",
+      "LNG-CFNDA-EPIFRAQ-002"
+    ]
+  },
+  {
+    "pmid": "42066072",
+    "cancer_type": "breast",
+    "claims_extracted": 10,
+    "claims_added": 10,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 70.5,
+    "claim_ids": [
+      "BRC-IBC-TGIRT-001",
+      "BRC-IBC-TGIRT-002",
+      "BRC-IBC-TGIRT-003",
+      "BRC-IBC-TGIRT-004",
+      "BRC-IBC-TGIRT-005",
+      "BRC-IBC-TGIRT-006",
+      "BRC-IBC-TGIRT-007",
+      "BRC-IBC-TGIRT-008",
+      "BRC-IBC-TGIRT-009",
+      "BRC-IBC-TGIRT-010"
+    ]
+  },
+  {
+    "pmid": "42092730",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 7,
+    "claims_added": 7,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 38.5,
+    "claim_ids": [
+      "XCN-MYHPVSCORE-001",
+      "XCN-MYHPVSCORE-002",
+      "XCN-MYHPVSCORE-003",
+      "XCN-MYHPVSCORE-004",
+      "XCN-MYHPVSCORE-005",
+      "XCN-MYHPVSCORE-006",
+      "XCN-MYHPVSCORE-007"
+    ]
+  },
+  {
+    "pmid": "42054640",
+    "cancer_type": "cross-cancer",
+    "claims_extracted": 6,
+    "claims_added": 6,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 54.3,
+    "claim_ids": [
+      "XCN-VISION-001",
+      "XCN-VISION-002",
+      "XCN-VISION-003",
+      "XCN-LOOPS-001",
+      "XCN-LOOPS-002",
+      "XCN-LOOPS-003"
+    ]
+  },
+  {
+    "pmid": "42066685",
+    "cancer_type": "colorectal",
+    "claims_extracted": 17,
+    "claims_added": 17,
+    "claims_skipped_duplicate": 0,
+    "model": "claude-sonnet-4-20250514",
+    "extracted_date": "2026-05-09",
+    "elapsed_seconds": 102.8,
+    "claim_ids": [
+      "CRC-MSI-MMRCRC-ICI-DISC-001",
+      "CRC-MSI-MMRCRC-ICI-DISC-002",
+      "CRC-MSI-MMRCRC-ICI-DISC-003",
+      "CRC-MSI-MMRCRC-ICI-DISC-004",
+      "CRC-MSI-MMRCRC-ICI-DISC-005",
+      "CRC-MSI-MMRCRC-ICI-DISC-006",
+      "CRC-MSI-MMRCRC-ICI-DISC-007",
+      "CRC-MSI-MMRCRC-ICI-DISC-008",
+      "CRC-MSI-MMRCRC-ICI-DISC-009",
+      "CRC-MSI-MMRCRC-ICI-DISC-010",
+      "CRC-MSI-MMRCRC-ICI-DISC-011",
+      "CRC-MSI-MMRCRC-ICI-DISC-012",
+      "CRC-MSI-MMRCRC-ICI-DISC-013",
+      "CRC-MSI-MMRCRC-ICI-DISC-014",
+      "CRC-MSI-MMRCRC-ICI-DISC-015",
+      "CRC-MSI-MMRCRC-ICI-DISC-016",
+      "CRC-MSI-MMRCRC-ICI-DISC-017"
+    ]
   }
 ]

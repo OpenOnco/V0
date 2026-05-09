@@ -1,0 +1,198 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "RS risk-category discordance occurred in 21% of bilateral and 24.7% of unilateral multifocal breast cancer cases.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 131,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RS risk-category discordance was found in 21% of bilateral and 24.7% of unilateral cases.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Among 131 patients (38 bilateral, 93 unilateral multifocal), RS risk-category discordance occurred in 21 and 24.7%, respectively, leading to chemotherapy escalation in half of the discordant cases."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "In bilateral disease, progesterone receptor score difference was significantly associated with absolute RS difference (β = 1.95; 95% CI, 0.44-3.46; P = 0.013).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.44,
+      "ci_upper": 3.46,
+      "p_value": 0.013,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Progesterone receptor score difference was significantly associated with RS difference in bilateral disease.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In bilateral disease, only the progesterone receptor score difference was significantly associated with the absolute RS difference (β = 1.95; 95% confidence interval [CI], 0.44-3.46; P = 0.013)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "In unilateral disease, absolute RS difference was independently associated with differences in HER2, progesterone receptor, and estrogen receptor scores (all P < 0.05).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RS difference in unilateral disease was associated with HER2, progesterone, and estrogen receptor score differences.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In unilateral disease, absolute RS difference was independently associated with differences in HER2, progesterone receptor, and estrogen receptor scores (all P < 0.05)."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Recurrence score correlation between paired tumors was higher in unilateral multifocal than in bilateral disease (r = 0.66 vs. 0.36).",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher RS correlation in unilateral multifocal than bilateral disease.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Recurrence score correlation between paired tumors was higher in unilateral multifocal than in bilateral disease (r = 0.66 vs. 0.36)."
+  }
+]

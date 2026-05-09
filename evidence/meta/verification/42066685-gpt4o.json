@@ -1,0 +1,394 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "51% of patients stopped treatment due to disease progression and 49% discontinued for other reasons.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 84,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "After a median follow-up period of 48 months, 51% of patients stopped treatment due to disease progression and 49% discontinued for other reasons, including immune-related adverse events, clinical benefit, protocol completion (2 years), surgery, or pregnancy."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Among patients who stopped per protocol, nearly 80% had negative ctDNA at discontinuation, with only 7% of them progressing during follow-up.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Among those who stopped per protocol, nearly 80% had negative ctDNA at discontinuation, with only 7% of them progressing during follow-up."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Among patients who progressed, 78.3% had positive liquid biopsy results at treatment discontinuation.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Conversely, among those patients who progressed, 78.3% had positive liquid biopsy results at treatment discontinuation, underscoring the complexity of molecular monitoring."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "The mPFS for the entire cohort was 10.8 months (95% CI 7.3 months, upper limit not reached).",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 7.3,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "With a median follow-up of 48 months (95% CI 42.1-50.7 months), the mPFS for the entire cohort was 10.8 months (95% CI 7.3 months, upper limit not reached [NR])."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In the multivariable analysis, the number of previous treatment lines and ECOG performance status were associated with PFS (HR 0.43, 95% CI 0.22-0.88, P = 0.020 and HR 3.18, 95% CI 1.58-6.40, P = 0.001, respectively).",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": null,
+      "hr": 0.43,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.22,
+      "ci_upper": 0.88,
+      "p_value": 0.02,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the multivariable analysis, the number of previous treatment lines and ECOG performance status were associated with PFS (HR 0.43, 95% CI 0.22-0.88, P = 0.020 and HR 3.18, 95% CI 1.58-6.40, P = 0.001, respectively)."
+  },
+  {
+    "id": "6",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "The mOS was 66.2 months (95% CI 37.5-NR months).",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 37.5,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In terms of OS, the median overall survival (mOS) was 66.2 months (95% CI 37.5-NR months)."
+  },
+  {
+    "id": "7",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In the multivariate analysis, only the number of previous treatment lines (0-1 versus >1) and ECOG performance status (0 vs ≥1) were associated with OS (HR 0.29, 95% CI 0.11-0.77, P = 0.011, and HR 4.50, 95% CI 1.95-10.41, P < 0.001, respectively).",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": null,
+      "hr": 0.29,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.11,
+      "ci_upper": 0.77,
+      "p_value": 0.011,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the multivariate analysis, only the number of previous treatment lines (0-1 versus >1) and ECOG performance status (0 vs ≥1) were associated with OS (HR 0.29, 95% CI 0.11-0.77, P = 0.011, and HR 4.50, 95% CI 1.95-10.41, P < 0.001, respectively)."
+  },
+  {
+    "id": "8",
+    "type": "guideline_recommendation",
+    "source": {
+      "pmid": "",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "European Society for Medical Oncology and National Comprehensive Cancer Network guidelines recommend treatment with anti-PD-1 or anti-PD-1/anti-CTLA-4 as the preferred first-line option in MSI mCRC.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": "European Society for Medical Oncology and National Comprehensive Cancer Network",
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Thus, European Society for Medical Oncology and National Comprehensive Cancer Network guidelines recommend treatment with anti-PD-1 or anti-PD-1/anti-CTLA-4 as the preferred first-line option in MSI mCRC."
+  }
+]

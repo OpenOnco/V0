@@ -1303,5 +1303,1263 @@
       "model_version": "claude-sonnet-4-20250514",
       "source_quote_hash": "3ce6b5e2"
     }
+  },
+  {
+    "id": "CRC-CAVE-2-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "156 out of 328 screened patients with RAS/BRAF wild-type mCRC were randomly assigned in a 2:1 ratio to cetuximab plus avelumab (104 patients) or cetuximab (52 patients)",
+      "trial_name": "CAVE-2",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 156,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "156 patients randomized 2:1 to cetuximab+avelumab vs cetuximab",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "c90cc061"
+    }
+  },
+  {
+    "id": "CRC-CAVE-2-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median progression-free survival in cetuximab plus avelumab arm versus cetuximab monotherapy arm",
+      "trial_name": "CAVE-2",
+      "endpoint": "progression-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": 156,
+      "hr": 0.78,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.55,
+      "ci_upper": 1.1,
+      "p_value": 0.158,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "mPFS 5.3 vs 4.3 months (HR 0.78, p=0.158)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "e21deb19"
+    }
+  },
+  {
+    "id": "CRC-CAVE-2-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median overall survival in cetuximab plus avelumab arm versus cetuximab monotherapy arm",
+      "trial_name": "CAVE-2",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "no-difference",
+      "n": 156,
+      "hr": 1,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.65,
+      "ci_upper": 1.52,
+      "p_value": 0.983,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "mOS 14.8 vs 12.9 months (HR 1.00, p=0.983)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1bc8446f"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "CRC-CAVE-2-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "124 out of 156 patients had tumors without any genomic alteration in EGFR pathway genes (negative hyperselection)",
+      "trial_name": "CAVE-2",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 124,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "124/156 patients had negative hyperselection profile",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "dd3a3dcd"
+    }
+  },
+  {
+    "id": "CRC-CAVE-2-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Patients with negative hyperselection had significantly improved progression-free survival compared to positive hyperselection",
+      "trial_name": "CAVE-2",
+      "endpoint": "progression-free survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": 156,
+      "hr": 0.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.42,
+      "ci_upper": 0.92,
+      "p_value": 0.017,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "mPFS 5.35 vs 3.65 months for negative vs positive hyperselection (HR 0.62, p=0.017)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4ff2e4cb"
+    }
+  },
+  {
+    "id": "CRC-CAVE-2-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41443411.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Patients with negative hyperselection had significantly improved overall survival compared to positive hyperselection",
+      "trial_name": "CAVE-2",
+      "endpoint": "overall survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": 156,
+      "hr": 0.61,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.39,
+      "ci_upper": 0.97,
+      "p_value": 0.037,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "mOS 15.0 vs 11.1 months for negative vs positive hyperselection (HR 0.61, p=0.037)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "b0b8fd74"
+    }
+  },
+  {
+    "id": "CRC-PLASMONIC-ARRAY-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42069955",
+      "title": "Translational feasibility of a plasmonic microarray-based liquid biopsy for KRAS codon mutation detection across tissue, plasma, and urine in early colorectal cancer.",
+      "journal": "NPJ Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42069955.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Plasmonic microarray achieved detection sensitivity down to 1 fM by direct hybridization",
+      "trial_name": null,
+      "endpoint": "detection sensitivity",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detection sensitivity of 1 fM by direct hybridization",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "96ad97ff"
+    }
+  },
+  {
+    "id": "CRC-PLASMONIC-ARRAY-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42069955",
+      "title": "Translational feasibility of a plasmonic microarray-based liquid biopsy for KRAS codon mutation detection across tissue, plasma, and urine in early colorectal cancer.",
+      "journal": "NPJ Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42069955.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Plasmonic microarray achieved detection sensitivity down to 100 zM after blocked amplification",
+      "trial_name": null,
+      "endpoint": "detection sensitivity",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detection sensitivity of 100 zM after blocked amplification",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "96ad97ff"
+    }
+  },
+  {
+    "id": "CRC-PLASMONIC-ARRAY-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42069955",
+      "title": "Translational feasibility of a plasmonic microarray-based liquid biopsy for KRAS codon mutation detection across tissue, plasma, and urine in early colorectal cancer.",
+      "journal": "NPJ Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lee et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42069955.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Clinical analysis showed 100% concordance between tissue, plasma, and urine in mutation-positive malignant cases when sufficient input was available",
+      "trial_name": null,
+      "endpoint": "concordance",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 58,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 100,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "100% concordance between tissue, plasma, and urine in malignant cases",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "0d99db52"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "84 patients with MSI/dMMR mCRC who discontinued ICI treatment were analyzed retrospectively",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 84,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "84 patients with MSI/dMMR mCRC analyzed for ICI discontinuation outcomes",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "2ddeae82"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "51% of patients stopped ICI treatment due to disease progression and 49% discontinued for other reasons",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 84,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "Equal split between progression-related and non-progression discontinuation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "402e6325"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median PFS for the entire cohort was 10.8 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": 84,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 7.3,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "mPFS 10.8 months (95% CI 7.3-NR)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "472aa7f5"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients who progressed had mPFS of 3.0 months vs not reached for non-progression discontinuation",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 2.1,
+      "ci_upper": 6.2,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "mPFS 3.0 months for progression group vs NR for non-progression discontinuation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "aee328fe"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Number of previous treatment lines associated with PFS in multivariable analysis",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 84,
+      "hr": 0.43,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.22,
+      "ci_upper": 0.88,
+      "p_value": 0.02,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "First-line treatment associated with improved PFS (HR 0.43)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "f0c1c508"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "ECOG performance status associated with PFS in multivariable analysis",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": 84,
+      "hr": 3.18,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.58,
+      "ci_upper": 6.4,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "Poor performance status (≥1) associated with worse PFS (HR 3.18)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "f0c1c508"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Reason for treatment discontinuation associated with PFS - immune-related adverse events vs per protocol",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 84,
+      "hr": 0.08,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.01,
+      "ci_upper": 0.77,
+      "p_value": 0.029,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "irAE discontinuation vs per protocol associated with better PFS (HR 0.08)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "b8d09fb3"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Disease progression vs per protocol discontinuation associated with worse PFS",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": 84,
+      "hr": 14.11,
+      "or": null,
+      "rr": null,
+      "ci_lower": 4.03,
+      "ci_upper": 49.45,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "Disease progression discontinuation vs per protocol associated with worse PFS (HR 14.11)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "b8d09fb3"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-009",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median overall survival for the entire cohort was 66.2 months",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": 84,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 37.5,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "mOS 66.2 months (95% CI 37.5-NR)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4aa5ac3f"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-010",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "mOS was 16.6 months for patients who progressed vs not reached for non-progression discontinuation",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 9,
+      "ci_upper": 37.5,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "mOS 16.6 months for progression group vs NR for non-progression discontinuation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "50f2f332"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-011",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Number of previous treatment lines associated with overall survival in multivariable analysis",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 84,
+      "hr": 0.29,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.11,
+      "ci_upper": 0.77,
+      "p_value": 0.011,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "0-1 vs >1 previous treatment lines associated with better OS (HR 0.29)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "fcec40bc"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-012",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "ECOG performance status associated with overall survival in multivariable analysis",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": 84,
+      "hr": 4.5,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.95,
+      "ci_upper": 10.41,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "Poor performance status (≥1) vs 0 associated with worse OS (HR 4.50)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "fcec40bc"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-013",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "48 of 84 patients had liquid biopsy data available at baseline and/or treatment discontinuation",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 48,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 48,
+      "effect_summary": "48 patients had ctDNA liquid biopsy data available",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "01c40cfa"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-014",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Among patients who stopped per protocol, 78.9% had negative ctDNA at discontinuation with only 7% progressing",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": 93,
+      "follow_up_months": null,
+      "effect_summary": "78.9% had negative ctDNA at discontinuation, 7% progression rate with negative ctDNA",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "f6b7c790"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-015",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Among patients who progressed, 78.3% had positive liquid biopsy results at treatment discontinuation",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 78.3,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "78.3% of progressed patients had positive ctDNA at discontinuation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9609564c"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-016",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "All patients who discontinued treatment per protocol had achieved radiologic response (21% CR, 79% PR)",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "100% response rate in per protocol discontinuation group (21% CR, 79% PR)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "d7a21834"
+    }
+  },
+  {
+    "id": "CRC-MSI-MMRCRC-ICI-DISC-017",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066685",
+      "title": "Impact of treatment discontinuation among patients with microsatellite instability or mismatch repair-deficient metastatic colorectal cancer treated with immune checkpoint inhibitors.",
+      "journal": "ESMO Open",
+      "year": 2026,
+      "authors_short": "Ros et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066685.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Only five patients who stopped immunotherapy per protocol or due to irAEs experienced progression",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 5,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Only 5 patients progressed after non-progression discontinuation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "36fc5100"
+    }
   }
 ]

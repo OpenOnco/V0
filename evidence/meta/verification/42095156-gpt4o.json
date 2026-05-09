@@ -1,0 +1,296 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Overall concordance between tissue and ctDNA was 85%.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 67,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Overall concordance between tissue and ctDNA was 85%.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Overall concordance between tissue and ctDNA (n = 67 patients) was 85%."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In the combined clinical-radiomic-genetic model, the RS and the presence of actionable alterations were independent OS predictors.",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RS and actionable alterations are independent OS predictors.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the combined clinical-radiomic-genetic model (C-index: 0.73), the RS (p < 0.001) and the presence of actionable alterations (p = 0.041) were independent OS predictors."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "For DFS, the integrated model achieved a cross-validated C-index of 0.77, outperforming the clinical-only model (0.59).",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Integrated model for DFS achieved a C-index of 0.77.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "For DFS, the integrated model achieved a cross-validated C-index of 0.77, outperforming the clinical-only model (0.59)."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In patients with EGFR-mutant NSCLC, detectable baseline ctDNA was significantly associated with a higher risk of disease progression.",
+      "trial_name": null,
+      "endpoint": "disease progression",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "0.018",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detectable baseline ctDNA associated with higher risk of progression.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In patients with EGFR-mutant NSCLC, detectable baseline ctDNA was significantly associated with a higher risk of disease progression (p = 0.018)."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In the EGFR-mutant subgroup, the combined clinical-radio-genomic model demonstrated a cross-validated C-index of 0.80 for DFS.",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": 25,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Combined model for EGFR-mutant subgroup achieved a C-index of 0.80 for DFS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In this subgroup, the combined clinical-radio-genomic model achieved a cross-validated C-index of 0.80 for DFS."
+  },
+  {
+    "id": "6",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Longitudinal analysis showed that 17 of 21 patients achieved molecular clearance of ctDNA at the first follow-up, correlating with treatment response.",
+      "trial_name": null,
+      "endpoint": "molecular clearance",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": 21,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "17 of 21 patients achieved molecular clearance of ctDNA at first follow-up.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Longitudinal analysis showed that 17 of 21 patients achieved molecular clearance of ctDNA at the first follow-up, correlating with treatment response."
+  }
+]

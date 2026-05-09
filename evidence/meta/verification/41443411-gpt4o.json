@@ -1,0 +1,149 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median progression-free survival (mPFS) was 5.3 months in arm A versus 4.3 months in arm B.",
+      "trial_name": "CAVE-2 GOIM",
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "no-difference",
+      "n": 156,
+      "hr": 0.78,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.55,
+      "ci_upper": 1.1,
+      "p_value": 0.158,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No significant difference in mPFS between arms A and B.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Median progression-free survival (mPFS) was 5.3 months [95% confidence interval (CI) 4.3-6 months] in arm A versus 4.3 months (95% CI 3.5-5.5 months) in arm B [hazard ratio (HR) 0.78, 95% CI 0.55-1.10, P = 0.158]."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median overall survival (mOS) was 14.8 months in arm A versus 12.9 months in arm B.",
+      "trial_name": "CAVE-2 GOIM",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "no-difference",
+      "n": 156,
+      "hr": 1,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.65,
+      "ci_upper": 1.52,
+      "p_value": 0.983,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No significant difference in mOS between arms A and B.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Median OS (mOS) was 14.8 months (95% CI 12.1-18.3 months) in arm A versus 12.9 months (95% CI 11 months-not evaluable) in arm B (HR 1.00, 95% CI 0.65-1.52, P = 0.983)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41443411",
+      "title": "Cetuximab rechallenge in molecularly selected metastatic colorectal cancer: the randomized CAVE-2 GOIM trial.",
+      "journal": "Ann Oncol",
+      "year": 2026,
+      "authors_short": "Ciardiello et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "colorectal",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients with 'negative hyperselection' had significantly improved mPFS and mOS compared with 'positive hyperselection'.",
+      "trial_name": "CAVE-2 GOIM",
+      "endpoint": "progression-free survival and overall survival",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": 124,
+      "hr": 0.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.42,
+      "ci_upper": 0.92,
+      "p_value": 0.017,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Significant improvement in mPFS and mOS for 'negative hyperselection' patients.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "These patients had significantly improved mPFS [5.35 months (95% CI 4.4-5.9 months) versus 3.65 months (95% CI 2.8-4.8 months); HR 0.62, 95% CI 0.42-0.92, P = 0.017] and mOS [15.0 months (95% CI 12.6-19.9 months) versus 11.1 months (95% CI 8.6-15.6 months); HR 0.61, 95% CI 0.39-0.97, P = 0.037] compared with patients having at least one pathogenic variant ('positive hyperselection')."
+  }
+]

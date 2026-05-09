@@ -769,5 +769,1722 @@
       "model_version": "claude-sonnet-4-20250514",
       "source_quote_hash": "ed184835"
     }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Study included 93 patients with locally advanced esophageal squamous cell carcinoma who underwent neoadjuvant chemoradiotherapy followed by esophagectomy between 2019-2023",
+      "trial_name": "preSINO",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 93,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 36.5,
+      "effect_summary": "93 ESCC patients analyzed with 36.5 month median follow-up",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ad17d9a3"
+    }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "30 out of 93 patients experienced recurrences, with most recurrences (73.3%) occurring within the first year post-surgery",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 30,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "73.3% of recurrences occurred within first year",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "dad891f7"
+    }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "1-year recurrence rate was lower in pCR patients (13.5%) compared to non-pCR patients (30.4%), but this difference was not statistically significant",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence",
+      "endpoint_type": null,
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.061,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 12,
+      "effect_summary": "pCR vs non-pCR: 13.5% vs 30.4% 1-year recurrence (p=0.061)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "dd14a8b2"
+    }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "MRD status significantly stratified recurrence-free survival and early recurrence risk, with 1-year recurrence rates of 6.1% vs 66.7% for MRD-negative vs MRD-positive groups",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 12,
+      "effect_summary": "MRD-negative vs MRD-positive: 6.1% vs 66.7% 1-year recurrence (p<0.001)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "fdcd75b1"
+    }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "MRD positivity was an independent predictor of recurrence-free survival in multivariable Cox regression analysis",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": 13.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "MRD positivity: HR 13.62 for recurrence (p<0.001)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "7325e3e1"
+    }
+  },
+  {
+    "id": "XCN-PRESIDIO-ESCC-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42086163.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Combined pCR/non-pCR and MRD status classification identified four distinct recurrence risk subgroups with 1-year recurrence rates of 3.7% (pCR&MRD-negative), 7.7% (non-pCR&MRD-negative), 40% (pCR&MRD-positive), and 82.4% (non-pCR&MRD-positive)",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 12,
+      "effect_summary": "Four-group classification: 3.7% to 82.4% 1-year recurrence rates (p<0.001)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "018e5448"
+    }
+  },
+  {
+    "id": "XCN-NHS-GALLERI-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41817436",
+      "title": "More Questions Than Answers in Trial of GRAIL's Galleri.",
+      "journal": "Cancer Discov",
+      "year": 2026,
+      "authors_short": "Unknown",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41817436.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "The Galleri multi-cancer early detection test did not meet its primary endpoint of reducing late-stage cancers in the NHS-Galleri trial",
+      "trial_name": "NHS-Galleri",
+      "endpoint": "reduction in late-stage cancers",
+      "endpoint_type": "primary",
+      "result_direction": "negative",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Galleri test failed to reduce late-stage cancers (primary endpoint not met)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "0fdfa4b4"
+    }
+  },
+  {
+    "id": "XCN-PDAC-LB-REVIEW-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092284",
+      "title": "Multimodal liquid biopsy surveillance after pancreatectomy for pancreatic ductal adenocarcinoma: evidence and a confirmation&#x2011;gated, trial&#x2011;ready framework.",
+      "journal": "Cancer Treat Res Commun",
+      "year": 2026,
+      "authors_short": "Feng L et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092284.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Tumor-informed ctDNA and longitudinal CTC kinetics show consistent prognostic value and may precede radiographic recurrence by weeks to months in resected PDAC",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA and CTC kinetics precede radiographic recurrence by weeks to months",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ff507567"
+    }
+  },
+  {
+    "id": "XCN-PDAC-LB-REVIEW-002",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42092284",
+      "title": "Multimodal liquid biopsy surveillance after pancreatectomy for pancreatic ductal adenocarcinoma: evidence and a confirmation&#x2011;gated, trial&#x2011;ready framework.",
+      "journal": "Cancer Treat Res Commun",
+      "year": 2026,
+      "authors_short": "Feng L et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092284.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Post-operative minimal residual disease is often near the assay limit of detection, raising risks of false positives, over-imaging, and premature treatment escalation outside trials",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "MRD near detection limit raises false positive risks",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4e66c6b7"
+    }
+  },
+  {
+    "id": "XCN-PDAC-LB-REVIEW-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092284",
+      "title": "Multimodal liquid biopsy surveillance after pancreatectomy for pancreatic ductal adenocarcinoma: evidence and a confirmation&#x2011;gated, trial&#x2011;ready framework.",
+      "journal": "Cancer Treat Res Commun",
+      "year": 2026,
+      "authors_short": "Feng L et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092284.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "EV markers and signatures provide complementary biology and may be informative in low-shedding states, but reproducibility is limited by pre-analytical and platform heterogeneity",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "EV markers informative in low-shedding states but limited reproducibility",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "62eac2bd"
+    }
+  },
+  {
+    "id": "XCN-BTC-LB-REVIEW-001",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42087549",
+      "title": "Liquid biopsy for biliary tract cancer: available evidence and future research directions.",
+      "journal": "Expert Rev Mol Diagn",
+      "year": 2026,
+      "authors_short": "Erul et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42087549.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": null,
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Evidence base for biliary tract cancer liquid biopsy assembled through targeted searches of PubMed/MEDLINE and Embase up to February 1, 2026",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "d462817e"
+    }
+  },
+  {
+    "id": "XCN-HNSCC-CTDNA-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "41789684",
+      "title": "Circulating tumor DNA in human papilloma virus negative head and neck squamous cell carcinoma.",
+      "journal": "Curr Opin Oncol",
+      "year": 2026,
+      "authors_short": "Galot R et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41789684.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Tumor-informed ctDNA assays achieve limits of detection near 0.01% VAF",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Tumor-informed assays achieve 0.01% VAF detection limit",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "3f1ed576"
+    }
+  },
+  {
+    "id": "XCN-HNSCC-CTDNA-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "41789684",
+      "title": "Circulating tumor DNA in human papilloma virus negative head and neck squamous cell carcinoma.",
+      "journal": "Curr Opin Oncol",
+      "year": 2026,
+      "authors_short": "Galot R et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41789684.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "ctDNA is detectable in approximately 80% of HNSCC patients",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 80,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA detectable in ~80% of HNSCC patients",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "e482efbc"
+    }
+  },
+  {
+    "id": "XCN-HNSCC-CTDNA-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "41789684",
+      "title": "Circulating tumor DNA in human papilloma virus negative head and neck squamous cell carcinoma.",
+      "journal": "Curr Opin Oncol",
+      "year": 2026,
+      "authors_short": "Galot R et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41789684.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "In recurrent/metastatic HNSCC, baseline ctDNA detection exceeds 90%",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 90,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA detection >90% in recurrent/metastatic HNSCC",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1793ac2e"
+    }
+  },
+  {
+    "id": "XCN-HNSCC-CTDNA-004",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "41789684",
+      "title": "Circulating tumor DNA in human papilloma virus negative head and neck squamous cell carcinoma.",
+      "journal": "Curr Opin Oncol",
+      "year": 2026,
+      "authors_short": "Galot R et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41789684.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "ctDNA positivity consistently identifies patients at high risk for relapse, often months before radiologic detection",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA+ identifies high-risk relapse patients months before imaging",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "02f767eb"
+    }
+  },
+  {
+    "id": "XCN-HNSCC-CTDNA-005",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "41789684",
+      "title": "Circulating tumor DNA in human papilloma virus negative head and neck squamous cell carcinoma.",
+      "journal": "Curr Opin Oncol",
+      "year": 2026,
+      "authors_short": "Galot R et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41789684.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "On-treatment ctDNA decrease correlates with improved survival in recurrent/metastatic HNSCC",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "On-treatment ctDNA decrease correlates with improved survival",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1793ac2e"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Four DNA methylation biomarkers achieved perfect discrimination between PSC-associated CCA and PSC alone in tissue samples",
+      "trial_name": null,
+      "endpoint": "diagnostic accuracy",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 19,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "AUC=1.00 for PSC-CCA vs PSC discrimination in tissue"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9e328bdd"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "All four biomarkers achieved AUC >0.9 for distinguishing PSC-CCA from PSC alone in bile samples",
+      "trial_name": null,
+      "endpoint": "diagnostic accuracy",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 227,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "AUC >0.9 for all four biomarkers in bile"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "3ac01470"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Two-biomarker panel (5-42952178 and PRKCB) in bile achieved 95% sensitivity and 90% specificity for PSC-CCA detection",
+      "trial_name": null,
+      "endpoint": "diagnostic accuracy",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 227,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 95,
+      "specificity": 90,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "95% sensitivity, 90% specificity for two-biomarker bile panel"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "cac6360c"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-004",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Four-biomarker panel in bile (adding KCNA6 and ZFP82) increased specificity to 97% while maintaining 90% sensitivity",
+      "trial_name": null,
+      "endpoint": "diagnostic accuracy",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 227,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 90,
+      "specificity": 97,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "90% sensitivity, 97% specificity for four-biomarker bile panel"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "e56596b1"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-005",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Two-biomarker bile panel detected all eight CCA cases (100% sensitivity) in samples collected 3-12 months prior to conventional diagnosis",
+      "trial_name": null,
+      "endpoint": "early detection",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 8,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 100,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "100% early detection 3-12 months before conventional diagnosis"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "85fcecdd"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-006",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Two-biomarker plasma panel (KCNA6 and PRKCB) achieved 70% sensitivity and 90% specificity for PSC-CCA detection",
+      "trial_name": null,
+      "endpoint": "diagnostic accuracy",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 118,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 70,
+      "specificity": 90,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "70% sensitivity, 90% specificity for plasma biomarkers"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ca36748f"
+    }
+  },
+  {
+    "id": "XCN-PSC-CCA-METHYLATION-007",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42067191",
+      "title": "Accurate detection of cholangiocarcinoma in primary sclerosing cholangitis by DNA methylation biomarkers in bile and plasma.",
+      "journal": "JHEP Rep",
+      "year": 2026,
+      "authors_short": "Vedeld et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42067191.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "Bile samples from 272 individuals and plasma samples from 128 individuals with PSC and/or CCA were analyzed across three different hospitals",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 400,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Multi-center study with 272 bile and 128 plasma samples"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "39c4d8fd"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-001",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated limit of blank of 2.7 positive droplets/reaction for HPV16 detection",
+      "trial_name": null,
+      "endpoint": "limit of blank",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "HPV16 limit of blank: 2.7 positive droplets/reaction",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4388a35c"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated limit of blank of 2.6 positive droplets/reaction for other high-risk HPV types",
+      "trial_name": null,
+      "endpoint": "limit of blank",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Other hrHPV types limit of blank: 2.6 positive droplets/reaction",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4388a35c"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated limit of detection of 15.2 positive droplets/reaction for HPV16",
+      "trial_name": null,
+      "endpoint": "limit of detection",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "HPV16 limit of detection: 15.2 positive droplets/reaction",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4a9930ce"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-004",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated limit of detection of 20.8 positive droplets/reaction for other high-risk HPV types",
+      "trial_name": null,
+      "endpoint": "limit of detection",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Other hrHPV types limit of detection: 20.8 positive droplets/reaction",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "4a9930ce"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-005",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated linear range of 15-62,500 targets/mL plasma for HPV16 with strong correlation (R² > 0.99)",
+      "trial_name": null,
+      "endpoint": "linear range",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "HPV16 linear range: 15-62,500 targets/mL (R² > 0.99)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ab4920b6"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-006",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "MyHPVscore demonstrated linear range of 12-100,000 targets/mL plasma for other high-risk HPV types with strong correlation (R² > 0.99)",
+      "trial_name": null,
+      "endpoint": "linear range",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Other hrHPV types linear range: 12-100,000 targets/mL (R² > 0.99)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ab4920b6"
+    }
+  },
+  {
+    "id": "XCN-MYHPVSCORE-007",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42092730",
+      "title": "Validation of MyHPVscore: a high-performance HPV ctDNA lab developed test.",
+      "journal": "J Mol Diagn",
+      "year": 2026,
+      "authors_short": "Currie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42092730.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "surveillance",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Analytes were stable for 96 hours at -20°C and yielded consistent qualitative results after >400 days of storage",
+      "trial_name": null,
+      "endpoint": "analyte stability",
+      "endpoint_type": "exploratory",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Stable for 96 hours at -20°C and >400 days storage",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a8d6c287"
+    }
+  },
+  {
+    "id": "XCN-VISION-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "[177Lu]Lu-PSMA-617 demonstrated overall survival benefit compared to standard of care in the VISION trial",
+      "trial_name": "VISION",
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": 0.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "[177Lu]Lu-PSMA-617 prolonged overall survival (15.3 vs 11.3 months; HR 0.62)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9fd6cf97"
+    }
+  },
+  {
+    "id": "XCN-VISION-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "[177Lu]Lu-PSMA-617 demonstrated radiographic progression-free survival benefit compared to standard of care in the VISION trial",
+      "trial_name": "VISION",
+      "endpoint": "radiographic progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": null,
+      "hr": 0.4,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "[177Lu]Lu-PSMA-617 prolonged radiographic PFS (8.7 vs 3.4 months; HR 0.40)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9fd6cf97"
+    }
+  },
+  {
+    "id": "XCN-VISION-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Only approximately 50% of patients achieved objective radiographic response in the VISION trial",
+      "trial_name": "VISION",
+      "endpoint": "objective radiographic response",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "50% objective radiographic response rate with [177Lu]Lu-PSMA-617",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "5db3f3e6"
+    }
+  },
+  {
+    "id": "XCN-LOOPS-001",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "LOOPS study planned sample size of 100 patients with primary endpoint evaluable in approximately 70 patients",
+      "trial_name": "LOOPS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 100,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "LOOPS study designed for 100 patients, 70 evaluable for primary endpoint",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "e051e0b1"
+    }
+  },
+  {
+    "id": "XCN-LOOPS-002",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "LOOPS study has 80% power to detect clinically meaningful differences in response rates between patients with and without ctDNA-based predictive markers",
+      "trial_name": "LOOPS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 70,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.05,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "80% power to detect response rate differences with ctDNA markers (α=0.05)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "0e90d31a"
+    }
+  },
+  {
+    "id": "XCN-LOOPS-003",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42054640",
+      "title": "Liquid Biopsy Biomarkers in Patients With Metastatic Castration-Resistant Prostate Cancer Receiving Prostate-Specific Membrane Antigen Radioligand Therapy: Protocol for a Prospective, Longitudinal Multicenter Observational Study.",
+      "journal": "JMIR Res Protoc",
+      "year": 2026,
+      "authors_short": "Michalski et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42054640.md"
+    },
+    "scope": {
+      "cancer": "cross-cancer",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "LOOPS study recruitment status as of January 2026: 63 patients enrolled out of target 100",
+      "trial_name": "LOOPS",
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 63,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "LOOPS enrolled 63/100 patients by January 2026",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "3ad716d3"
+    }
   }
 ]

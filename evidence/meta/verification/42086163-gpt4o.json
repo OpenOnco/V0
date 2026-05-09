@@ -1,0 +1,149 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "esophageal",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "MRD status significantly stratified recurrence-free survival and early recurrence risk, with 1-year recurrence rates of 6.1% vs 66.7% for MRD-negative vs MRD-positive groups.",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": 93,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 36.5,
+      "effect_summary": "MRD status significantly stratified RFS with 1-year recurrence rates of 6.1% vs 66.7% for MRD-negative vs MRD-positive.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "MRD status significantly stratified RFS and early recurrence risk, with 1-year recurrence rates of 6.1% vs 66.7% for MRD-negative vs MRD-positive groups (P<.001)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "esophageal",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Multivariable Cox-regression analysis demonstrated MRD positivity as an independent predictor of recurrence-free survival with a hazard ratio of 13.62.",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "superior",
+      "n": 93,
+      "hr": 13.62,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 36.5,
+      "effect_summary": "MRD positivity is an independent predictor of RFS with HR 13.62.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Multivariable Cox-regression analysis demonstrated MRD positivity (hazard ratio, 13.62; P<.001) as an independent predictor of RFS, whereas pathologic response was not."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42086163",
+      "title": "Postoperative MRD status Refines Recurrence Risk Stratification Beyond Pathologic Response After Neoadjuvant Chemoradiotherapy for ESCC.",
+      "journal": "J Thorac Cardiovasc Surg",
+      "year": 2026,
+      "authors_short": "Liu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "esophageal",
+      "stages": null,
+      "setting": "neoadjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "A classification combining pCR/non-pCR and MRD status identified four distinct recurrence risk subgroups with 1-year recurrence rates of 3.7% for pCR&MRD-negative, 7.7% for non-pCR&MRD-negative, 40% for pCR&MRD-positive, and 82.4% for non-pCR&MRD-positive.",
+      "trial_name": "preSINO",
+      "endpoint": "recurrence risk stratification",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": 93,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 36.5,
+      "effect_summary": "Four distinct recurrence risk subgroups identified with varying 1-year recurrence rates.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "A classification combining pCR/non-pCR and MRD status identified four distinct recurrence risk subgroups: the 1-year recurrence rates were 3.7% of pCR&MRD-negative, 7.7% of non-pCR&MRD-negative, 40% of pCR&MRD-positive, and 82.4% of non-pCR&MRD-positive (P<.001), with distant recurrence predominating in MRD-positive groups."
+  }
+]

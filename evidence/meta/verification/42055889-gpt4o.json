@@ -1,0 +1,247 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "RET fusions were detected at diagnosis in 2 patients and acquired in 7 patients during EGFR-TKI treatment, with a median time to detection of 11.4 months.",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "RET fusions were detected at diagnosis in 2 patients and acquired in 7 patients during EGFR-TKI treatment, with a median time to detection of 11.4 months."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "First-line treatment consisted of RET inhibition with pralsetinib in the 2 patients with atypical EGFR mutations, third-generation EGFR-TKIs in 6 patients (median PFS: 13.5 ± 9.2 months), and a second-generation EGFR-TKI (afatinib) in one patient (PFS: 8.7 months).",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "First-line treatment consisted of RET inhibition with pralsetinib in the 2 patients with atypical EGFR mutations, third-generation EGFR-TKIs in 6 patients (median PFS: 13.5 ± 9.2 months), and a second-generation EGFR-TKI (afatinib) in one patient (PFS: 8.7 months)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Following progression, all patients underwent re-biopsy, confirming persistence of the EGFR mutation and presence of RET fusions. Second-line therapies varied, including chemo-immunotherapy (n = 4, mPFS: 6.5 ± 2.5 months), chemotherapy (n = 1, PFS: 0.3 months), and best supportive care (n = 1).",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Following progression, all patients underwent re-biopsy, confirming persistence of the EGFR mutation and presence of RET fusions. Second-line therapies varied, including chemo-immunotherapy (n = 4, mPFS: 6.5 ± 2.5 months), chemotherapy (n = 1, PFS: 0.3 months), and best supportive care (n = 1)."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Three patients received the combined EGFR-TKI osimertinib and RET-TKI pralsetinib either in second- or third-line, with PFS ranging from 3.9 to 10.5 months.",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": null,
+      "n": 3,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Three patients received the combined EGFR-TKI osimertinib and RET-TKI pralsetinib either in second- or third-line, with PFS ranging from 3.9 to 10.5 months."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median OS for the cohort was 27 months (range: 7 to >30 months), with 4 patients still alive at last follow-up.",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": null,
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Median OS for the cohort was 27 months (range: 7 to >30 months), with 4 patients still alive at last follow-up."
+  }
+]

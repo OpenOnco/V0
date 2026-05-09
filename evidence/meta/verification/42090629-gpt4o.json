@@ -1,0 +1,249 @@
+[
+  {
+    "id": "1",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Positive MRD at landmark is associated with shorter disease-free survival.",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": 165,
+      "hr": 12,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Positive MRD is linked to shorter DFS.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "At landmark, positive MRD was associated with shorter disease-free survival (DFS) than negative MRD ( P < .001, hazard ratio, 12.0)."
+  },
+  {
+    "id": "2",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "No significant difference in DFS between stage IB patients with high-risk factors who received AT and those who did not, when MRD is negative.",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "0.974",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No DFS difference in stage IB high-risk with negative MRD.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the case of negative landmark MRD, there was no significant difference between the DFS of (1) those who received AT and those who did not in stage IB patients with high-risk factors ( P = .974)."
+  },
+  {
+    "id": "3",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "No significant difference in DFS for EGFR-mutant patients with or without adjuvant chemotherapy before adjuvant targeted therapy, when MRD is negative.",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "0.502",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No DFS difference in EGFR-mutant with negative MRD.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the case of negative landmark MRD, there was no significant difference between the DFS of (2) epidermal growth factor receptor ( EGFR )-mutant patients with or without adjuvant chemotherapy before adjuvant targeted therapy ( P = .502)."
+  },
+  {
+    "id": "4",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "No significant difference in DFS for EGFR/ALK wild-type patients with or without adjuvant immunotherapy, when MRD is negative.",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "0.534",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "No DFS difference in EGFR/ALK wild-type with negative MRD.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "In the case of negative landmark MRD, there was no significant difference between the DFS of (3) EGFR / ALK wild-type with or without adjuvant immunotherapy ( P = .534)."
+  },
+  {
+    "id": "5",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/undefined.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Clearance of ctDNA during adjuvant therapy is associated with better prognosis than persistently detected ctDNA.",
+      "trial_name": null,
+      "endpoint": "prognosis",
+      "endpoint_type": "exploratory",
+      "result_direction": "superior",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": "<0.001",
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "ctDNA clearance during AT indicates better prognosis.",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "gpt-4o",
+      "extracted_date": "2026-05-09",
+      "model_version": "gpt-4o",
+      "source_quote_hash": null
+    },
+    "source_quote": "Clearance of ctDNA during AT was associated with a better prognosis than persistently detected ctDNA ( P < .001)."
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "HEM-MRD-TRAIT-001",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42036772",
+      "title": "Minimal Residual Disease as a Biological Trait: Rethinking Disease Persistence in Hematologic Malignancies.",
+      "journal": "Eur J Haematol",
+      "year": 2026,
+      "authors_short": "Caserta et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42036772.md"
+    },
+    "scope": {
+      "cancer": "hematologic",
+      "stages": null,
+      "setting": null,
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "MRD is proposed as a multidimensional biological trait across five interacting axes: clonal fitness, phenotypic plasticity, metabolic adaptability, immune evasion, and microenvironmental dependence",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "MRD redefined as dynamic biological trait with five functional dimensions",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "34b641ac"
+    }
+  }
+]

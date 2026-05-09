@@ -442,5 +442,1370 @@
       "seed_source": "physicianFAQ.js"
     },
     "source_excerpt": "Looking through the paper for information about PhasED-Seq, LOD95, and clinical sensitivity comparisons...\n\nNO_MATCH"
+  },
+  {
+    "id": "LNG-MRD-NSCLC-001",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "165 patients with stage IA to IIIB NSCLC who had undergone confirmed R0 resection were enrolled with blood samples collected 1 month after surgery before initiation of adjuvant therapy",
+      "n": 165,
+      "effect_summary": "Study enrolled 165 patients with stage IA-IIIB NSCLC post-R0 resection"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "effe4bab"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "35 out of 165 patients experienced relapses",
+      "n": 165,
+      "effect_summary": "21.2% relapse rate in post-surgical NSCLC patients"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "effe4bab"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Positive MRD at landmark was associated with shorter disease-free survival than negative MRD",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "primary",
+      "result_direction": "positive",
+      "hr": 12,
+      "p_value": 0.001,
+      "effect_summary": "Positive MRD associated with 12-fold increased risk of recurrence (HR=12.0, P<0.001)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "f8e821a1"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "In patients with negative landmark MRD and stage IB with high-risk factors, there was no significant difference in DFS between those who received adjuvant therapy and those who did not",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "p_value": 0.974,
+      "effect_summary": "No DFS benefit from adjuvant therapy in MRD-negative stage IB high-risk patients (P=0.974)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "de9c27bb"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "In patients with negative landmark MRD and EGFR mutations, there was no significant difference in DFS between those with or without adjuvant chemotherapy before adjuvant targeted therapy",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "p_value": 0.502,
+      "effect_summary": "No DFS benefit from adjuvant chemotherapy in MRD-negative EGFR-mutant patients (P=0.502)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "5ae61f4a"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "In patients with negative landmark MRD and EGFR/ALK wild-type tumors, there was no significant difference in DFS with or without adjuvant immunotherapy",
+      "endpoint": "disease-free survival",
+      "endpoint_type": "secondary",
+      "result_direction": "no-difference",
+      "p_value": 0.534,
+      "effect_summary": "No DFS benefit from adjuvant immunotherapy in MRD-negative EGFR/ALK wild-type patients (P=0.534)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "83518e00"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "LNG-MRD-NSCLC-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42090629",
+      "title": "Potential of Minimal Residual Disease in Guiding Adjuvant Therapy Decisions in Non-Small Cell Lung Cancer.",
+      "journal": "JCO Precis Oncol",
+      "year": 2026,
+      "authors_short": "Lei et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42090629.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IA",
+        "IB",
+        "II",
+        "IIIA",
+        "IIIB"
+      ],
+      "setting": "adjuvant",
+      "test_category": "MRD"
+    },
+    "finding": {
+      "description": "Clearance of ctDNA during adjuvant therapy was associated with better prognosis than persistently detected ctDNA",
+      "endpoint": "prognosis",
+      "endpoint_type": "secondary",
+      "result_direction": "positive",
+      "p_value": 0.001,
+      "effect_summary": "ctDNA clearance during therapy associated with better prognosis (P<0.001)"
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "6684adcc"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Overall concordance between tissue and ctDNA molecular profiling in advanced NSCLC patients",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 67,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "85% concordance between tissue and ctDNA profiling",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "21da58e0"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-002",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "EGFR mutation concordance between tissue and ctDNA in NSCLC",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.1,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "91% concordance for EGFR mutations (Kappa 0.79)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "d5d2076e"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-003",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "KRAS mutation concordance between tissue and ctDNA in NSCLC",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "99% concordance for KRAS mutations (Kappa 0.97)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "b0ce6781"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Combined clinical-radiomic-genetic model performance for overall survival prediction",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 91,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.72,
+      "ci_upper": 0.74,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "C-index 0.73 for combined model vs 0.62 for clinical-only",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "48cb521c"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Radiomic score as independent predictor of overall survival",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 91,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Radiomic score independently predicts OS (p<0.001)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "48cb521c"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Presence of actionable alterations as independent predictor of overall survival",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 91,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.041,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Actionable alterations independently predict OS (p=0.041)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "48cb521c"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Integrated model performance for disease-free survival prediction",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": null,
+      "result_direction": "superior",
+      "n": 91,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "C-index 0.77 for integrated model vs 0.59 for clinical-only",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a59bfefb"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Baseline ctDNA detection associated with higher disease progression risk in EGFR-mutant NSCLC",
+      "trial_name": null,
+      "endpoint": "disease progression",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 25,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.018,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Detectable baseline ctDNA predicts higher progression risk (p=0.018)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a8689430"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-009",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "Combined clinical-radiogenomic model performance in EGFR-mutant NSCLC subgroup",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 25,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.74,
+      "ci_upper": 0.85,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "C-index 0.80 for combined model in EGFR-mutant subgroup",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "719e2216"
+    }
+  },
+  {
+    "id": "LNG-RADIOGEN-NSCLC-010",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42095156",
+      "title": "Radiogenomic approach combining CT-based radiomics and liquid biopsy improves prognostic stratification in patients with advanced NSCLC.",
+      "journal": "J Liq Biopsy",
+      "year": 2026,
+      "authors_short": "Ranghiero et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42095156.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": [
+        "IV"
+      ],
+      "setting": "metastatic",
+      "test_category": "TDS"
+    },
+    "finding": {
+      "description": "ctDNA molecular clearance rate at first follow-up during targeted therapy",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 21,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "17 of 21 patients achieved ctDNA molecular clearance",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "6d22bff4"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Nine patients with EGFR-mutated NSCLC and co-occurring RET fusions were identified, with median age 54 years",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "9 patients with EGFR-mutated NSCLC and RET fusions identified",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "56d6f471"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "RET fusions were detected at diagnosis in 2 patients and acquired in 7 patients during EGFR-TKI treatment",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RET fusions present at diagnosis (n=2) or acquired during treatment (n=7)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "efa82cee"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median time to detection of acquired RET fusions during EGFR-TKI treatment was 11.4 months",
+      "trial_name": null,
+      "endpoint": "time to RET fusion detection",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 7,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 11.4,
+      "effect_summary": "Median time to acquired RET fusion detection: 11.4 months",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "efa82cee"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "The most common EGFR mutation was exon 19 deletion in 6 patients, followed by L858R in 1 patient and exon 20 insertions in 2 patients",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "EGFR mutations: exon 19 del (n=6), L858R (n=1), exon 20 ins (n=2)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "052b790f"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Six patients treated with third-generation EGFR-TKIs in first-line had median PFS of 13.5 ± 9.2 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 6,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 13.5,
+      "effect_summary": "Median PFS with 3rd-gen EGFR-TKIs: 13.5 ± 9.2 months (n=6)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "5378b83b"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "One patient treated with second-generation EGFR-TKI afatinib in first-line had PFS of 8.7 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 1,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 8.7,
+      "effect_summary": "PFS with afatinib: 8.7 months (n=1)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "44b360f7"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Four patients treated with chemo-immunotherapy in second-line had median PFS of 6.5 ± 2.5 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 4,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 6.5,
+      "effect_summary": "Median PFS with chemo-immunotherapy: 6.5 ± 2.5 months (n=4)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "422ea6e3"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "One patient treated with chemotherapy alone in second-line had PFS of 0.3 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 1,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 0.3,
+      "effect_summary": "PFS with chemotherapy: 0.3 months (n=1)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "499e6f6c"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-009",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Three patients treated with combined osimertinib and pralsetinib had PFS ranging from 3.9 to 10.5 months",
+      "trial_name": null,
+      "endpoint": "progression-free survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 3,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "PFS with combined osimertinib+pralsetinib: 3.9-10.5 months (n=3)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "aadcb85f"
+    }
+  },
+  {
+    "id": "LNG-NNGM-RETFUSION-010",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42055889",
+      "title": "A Retrospective, Multicenter Analysis Within the National Network Genomic Medicine Lung Cancer in Germany to Detect RET Fusions as a Possible Mechanism of Resistance in Patients With EGFR Mutations.",
+      "journal": "Clin Lung Cancer",
+      "year": 2026,
+      "authors_short": "Kropf-Sanchen et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42055889.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "metastatic",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Median overall survival for the entire cohort was 27 months with 4 patients still alive at last follow-up",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 9,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": 27,
+      "effect_summary": "Median OS: 27 months (range 7 to >30 months), 4 patients alive",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9680f71d"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "LNG-CFNDA-EPIFRAQ-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "42023873",
+      "title": "Beyond mutations: epigenetic and fragmentomic landscapes of cfDNA in lung cancer.",
+      "journal": "Expert Rev Mol Diagn",
+      "year": 2026,
+      "authors_short": "Liu J et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42023873.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": "screening",
+      "test_category": "ECD"
+    },
+    "finding": {
+      "description": "cfDNA epigenetic and fragmentomic analyses represent a transformative frontier in lung cancer diagnostics and monitoring with significant potential",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "cfDNA epigenetic and fragmentomic analyses show transformative potential in lung cancer diagnostics",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a707debd"
+    }
+  },
+  {
+    "id": "LNG-CFNDA-EPIFRAQ-002",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42023873",
+      "title": "Beyond mutations: epigenetic and fragmentomic landscapes of cfDNA in lung cancer.",
+      "journal": "Expert Rev Mol Diagn",
+      "year": 2026,
+      "authors_short": "Liu J et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42023873.md"
+    },
+    "scope": {
+      "cancer": "lung",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Most cfDNA epigenetic and fragmentomic studies are limited by modest cohort sizes and reports of survival benefits, requiring large-scale validation",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Current studies limited by small cohorts, need large-scale validation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a707debd"
+    }
   }
 ]

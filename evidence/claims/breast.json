@@ -423,5 +423,1201 @@
       "model_version": "claude-sonnet-4-20250514",
       "source_quote_hash": "1f1ad214"
     }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-001",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Oncotype DX recurrence score risk-category discordance occurred in 21% of bilateral breast cancer cases and 24.7% of unilateral multifocal cases",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 131,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RS discordance: 21% bilateral, 24.7% unilateral multifocal",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1ae57756"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-002",
+    "type": "clinical_utility",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Recurrence score discordance led to chemotherapy escalation in half of the discordant cases",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "50% of discordant cases received chemotherapy escalation",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "84cb71e7"
+    }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In bilateral breast cancer, progesterone receptor score difference was significantly associated with absolute recurrence score difference",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 38,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": 0.44,
+      "ci_upper": 3.46,
+      "p_value": 0.013,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "PR score difference associated with RS difference (β=1.95, p=0.013)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "68162f28"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "In unilateral multifocal disease, absolute recurrence score difference was independently associated with differences in HER2, progesterone receptor, and estrogen receptor scores",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 93,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "HER2, PR, and ER score differences associated with RS difference (all P<0.05)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "f2330004"
+    }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Recurrence score correlation between paired tumors was higher in unilateral multifocal than in bilateral disease",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 131,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "RS correlation: unilateral r=0.66 vs bilateral r=0.36",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "89790a7b"
+    }
+  },
+  {
+    "id": "BRC-ONCOTYPE-MULTI-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "41697472",
+      "title": "Clinical Utility of Oncotype DX Testing in Synchronous Bilateral and Unilateral Multifocal Breast Cancer.",
+      "journal": "Ann Surg Oncol",
+      "year": 2026,
+      "authors_short": "Ryu et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/41697472.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Disease-free survival showed a consistent, although nonsignificant, trend toward poorer outcomes in discordant cases across both bilateral and unilateral multifocal cohorts",
+      "trial_name": null,
+      "endpoint": "disease-free survival",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": 131,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Nonsignificant trend toward worse DFS in discordant cases",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "72906137"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Among patients with HR-positive/HER2-negative breast cancer and high Oncotype DX recurrence scores (>25), 10.9% declined chemotherapy",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination rate",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 30326,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "10.9% of patients with high recurrence scores declined chemotherapy",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "a1126208"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Among patients who declined chemotherapy, 15.5% also declined hormonal therapy",
+      "trial_name": null,
+      "endpoint": "hormonal therapy declination rate",
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "15.5% of CT decliners also declined hormonal therapy",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "5106f648"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Higher Oncotype DX recurrence scores were associated with lower odds of chemotherapy declination",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": null,
+      "hr": null,
+      "or": 0.97,
+      "rr": null,
+      "ci_lower": 0.96,
+      "ci_upper": 0.97,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Higher RS associated with lower CT declination (aOR 0.97, 95% CI 0.96-0.97)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "19805d17"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Hispanic race was associated with lower odds of chemotherapy declination compared to other racial groups",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination",
+      "endpoint_type": null,
+      "result_direction": "negative",
+      "n": null,
+      "hr": null,
+      "or": 0.83,
+      "rr": null,
+      "ci_lower": 0.7,
+      "ci_upper": 0.98,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Hispanic race associated with lower CT declination (aOR 0.83, 95% CI 0.70-0.98)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "2b78b807"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Black race was associated with higher odds of chemotherapy declination",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": 1.29,
+      "rr": null,
+      "ci_lower": 1.15,
+      "ci_upper": 1.45,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Black race associated with higher CT declination (aOR 1.29, 95% CI 1.15-1.45)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "66eac7ac"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-006",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients on Medicaid had higher odds of chemotherapy declination compared to those with private insurance",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": 1.53,
+      "rr": null,
+      "ci_lower": 1.31,
+      "ci_upper": 1.79,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Medicaid insurance associated with higher CT declination (aOR 1.53, 95% CI 1.31-1.79)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1361f117"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-007",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Patients on Medicare had higher odds of chemotherapy declination compared to those with private insurance",
+      "trial_name": null,
+      "endpoint": "chemotherapy declination",
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": null,
+      "hr": null,
+      "or": 1.19,
+      "rr": null,
+      "ci_lower": 1.05,
+      "ci_upper": 1.34,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Medicare insurance associated with higher CT declination (aOR 1.19, 95% CI 1.05-1.34)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "1361f117"
+    }
+  },
+  {
+    "id": "BRC-CT-DECLINE-HIGH-RS-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42048620",
+      "title": "Chemotherapy Declination Among Patients With Early-Stage Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Negative Breast Cancer and High Oncotype DX Recurrence Scores.",
+      "journal": "JCO Oncol Pract",
+      "year": 2026,
+      "authors_short": "Jackson et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42048620.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": [
+        "I",
+        "II"
+      ],
+      "setting": "adjuvant",
+      "test_category": null
+    },
+    "finding": {
+      "description": "Chemotherapy declination was associated with increased risk of death in propensity score-matched analysis",
+      "trial_name": null,
+      "endpoint": "overall survival",
+      "endpoint_type": "primary",
+      "result_direction": "inferior",
+      "n": null,
+      "hr": 1.43,
+      "or": null,
+      "rr": null,
+      "ci_lower": 1.2,
+      "ci_upper": 1.69,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "CT declination associated with increased death risk (aHR 1.43, 95% CI 1.20-1.69)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "aabc4e2c"
+    },
+    "verification": {
+      "agreement": true,
+      "verified_by": "gpt-4o",
+      "verified_date": "2026-05-09"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-001",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "TGIRT-seq analysis identified 43 significantly differentially expressed genes in IBC vs non-IBC FFPE tumor samples",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 43,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "43 significantly DE genes (28 protein-coding + 15 noncoding) in IBC vs non-IBC tumors",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "d74e2f5a"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-002",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "TGIRT-seq analysis identified 637 significantly differentially expressed genes in IBC vs non-IBC FFPE tumor samples at relaxed criteria",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 637,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.05,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "637 significantly DE genes (222 protein-coding + 415 noncoding) in IBC vs non-IBC tumors",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ef8e3950"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-003",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "TGIRT-seq identified 374 differentially expressed genes in IBC patient PBMCs versus both healthy donor and non-IBC patient PBMCs",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 374,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "374 DE genes (149 protein-coding + 225 other) in IBC vs healthy/non-IBC PBMCs",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "9d636b11"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-004",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Study cohort included 10 IBC patients with FFPE tumor tissue and paired PBMC and plasma samples",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 10,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "10 IBC patients with tumor, PBMC, and plasma samples analyzed",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "c0161ce3"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-005",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Study cohort included 6 non-IBC patients and 13 healthy female donors as controls",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 19,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Control cohort included 6 non-IBC patients + 13 healthy donors",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "0cf319f1"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-006",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "TRBJ1-6 RNA fragments were detected in all 10 IBC plasma samples but none of the healthy or non-IBC plasma samples",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 10,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 1,
+      "specificity": 1,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "TRBJ1-6 RNA fragments: 100% sensitivity and specificity for IBC",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "ab775bc0"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-007",
+    "type": "diagnostic_performance",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "TRBJ1-1 RNA fragments were detected in 4 IBC plasma samples but none of the healthy or non-IBC plasma samples",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": "positive",
+      "n": 10,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": 0.4,
+      "specificity": 1,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "TRBJ1-1 RNA fragments: 40% sensitivity, 100% specificity for IBC",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "25a1964a"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-008",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Potential RNA biomarkers identified in IBC plasma samples included 30 protein-coding gene RNAs and 39 Repeat-element RNAs",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 69,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "69 potential plasma biomarkers identified (30 protein-coding + 39 Repeat-element RNAs)",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "b716bada"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-009",
+    "type": "methodology_note",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "Libraries were sequenced on Illumina NextSeq to obtain 12.3 to 81.6 million reads per sample",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": null,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": null,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "Sequencing generated 12.3-81.6 million reads per sample",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "0c0b11ec"
+    }
+  },
+  {
+    "id": "BRC-IBC-TGIRT-010",
+    "type": "trial_result",
+    "source": {
+      "pmid": "42066072",
+      "title": "Pervasive enhanced transcription in inflammatory breast cancer tumors and PBMCs impacts RNA splicing and intronic RNAs in plasma.",
+      "journal": "Sci Adv",
+      "year": 2026,
+      "authors_short": "Wylie et al.",
+      "source_type": "journal-article",
+      "raw_file": "raw/papers/42066072.md"
+    },
+    "scope": {
+      "cancer": "breast",
+      "stages": null,
+      "setting": null,
+      "test_category": null
+    },
+    "finding": {
+      "description": "IBC patient PBMCs had significantly overexpressed protein-coding genes including 378 for genome mapping vs only 48 for transcriptome mapping",
+      "trial_name": null,
+      "endpoint": null,
+      "endpoint_type": null,
+      "result_direction": null,
+      "n": 378,
+      "hr": null,
+      "or": null,
+      "rr": null,
+      "ci_lower": null,
+      "ci_upper": null,
+      "p_value": 0.001,
+      "sensitivity": null,
+      "specificity": null,
+      "ppv": null,
+      "npv": null,
+      "follow_up_months": null,
+      "effect_summary": "378 overexpressed genes (genome mapping) vs 48 (transcriptome mapping) suggests rate-limiting splicing",
+      "guideline_body": null,
+      "recommendation_strength": null,
+      "evidence_level": null
+    },
+    "extraction": {
+      "extracted_by": "claude",
+      "extracted_date": "2026-05-09",
+      "model_version": "claude-sonnet-4-20250514",
+      "source_quote_hash": "5264726f"
+    }
   }
 ]
