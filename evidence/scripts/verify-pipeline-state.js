@@ -22,8 +22,12 @@
  *      sources.json (no orphan papers).
  *   3. Every claim's source.pmid (across evidence/claims/*.json) appears in
  *      sources.json — claims should never reference unregistered PMIDs.
- *   4. If --expected-head <sha> is supplied, asserts it matches HEAD.
- *   5. If --require-clean-push is supplied, asserts `git rev-parse HEAD`
+ *   4. src/data/tests/*.json files parse as JSON arrays and have not shrunk
+ *      by more than 25% (bytes) or 25% (array length) versus their previous
+ *      committed version on this branch. Driven by the 2026-05-09 incident
+ *      where the scan truncated ecd.json from 3,803 lines to 3.
+ *   5. If --expected-head <sha> is supplied, asserts it matches HEAD.
+ *   6. If --require-clean-push is supplied, asserts `git rev-parse HEAD`
  *      matches `git rev-parse @{u}` (i.e. the push actually landed).
  *
  * Usage:
@@ -57,6 +61,9 @@ const PROJECT_ROOT = resolve(__dirname, "../..");
 const SOURCES_PATH = resolve(PROJECT_ROOT, "evidence/meta/sources.json");
 const PAPERS_DIR = resolve(PROJECT_ROOT, "evidence/raw/papers");
 const CLAIMS_DIR = resolve(PROJECT_ROOT, "evidence/claims");
+const DATA_TESTS_DIR = resolve(PROJECT_ROOT, "src/data/tests");
+const DATA_TESTS_FILES = ["mrd.json", "ecd.json", "trm.json", "cgp.json", "hct.json"];
+const DATA_SHRINK_LIMIT = 0.25;
 
 function parseArgs(argv) {
   const args = { json: false, expectedHead: null, requireCleanPush: false };
@@ -127,6 +134,102 @@ function gitRevParse(ref) {
   }
 }
 
+function gitShowFile(rev, relPath) {
+  try {
+    return execSync(`git -C "${PROJECT_ROOT}" show ${rev}:${relPath}`, {
+      stdio: ["ignore", "pipe", "pipe"],
+      maxBuffer: 64 * 1024 * 1024,
+    }).toString();
+  } catch {
+    return null;
+  }
+}
+
+function checkDataTestsIntegrity({
+  dataTestsDir = DATA_TESTS_DIR,
+  filenames = DATA_TESTS_FILES,
+  shrinkLimit = DATA_SHRINK_LIMIT,
+  showPrev = (rel) => gitShowFile("HEAD", rel),
+} = {}) {
+  const errors = [];
+  const summary = {};
+  // Skip entirely if the data dir does not exist — caller may be a non-production
+  // tree (test fixture, partial checkout). This is not a failure mode we guard.
+  if (!existsSync(dataTestsDir)) {
+    return { errors, summary };
+  }
+  for (const filename of filenames) {
+    const abs = resolve(dataTestsDir, filename);
+    const rel = `src/data/tests/${filename}`;
+    if (!existsSync(abs)) {
+      errors.push(`${rel}: file missing`);
+      summary[filename] = { error: "missing" };
+      continue;
+    }
+    const currentRaw = readFileSync(abs, "utf-8");
+    let currentArr;
+    try {
+      currentArr = JSON.parse(currentRaw);
+    } catch (e) {
+      errors.push(`${rel}: invalid JSON — ${e.message}`);
+      summary[filename] = { error: "invalid_json" };
+      continue;
+    }
+    if (!Array.isArray(currentArr)) {
+      errors.push(`${rel}: expected top-level JSON array, got ${typeof currentArr}`);
+      summary[filename] = { error: "not_array" };
+      continue;
+    }
+
+    const prevRaw = showPrev(rel);
+    if (prevRaw == null) {
+      summary[filename] = { entries: currentArr.length, bytes: currentRaw.length, baseline: "none" };
+      continue;
+    }
+    let prevArr;
+    try {
+      prevArr = JSON.parse(prevRaw);
+    } catch {
+      summary[filename] = {
+        entries: currentArr.length,
+        bytes: currentRaw.length,
+        baseline: "unparseable_prev",
+      };
+      continue;
+    }
+    if (!Array.isArray(prevArr)) {
+      summary[filename] = {
+        entries: currentArr.length,
+        bytes: currentRaw.length,
+        baseline: "prev_not_array",
+      };
+      continue;
+    }
+    const byteShrink = prevRaw.length > 0 ? 1 - currentRaw.length / prevRaw.length : 0;
+    const entryShrink = prevArr.length > 0 ? 1 - currentArr.length / prevArr.length : 0;
+    const limit = shrinkLimit;
+    summary[filename] = {
+      entries: currentArr.length,
+      prev_entries: prevArr.length,
+      bytes: currentRaw.length,
+      prev_bytes: prevRaw.length,
+      byte_shrink: +byteShrink.toFixed(3),
+      entry_shrink: +entryShrink.toFixed(3),
+    };
+    if (byteShrink > limit) {
+      errors.push(
+        `${rel}: byte size shrank ${(byteShrink * 100).toFixed(1)}% (${prevRaw.length}→${currentRaw.length}) — refusing as likely truncation`
+      );
+    }
+    if (entryShrink > limit) {
+      errors.push(
+        `${rel}: array entries shrank ${(entryShrink * 100).toFixed(1)}% (${prevArr.length}→${currentArr.length}) — refusing as likely truncation`
+      );
+    }
+  }
+  return { errors, summary };
+}
+
 function runChecks(args) {
   const errors = [];
   const stats = {};
@@ -178,6 +281,11 @@ function runChecks(args) {
     }
   }
 
+  // ---- src/data/tests/*.json integrity (truncation guard) ----
+  const dataIntegrity = checkDataTestsIntegrity();
+  stats.data_tests = dataIntegrity.summary;
+  errors.push(...dataIntegrity.errors);
+
   // ---- git checks ----
   const head = gitRevParse("HEAD");
   stats.git_head = head;
@@ -221,7 +329,14 @@ function main() {
     console.log(`Pipeline state verification`);
     console.log(`---------------------------`);
     for (const [k, v] of Object.entries(result.stats)) {
-      console.log(`  ${k}: ${v}`);
+      if (v !== null && typeof v === "object") {
+        console.log(`  ${k}:`);
+        for (const [fk, fv] of Object.entries(v)) {
+          console.log(`    ${fk}: ${typeof fv === "object" ? JSON.stringify(fv) : fv}`);
+        }
+      } else {
+        console.log(`  ${k}: ${v}`);
+      }
     }
     if (result.ok) {
       console.log(`\nOK — sources.json, raw/papers, claims, and git state are consistent.`);
@@ -239,4 +354,4 @@ const isMain =
   process.argv[1] && realpathSafe(resolve(process.argv[1])) === realpathSafe(resolve(__filename));
 if (isMain) main();
 
-export { runChecks, gitRevParse };
+export { runChecks, gitRevParse, checkDataTestsIntegrity };
