@@ -25,6 +25,11 @@ npm run test:smoke       # Quick validation
 - `/store` - Write current state to SESSION_STATE.md
 - `/triage` - Research and triage weekly crawler submissions (supersedes /proposals)
 - `/proposals` - Review pending proposals (legacy, prefer /triage)
+- `/weekly` - Walk through the Weekly OpenOnco Scan report (or auto-fires, see below)
+
+## Auto-trigger: Weekly Scan reports
+
+When the user's message contains the line `# Weekly OpenOnco Scan — YYYY-MM-DD` (the header emitted by `weekly-reports/*.md`), **invoke `/weekly` automatically without being asked**. The user pastes the email body straight in; don't make them remember the command. Same applies if the user just says "weekly", "the report", or "the email" and a recent `weekly-reports/*.md` exists.
 
 ## Project Overview
 
