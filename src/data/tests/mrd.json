@@ -218,7 +218,7 @@
     "tatCitations": "Vendor data (Dan Norton, Personalis, Dec 2025)",
     "tatNotes": "Initial report: 21 days; follow-up monitoring: 10 days (vendor-confirmed Dec 2025).",
     "fdaStatus": "CLIA LDT (early access / clinical offering)",
-    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance and stage I-III NSCLC surveillance (Feb 2026); additional solid tumor coverage via Tempus xM collaboration expanding.",
+    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance, stage I-III NSCLC surveillance (Feb 2026), and immunotherapy monitoring across late-stage solid tumors (May 2026); additional solid tumor coverage via Tempus xM collaboration expanding.",
     "commercialPayers": [],
     "commercialPayersNotes": "Aetna: Not covered (CPB 0352) — ctDNA MRD classified as not medically necessary under tumor markers policy.",
     "cptCodes": "MolDX with DEX Z-code",
@@ -247,12 +247,13 @@
       "coveredIndications": [
         "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
         "Post-treatment surveillance up to 6 years",
-        "Stage I-III NSCLC surveillance (effective Feb 2026)"
+        "Stage I-III NSCLC surveillance (effective Feb 2026)",
+        "Immunotherapy monitoring across late-stage solid tumors (effective May 2026)"
       ],
       "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
       "cptCode": null,
-      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. NSCLC surveillance coverage announced Feb 2026.",
-      "lastVerified": "2026-03-23",
+      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. NSCLC surveillance coverage announced Feb 2026. Immunotherapy monitoring coverage announced May 13, 2026 (supported by VHIO data).",
+      "lastVerified": "2026-05-16",
       "reimbursementDetails": {
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
@@ -642,7 +643,7 @@
     "followUpTatNotes": "Serial MRD monitoring blood draws generally reported within ~7 days after receipt.",
     "tat": 35,
     "tatNotes": "Approximate TAT ~5 weeks baseline, ~1 week longitudinally.",
-    "fdaStatus": "CLIA LDT",
+    "fdaStatus": "CLIA LDT; FDA Breakthrough Device Designation for MRD detection in early-stage solid tumors. RaDaR ST (next-gen) clinically launched Q1 2026; Natera patent litigation resolved (voluntary withdrawal).",
     "reimbursement": "Medicare coverage for selected indications; MolDX framework applied.",
     "reimbursementNote": "LCDs describe coverage in specific solid tumors (e.g., breast and HPV-negative head & neck cancer) with broader multi-tumor positioning in trials.",
     "commercialPayers": [
@@ -1010,7 +1011,7 @@
     "tat": 28,
     "tatCitations": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/faq/",
     "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
-    "fdaStatus": "CLIA LDT; PMA submitted for CDx indication in muscle-invasive bladder cancer with atezolizumab (Feb 2026, based on IMvigor011 Phase 3). Not yet FDA-cleared/approved.",
+    "fdaStatus": "FDA-approved CDx (PMA, May 15, 2026) — Signatera CDx approved as companion diagnostic for adjuvant atezolizumab in ctDNA-positive muscle-invasive bladder cancer (MIBC); first blood-based MRD companion diagnostic. Also CLIA LDT for pan-tumor MRD monitoring.",
     "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
     "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
     "commercialPayers": [
@@ -1047,7 +1048,7 @@
     "independentValidation": "Yes",
     "independentValidationNotes": "Multiple peer-reviewed and prospective studies across tumors.",
     "exampleTestReport": "https://www.natera.com/resource-library/signatera/signatera-patient-test-sample-report/",
-    "clinicalTrials": "BESPOKE CRC (NCT04264702, ~2,000 stage I–IV CRC pts); IMvigor011 (Phase 3, MIBC ctDNA-guided adjuvant atezolizumab); ALTAIR (FTD/TPI in Signatera-positive CRC, updated ASCO GI Jan 2026); SIGNAL-EMC 101 (endometrial cancer, de-escalation of vaginal radiation in Signatera-negative pts)",
+    "clinicalTrials": "BESPOKE CRC (NCT04264702, ~2,000 stage I–IV CRC pts); IMvigor011 (Phase 3, MIBC ctDNA-guided adjuvant atezolizumab — FDA CDx approved May 2026); ALTAIR (FTD/TPI in Signatera-positive CRC, updated ASCO GI Jan 2026); SINERGY (Phase 2, R/M HNSCC, MRD-guided chemo de-escalation — 63% ORR, 74% de-escalated, Feb 2026); SIGNAL-EMC 101 (endometrial cancer, de-escalation of vaginal radiation in Signatera-negative pts)",
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT04264702 | https://www.natera.com/company/news/natera-submits-signatera-cdx-pma-to-fda/ | https://www.natera.com/company/news/natera-presents-updated-analyses-from-altair-clinical-trial-at-asco-gi/",
     "clinicalSettings": [
       "Neoadjuvant",
