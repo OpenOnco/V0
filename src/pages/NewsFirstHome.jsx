@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 
 import { useAacrHome, useAacrFeed, useNewsFeed, pinArticle, unpinArticle, killArticle } from '../dal/news';
 import { getEditSecret } from '../utils/editSecret';
+import { isBasecallHost } from '../utils/host';
 import { useAllTests } from '../dal/hooks/useTests';
 import LinkedArticleText from '../components/LinkedArticleText';
 import VendorPopup from '../components/VendorPopup';
@@ -391,7 +392,7 @@ export default function NewsFirstHome({ onNavigate, editMode = false }) {
       <header className="mb-8">
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-            OpenOnco News
+            {isBasecallHost() ? 'BaseCall' : 'OpenOnco News'}
           </h1>
           <button
             onClick={() => setShowTipBox(true)}

@@ -1,9 +1,28 @@
 import { getSiteConfig } from '../data';
 import { useAllTests } from '../dal/hooks/useTests';
+import { isBasecallHost } from '../utils/host';
 
 const Header = ({ currentPage, onNavigate }) => {
   const { tests: allTests } = useAllTests();
   const testCount = allTests?.length || 213;
+  const basecall = isBasecallHost();
+
+  if (basecall) {
+    return (
+      <header className="bg-white border-b-2 border-brand-600 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+          <button
+            type="button"
+            className="cursor-pointer flex items-center bg-transparent border-none p-0 flex-shrink-0"
+            onClick={() => onNavigate('news-home')}
+            aria-label="BaseCall home"
+          >
+            <img src="/basecall-wordmark.svg" alt="BaseCall" className="h-8 sm:h-10" />
+          </button>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="bg-white border-b-2 border-brand-600 sticky top-0 z-40">

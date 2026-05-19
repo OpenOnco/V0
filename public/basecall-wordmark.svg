@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 978 122" role="img" aria-labelledby="title desc">
+  <title id="title">BaseCall wordmark</title>
+  <desc id="desc">Eight rounded tiles spelling BaseCall in alternating blue, cyan, green, and orange blocks.</desc>
+  <defs>
+    <linearGradient id="tile-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c7cff"/>
+      <stop offset="100%" stop-color="#2f58d8"/>
+    </linearGradient>
+    <linearGradient id="tile-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#62b1d0"/>
+      <stop offset="100%" stop-color="#3f87b7"/>
+    </linearGradient>
+    <linearGradient id="tile-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58b786"/>
+      <stop offset="100%" stop-color="#418b68"/>
+    </linearGradient>
+    <linearGradient id="tile-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e79a3a"/>
+      <stop offset="100%" stop-color="#cc7a20"/>
+    </linearGradient>
+    <filter id="tile-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#tile-shadow)" font-family="'Avenir Next', 'Segoe UI', Arial, sans-serif" font-size="58" font-weight="500" text-anchor="middle" fill="#ffffff">
+    <g transform="translate(8 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-blue)"/>
+      <text x="53" y="68">B</text>
+    </g>
+    <g transform="translate(128 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-cyan)"/>
+      <text x="53" y="68">A</text>
+    </g>
+    <g transform="translate(248 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-green)"/>
+      <text x="53" y="68">S</text>
+    </g>
+    <g transform="translate(368 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-orange)"/>
+      <text x="53" y="68">E</text>
+    </g>
+    <g transform="translate(504 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-blue)"/>
+      <text x="53" y="68">C</text>
+    </g>
+    <g transform="translate(624 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-cyan)"/>
+      <text x="53" y="68">A</text>
+    </g>
+    <g transform="translate(744 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-green)"/>
+      <text x="53" y="68">L</text>
+    </g>
+    <g transform="translate(864 8)">
+      <rect width="106" height="106" rx="16" fill="url(#tile-orange)"/>
+      <text x="53" y="68">L</text>
+    </g>
+  </g>
+</svg>

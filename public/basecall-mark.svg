@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234 234" role="img" aria-labelledby="title desc">
+  <title id="title">BaseCall compact mark</title>
+  <desc id="desc">A compact four-tile Base mark using blue, cyan, green, and orange rounded squares.</desc>
+  <defs>
+    <linearGradient id="mark-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c7cff"/>
+      <stop offset="100%" stop-color="#2f58d8"/>
+    </linearGradient>
+    <linearGradient id="mark-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#62b1d0"/>
+      <stop offset="100%" stop-color="#3f87b7"/>
+    </linearGradient>
+    <linearGradient id="mark-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58b786"/>
+      <stop offset="100%" stop-color="#418b68"/>
+    </linearGradient>
+    <linearGradient id="mark-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e79a3a"/>
+      <stop offset="100%" stop-color="#cc7a20"/>
+    </linearGradient>
+    <filter id="mark-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#mark-shadow)" font-family="'Avenir Next', 'Segoe UI', Arial, sans-serif" font-size="50" font-weight="500" text-anchor="middle" fill="#ffffff">
+    <g transform="translate(12 12)">
+      <rect width="98" height="98" rx="18" fill="url(#mark-blue)"/>
+      <text x="49" y="63">B</text>
+    </g>
+    <g transform="translate(124 12)">
+      <rect width="98" height="98" rx="18" fill="url(#mark-cyan)"/>
+      <text x="49" y="63">A</text>
+    </g>
+    <g transform="translate(12 124)">
+      <rect width="98" height="98" rx="18" fill="url(#mark-green)"/>
+      <text x="49" y="63">S</text>
+    </g>
+    <g transform="translate(124 124)">
+      <rect width="98" height="98" rx="18" fill="url(#mark-orange)"/>
+      <text x="49" y="63">E</text>
+    </g>
+  </g>
+</svg>

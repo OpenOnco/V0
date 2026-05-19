@@ -74,6 +74,7 @@ import { TIER1_FIELDS, PARAMETER_DEFINITIONS, PARAMETER_CHANGELOG, FIELD_DEFINIT
 import { PATIENT_INFO_CONTENT } from './config/patientContent';
 import { calculateTier1Metrics, calculateCategoryMetrics } from './utils/testMetrics';
 import { matchesEditSecret } from './utils/editSecret';
+import { isBasecallHost } from './utils/host';
 import Checkbox from './components/ui/Checkbox';
 import FilterSection from './components/ui/FilterSection';
 import Badge from './components/ui/Badge';
@@ -112,7 +113,9 @@ import { useAllTests, useTestCounts, useTestsByCategories, useVendors, useChange
 // SEO Component - Dynamic meta tags
 // ============================================
 const SEO = ({ title, description, path = '/', type = 'website', structuredData = null }) => {
-  const fullTitle = title ? `${title} | ${SEO_DEFAULTS.siteName}` : SEO_DEFAULTS.siteName;
+  const basecall = isBasecallHost();
+  const siteName = basecall ? 'BaseCall' : SEO_DEFAULTS.siteName;
+  const fullTitle = title ? `${title} | ${siteName}` : siteName;
   const fullUrl = `${SEO_DEFAULTS.siteUrl}${path}`;
   const desc = description || SEO_DEFAULTS.defaultDescription;
 
@@ -121,13 +124,15 @@ const SEO = ({ title, description, path = '/', type = 'website', structuredData 
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
       <link rel="canonical" href={fullUrl} />
+      {basecall && <link rel="icon" type="image/svg+xml" href="/basecall-favicon.svg" />}
+      {basecall && <link rel="apple-touch-icon" href="/basecall-favicon.svg" />}
 
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={desc} />
       <meta property="og:url" content={fullUrl} />
       <meta property="og:type" content={type} />
-      <meta property="og:site_name" content={SEO_DEFAULTS.siteName} />
+      <meta property="og:site_name" content={siteName} />
       <meta property="og:image" content={SEO_DEFAULTS.defaultImage} />
 
       {/* Twitter */}
@@ -1029,7 +1034,7 @@ export default function App() {
   // New plain-language URLs: /risk, /screen, /treat, /monitor
   // Legacy URLs redirect: /mrd→/monitor, /ecd→/screen, /trm→/monitor, /tds→/treat
   const pathToPage = {
-    '/': 'news-home',
+    '/': 'landing',
     '/landing': 'landing',  // legacy: the old marketing landing page, kept for fallback
     '/database': 'home',
     '/testdata': 'home',  // plan decision 1b: test directory relocates here
@@ -1150,6 +1155,12 @@ export default function App() {
   // Initialize currentPage from URL path (handles /mrd/signatera style URLs)
   const getInitialPage = () => {
     const path = window.location.pathname.toLowerCase();
+    const host = (typeof window !== 'undefined' ? window.location.hostname : '').toLowerCase();
+    const isBasecallHost = host === 'basecall.news' || host === 'www.basecall.news';
+
+    if (isBasecallHost && path === '/') {
+      return { page: 'news-home', testSlug: null, testId: null, persona: null };
+    }
 
     // Check for comparison pages: /compare/signatera-vs-guardant-reveal
     const compareMatch = path.match(/^\/compare\/([a-z0-9-]+)$/);

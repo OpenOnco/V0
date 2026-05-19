@@ -558,7 +558,6 @@ export const RECENTLY_ADDED_TESTS = [
   { id: 'tds-kit-14', name: 'OncoScreen Focus CDx Tissue Kit', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-25', name: 'OncoScreen Focus CDx', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
   { id: 'tds-24', name: 'OncoCompass Target', vendor: 'Burning Rock Dx', category: 'TDS', dateAdded: 'Jan 1, 2026' },
-  { id: 'tds-23', name: 'Resolution ctDx FIRST', vendor: 'Agilent / Resolution Bioscience', category: 'TDS', dateAdded: 'Dec 24, 2025' },
   { id: 'tds-22', name: 'LiquidHALLMARK', vendor: 'Lucence', category: 'TDS', dateAdded: 'Dec 19, 2025' },
   { id: 'mrd-24', name: 'CancerVista', vendor: 'LIQOMICS', category: 'MRD', dateAdded: 'Dec 15, 2025' },
   { id: 'ecd-kit-1', name: 'Cologuard', vendor: 'Exact Sciences', category: 'ECD', dateAdded: 'Dec 14, 2025' },

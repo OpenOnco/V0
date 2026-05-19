@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">BaseCall favicon</title>
+  <desc id="desc">A rounded square icon with four colored tiles and a centered white B.</desc>
+  <defs>
+    <linearGradient id="fav-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c7cff"/>
+      <stop offset="100%" stop-color="#2f58d8"/>
+    </linearGradient>
+    <linearGradient id="fav-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#62b1d0"/>
+      <stop offset="100%" stop-color="#3f87b7"/>
+    </linearGradient>
+    <linearGradient id="fav-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58b786"/>
+      <stop offset="100%" stop-color="#418b68"/>
+    </linearGradient>
+    <linearGradient id="fav-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e79a3a"/>
+      <stop offset="100%" stop-color="#cc7a20"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#fav-blue)"/>
+  <rect x="68" y="4" width="56" height="56" rx="14" fill="url(#fav-cyan)"/>
+  <rect x="4" y="68" width="56" height="56" rx="14" fill="url(#fav-green)"/>
+  <rect x="68" y="68" width="56" height="56" rx="14" fill="url(#fav-orange)"/>
+  <text x="64" y="82" text-anchor="middle" fill="#ffffff" font-family="'Avenir Next', 'Segoe UI', Arial, sans-serif" font-size="64" font-weight="600">B</text>
+</svg>
