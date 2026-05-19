@@ -1034,7 +1034,7 @@ export default function App() {
   // New plain-language URLs: /risk, /screen, /treat, /monitor
   // Legacy URLs redirect: /mrd→/monitor, /ecd→/screen, /trm→/monitor, /tds→/treat
   const pathToPage = {
-    '/': 'landing',
+    '/': 'home',
     '/landing': 'landing',  // legacy: the old marketing landing page, kept for fallback
     '/database': 'home',
     '/testdata': 'home',  // plan decision 1b: test directory relocates here
