@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "name": "CellDx-Tissue",
+    "vendor": "Datar Cancer Genetics",
+    "category": "TDS",
+    "summary": "FDA-cleared comprehensive genomic profiling assay for solid tumors (517 genes, DNA+RNA). Tissue-based CGP test. Datar already tracked in DB as ecd-26 (Trucheck Intelli, a separate liquid biopsy product).",
+    "source": "https://www.prnewswire.com/news-releases/datar-cancer-genetics-receives-landmark-us-fda-clearance-for-celldx-tissue-302772593.html",
+    "fdaAction": "FDA clearance (May 14, 2026)",
+    "dateFound": "2026-05-23"
+  }
+]

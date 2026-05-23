@@ -218,7 +218,7 @@
     "tatCitations": "Vendor data (Dan Norton, Personalis, Dec 2025)",
     "tatNotes": "Initial report: 21 days; follow-up monitoring: 10 days (vendor-confirmed Dec 2025).",
     "fdaStatus": "CLIA LDT (early access / clinical offering)",
-    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance, stage I-III NSCLC surveillance (Feb 2026), and immunotherapy monitoring across late-stage solid tumors (May 2026); additional solid tumor coverage via Tempus xM collaboration expanding.",
+    "reimbursement": "Medicare coverage for stage II-III breast cancer MRD surveillance, stage I-III NSCLC surveillance (Feb 2026), immunotherapy monitoring across late-stage solid tumors (May 2026), and neoadjuvant breast cancer monitoring for Stage II-III TNBC/HER2+ (May 2026, 4th coverage decision); additional solid tumor coverage via Tempus xM collaboration expanding.",
     "commercialPayers": [],
     "commercialPayersNotes": "Aetna: Not covered (CPB 0352) — ctDNA MRD classified as not medically necessary under tumor markers policy.",
     "cptCodes": "MolDX with DEX Z-code",
@@ -248,12 +248,13 @@
         "Stage II and III breast cancer (HR+/HER2-, HER2+, TNBC)",
         "Post-treatment surveillance up to 6 years",
         "Stage I-III NSCLC surveillance (effective Feb 2026)",
-        "Immunotherapy monitoring across late-stage solid tumors (effective May 2026)"
+        "Immunotherapy monitoring across late-stage solid tumors (effective May 2026)",
+        "Neoadjuvant breast cancer monitoring (Stage II-III TNBC/HER2+) (effective May 2026)"
       ],
       "reimbursementRate": "$4,266 (once per diagnosis); $1,164 (up to 6 years post-treatment)",
       "cptCode": null,
-      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. NSCLC surveillance coverage announced Feb 2026. Immunotherapy monitoring coverage announced May 13, 2026 (supported by VHIO data).",
-      "lastVerified": "2026-05-16",
+      "notes": "Medicare coverage announced Nov 2025, effective Oct 7, 2025. NSCLC surveillance coverage announced Feb 2026. Immunotherapy monitoring coverage announced May 13, 2026 (supported by VHIO data). Fourth coverage decision: neoadjuvant breast cancer monitoring (Stage II-III TNBC/HER2+) announced May 20, 2026 (supported by PREDICT-DNA study, 227 pts, published JCO).",
+      "lastVerified": "2026-05-23",
       "reimbursementDetails": {
         "breastMRDMonitoring": "$4,266 (once per diagnosis)",
         "singlePlasmaTest": "$1,164 (up to 6 years post-treatment)"
