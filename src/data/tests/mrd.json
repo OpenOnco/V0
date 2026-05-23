@@ -2449,7 +2449,8 @@
     "fdaStatus": "CLIA LDT",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Coverage expanding; contact Caris for current payer coverage.",
-    "clinicalAvailability": "Commercially available in US since late 2022",
+    "clinicalAvailability": "Commercially available in US since late 2022; NY State submission pending (May 2026)",
+    "clinicalAvailabilityNotes": "Caris submitted application to New York State Department of Health (May 2026). Volume up 58% YoY. Blood ASP ~$2,500.",
     "availableRegions": [
       "US"
     ],

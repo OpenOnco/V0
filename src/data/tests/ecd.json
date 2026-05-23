@@ -3680,14 +3680,14 @@
     "fdaStatusNotes": "Caris Detect is a forthcoming MCED test expected to launch H1 2026. Achieve 1 finalized results (March 31, 2026) support commercial launch.",
     "reimbursement": "Not covered",
     "reimbursementNote": "Pre-launch; no coverage established. Will be distributed through Everlywell consumer platform.",
-    "listPrice": null,
-    "listPriceNotes": "Not yet announced; expected at commercial launch H1 2026",
+    "listPrice": 3500,
+    "listPriceNotes": "$3,500 confirmed at Q1 2026 earnings call (May 7, 2026). Direct-to-consumer via Everlywell partnership.",
     "commercialPayers": [],
     "availableRegions": [
       "US (planned)"
     ],
-    "clinicalAvailability": "Not yet commercially available; expected H1 2026 launch through Everlywell partnership",
-    "clinicalAvailabilityNotes": "Caris announced Everlywell distribution partnership Jan 12, 2026. Commercial launch expected H1 2026 pending blinded validation results.",
+    "clinicalAvailability": "Beta launch underway; commercial launch Q2 2026 through Everlywell partnership",
+    "clinicalAvailabilityNotes": "Caris announced Everlywell distribution partnership Jan 12, 2026. Beta launch underway as of Q1 2026 earnings (May 7, 2026). Full commercial launch expected Q2 2026. Price: $3,500.",
     "tat": null,
     "sampleType": "Whole blood (plasma cfDNA)",
     "sampleTubeType": null,

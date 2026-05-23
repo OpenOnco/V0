@@ -7,5 +7,14 @@
     "source": "https://www.prnewswire.com/news-releases/datar-cancer-genetics-receives-landmark-us-fda-clearance-for-celldx-tissue-302772593.html",
     "fdaAction": "FDA clearance (May 14, 2026)",
     "dateFound": "2026-05-23"
+  },
+  {
+    "name": "Caris ChromoSeq",
+    "vendor": "Caris Life Sciences",
+    "category": "TDS",
+    "summary": "Whole genome tumor profiling assay for myeloid malignancies (AML, MDS, MPN). >200X depth of coverage, ~1.6B reads per patient. MolDX approved. Hematologic CGP — evaluate if in scope.",
+    "source": "https://finance.yahoo.com/sectors/healthcare/articles/caris-life-sciences-q1-earnings-213936656.html",
+    "fdaAction": "MolDX approved (early May 2026)",
+    "dateFound": "2026-05-23"
   }
 ]
