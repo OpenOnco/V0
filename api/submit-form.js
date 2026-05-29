@@ -201,7 +201,7 @@ export default withVercelLogging(async (req, res) => {
     
     // Override the standard email template for vendor confirmations
     try {
-      await resend.emails.send({
+      const { error: resendError } = await resend.emails.send({
         from: 'OpenOnco <noreply@openonco.org>',
         to: ADMIN_EMAIL,
         replyTo: submitterEmail,
@@ -251,12 +251,16 @@ export default withVercelLogging(async (req, res) => {
             
             <h3 style="color: #374151;">Full JSON Data:</h3>
             <pre style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12px;">${jsonString}</pre>
-            
+
             <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
             <p style="color: #999; font-size: 12px;">Sent from OpenOnco Vendor Confirmation Form at ${submission.timestamp}</p>
           </div>
         `
       });
+
+      if (resendError) {
+        throw new Error(`Resend: ${resendError.name || 'error'} — ${resendError.message || 'unknown'}`);
+      }
 
       req.logger.info('Response sent', {
         status: 200,
@@ -323,7 +327,7 @@ export default withVercelLogging(async (req, res) => {
   }
 
   try {
-    await resend.emails.send({
+    const { error: resendError } = await resend.emails.send({
       from: 'OpenOnco <noreply@openonco.org>',
       to: ADMIN_EMAIL,
       replyTo: submitterEmail,
@@ -362,6 +366,10 @@ export default withVercelLogging(async (req, res) => {
         </div>
       `
     });
+
+    if (resendError) {
+      throw new Error(`Resend: ${resendError.name || 'error'} — ${resendError.message || 'unknown'}`);
+    }
 
     req.logger.info('Response sent', {
       status: 200,

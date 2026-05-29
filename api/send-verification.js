@@ -54,7 +54,7 @@ export default withVercelLogging(async (req, res) => {
   const token = createToken(email, code);
 
   try {
-    await resend.emails.send({
+    const { error: resendError } = await resend.emails.send({
       from: 'OpenOnco <noreply@openonco.org>',
       to: email,
       subject: `Your OpenOnco Verification Code: ${code}`,
@@ -73,6 +73,10 @@ export default withVercelLogging(async (req, res) => {
         </div>
       `
     });
+
+    if (resendError) {
+      throw new Error(`Resend: ${resendError.name || 'error'} — ${resendError.message || 'unknown'}`);
+    }
 
     req.logger.info('Response sent', {
       status: 200,

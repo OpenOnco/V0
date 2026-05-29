@@ -72,12 +72,16 @@ export default withVercelLogging(async (req, res) => {
   `;
 
   try {
-    await resend.emails.send({
+    const { error: resendError } = await resend.emails.send({
       from: 'OpenOnco <noreply@openonco.org>',
       to: ['alexgdickinson@gmail.com'],
       subject,
       html
     });
+
+    if (resendError) {
+      throw new Error(`Resend: ${resendError.name || 'error'} — ${resendError.message || 'unknown'}`);
+    }
 
     req.logger.info('Response sent', {
       status: 200,
