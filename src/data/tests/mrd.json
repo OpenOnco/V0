@@ -5705,5 +5705,61 @@
     "vendorVerified": false,
     "technologyDifferentiator": "Blood-based flow cytometry MRD test for myeloma with 5-day specimen stability. Eliminates need for bone marrow biopsy. Comparable sensitivity to NGS-based approaches.",
     "dateAdded": "2026-02-05"
+  },
+  {
+    "id": "mrd-31",
+    "sampleCategory": "Blood/Plasma",
+    "name": "CatCHimera",
+    "vendor": "TCM Biotech International",
+    "approach": "Tumor-informed (viral-integration)",
+    "method": "Detects HBV–host genome integration junctions (viral-host DNA, vh-DNA) as patient-specific circulating MRD biomarkers via capture-NGS and ddPCR, without somatic mutation calling. First viral-integration MRD biomarker class.",
+    "methodCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "cancerTypes": [
+      "Hepatocellular carcinoma (HBV-related)"
+    ],
+    "cancerTypesCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "indicationsNotes": "Post-curative-treatment MRD monitoring for HBV-related hepatocellular carcinoma. Mechanistically distinct from ctDNA MRD assays that rely on somatic SNVs/indels; uses HBV integration sites unique to each patient's tumor clones. Developed with Pei-Jer Chen's group at National Taiwan University.",
+    "sensitivity": 95.8,
+    "sensitivityCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "sensitivityNotes": "95.8% sensitivity / 95.5% specificity when combined with AFP + PIVKA-II biomarkers. vh-DNA detected in 98% of pre-surgical plasma samples; superior sensitivity to AFP alone for tumors <5 cm. (Vendor/press-release figures; clinical data presented in Hepatology, Cellular & Molecular Gastroenterology and Hepatology, and AASLD 2023.)",
+    "specificity": 95.5,
+    "specificityCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "specificityNotes": "95.5% specificity in combination with AFP + PIVKA-II. NPV 92% / PPV 71% for post-operative recurrence prediction.",
+    "leadTimeVsImaging": 158,
+    "leadTimeVsImagingCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "leadTimeVsImagingNotes": "158-day mean lead time over CT imaging for recurrence detection (vendor/press-release figure).",
+    "lod": "~1.5 cm tumor",
+    "lodCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "lodNotes": "Reported detection limit corresponds to approximately 1.5 cm tumor size.",
+    "requiresTumorTissue": "No",
+    "requiresTumorTissueNotes": "Tumor-informed via the patient's HBV integration profile; uses plasma vh-DNA rather than a tumor-tissue-derived mutation panel.",
+    "fdaStatus": "FDA Breakthrough Device Designation (April 21, 2026); not FDA-cleared or approved. Operates as a TFDA-accredited LDT in Taiwan.",
+    "fdaStatusNotes": "First viral-integration MRD liquid biopsy to receive FDA Breakthrough Device Designation (announced April 21, 2026). Not commercially available in the US. Platform protected by multi-country patents (US, EU, Singapore, China).",
+    "fdaStatusCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "reimbursement": "Not applicable",
+    "reimbursementNote": "Pre-commercial in the US (Breakthrough Device Designation only); no US reimbursement established.",
+    "clinicalAvailability": "Not commercially available in the US (FDA Breakthrough Device Designation only); available as a TFDA-accredited LDT in Taiwan.",
+    "medicareCoverage": {
+      "status": "NOT_YET_AVAILABLE",
+      "policyType": null,
+      "policyNumber": null,
+      "policyName": null,
+      "coveredIndications": [],
+      "reimbursementRate": null,
+      "cptCode": null,
+      "notes": "Not US-commercially available; FDA Breakthrough Device Designation only (April 2026).",
+      "lastVerified": "2026-05-30"
+    },
+    "medicareCoverageCitations": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
+    "clinicalSettings": [
+      "Post-Surgery",
+      "Surveillance"
+    ],
+    "clinicalSettingsNotes": "Post-curative-treatment MRD monitoring and recurrence surveillance in HBV-related HCC.",
+    "isRUO": false,
+    "isInvestigational": true,
+    "isClinicalLDT": true,
+    "regulatoryStatusNotes": "TFDA-accredited LDT (Taiwan); FDA Breakthrough Device Designation (April 21, 2026) for US pathway; not yet FDA-cleared/approved.",
+    "dateAdded": "2026-05-30"
   }
 ]
