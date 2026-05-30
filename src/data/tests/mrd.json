@@ -1060,7 +1060,7 @@
     "clinicalSettingsNotes": "Most broadly validated across clinical settings. Neoadjuvant: breast cancer (I-SPY2 trial, Medicare covered). Post-surgery: landmark ~4 weeks (75% NSCLC sens). Post-adjuvant: after chemo completion. Surveillance: longitudinal monitoring (94% NSCLC sens). Medicare covers all settings for CRC, breast, bladder, NSCLC, ovarian.",
     "totalParticipants": 2000,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT04264702",
-    "numPublications": 100,
+    "numPublications": 103,
     "numPublicationsCitations": "https://www.natera.com/company/news/natera-announces-publication-of-over-100-peer-reviewed-papers-on-signateratm/",
     "numPublicationsPlus": true,
     "nccnNamedInGuidelines": true,
@@ -2007,7 +2007,7 @@
     "clinicalSettingsNotes": "Used across entire care continuum for HPV+ cancers: pre-treatment baseline, treatment response during neoadjuvant/adjuvant therapy, post-treatment MRD assessment, and long-term surveillance. Median 4-month lead time vs imaging.",
     "totalParticipants": 1076,
     "totalParticipantsNotes": "Multi-center surveillance cohort of 1,076 patients with PPV 95% (76/80) and NPV 95% (1,198/1,256) per Naveris clinical performance data. Additional validation across multiple published cohorts.",
-    "numPublications": 35,
+    "numPublications": 36,
     "numPublicationsPlus": true,
     "isRUO": false,
     "isInvestigational": false,
@@ -4889,7 +4889,7 @@
     "availableRegions": [
       "US"
     ],
-    "clinicalTrials": null,
+    "clinicalTrials": "ASCO 2026: 6 posters showing utility in gastric, ovarian, head/neck, sarcoma, CRC. MONSTAR-SCREEN-3 interim data: 97% baseline ctDNA detection rate. MolDx submissions planned for breast (Q3 2026), CRC/renal (H2 2026).",
     "clinicalSettings": [
       "Post-Surgery",
       "Neoadjuvant",
