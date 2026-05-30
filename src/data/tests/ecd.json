@@ -997,8 +997,8 @@
   },
   {
     "id": "ecd-6",
-    "name": "Freenome CRC Blood Test",
-    "vendor": "Freenome",
+    "name": "Freenome SimpleScreen CRC",
+    "vendor": "Freenome (commercialized by Abbott)",
     "sampleCategory": "Blood/Plasma",
     "sampleTubeType": "Streck Cell-Free DNA BCT",
     "sampleTubeCount": 5,
@@ -1037,7 +1037,9 @@
     "fdaStatus": "PMA application submitted (final module August 2025); Exact Sciences/Abbott exclusive US licensing agreement; FDA approval expected H2 2026",
     "reimbursement": "Coverage Varies",
     "reimbursementNote": "Not yet established",
-    "clinicalAvailability": "Not yet commercially available - pending FDA approval",
+    "clinicalAvailability": "Not yet commercially available - pending FDA approval (LDT at select pilot sites)",
+    "guidelinesNotes": "Included in the updated American Cancer Society (ACS) Colorectal Cancer Screening Guideline (2026) as a blood-based screening option for individuals who decline or do not complete other recommended screening; a positive non-invasive result should be followed by colonoscopy.",
+    "guidelinesCitations": "https://www.prnewswire.com/news-releases/freenomes-simplescreen-crc-blood-based-test-included-in-updated-acs-colorectal-cancer-screening-guideline-302783233.html",
     "tat": "14 days",
     "tatNotes": "Expected TAT ~14 days based on similar blood-based CRC tests; final TAT to be confirmed at launch",
     "listPrice": 895,
@@ -2564,35 +2566,7 @@
       "lastVerified": "2026-01-13"
     }
   },
-  {
-    "id": "ecd-23",
-    "sampleCategory": "Blood/Plasma",
-    "name": "Freenome Blood-Based CRC Screening",
-    "vendor": "Abbott (Exact Sciences)",
-    "testScope": "Single-cancer (CRC)",
-    "approach": "Blood-based cfDNA methylation",
-    "method": "Blood-based colorectal cancer screening test acquired through exclusive license from Freenome",
-    "cancerTypes": [
-      "Colorectal cancer"
-    ],
-    "targetPopulation": "Adults eligible for CRC screening",
-    "indicationGroup": "CRC",
-    "fdaStatus": "PMA submitted (initial version SimpleScreen CRC, Aug 2025); FDA approval and commercial launch anticipated 2026. Supplemental PMA for updated assay (85% CRC sensitivity, 22% APL at 90% specificity) planned after initial approval.",
-    "fdaStatusNotes": "Exact Sciences exclusive US license ($885M deal). Updated assay validated in head-to-head study of 966 average-risk samples.",
-    "clinicalAvailability": "Not yet available; FDA approval expected 2026",
-    "dataSourceNotes": "Added February 2026 via daemon crawl. Exact Sciences acquired exclusive license for Freenome blood-based CRC screening technology. Performance data from improved assay presented Jan 2026.",
-    "medicareCoverage": {
-      "status": "NOT_COVERED",
-      "policyType": null,
-      "policyNumber": null,
-      "policyName": null,
-      "coveredIndications": [],
-      "reimbursementRate": null,
-      "cptCode": null,
-      "notes": "Not yet commercially available",
-      "lastVerified": "2026-02-01"
-    }
-  },
+  
   {
     "id": "ecd-kit-1",
     "sampleCategory": "Stool",
