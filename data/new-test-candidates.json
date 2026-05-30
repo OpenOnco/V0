@@ -16,14 +16,5 @@
     "source": "https://finance.yahoo.com/sectors/healthcare/articles/caris-life-sciences-q1-earnings-213936656.html",
     "fdaAction": "MolDX approved (early May 2026)",
     "dateFound": "2026-05-23"
-  },
-  {
-    "name": "CatCHimera",
-    "vendor": "TCM Biotech",
-    "category": "MRD",
-    "summary": "Viral-integration MRD liquid biopsy for hepatocellular carcinoma (HCC). FDA Breakthrough Device Designation (April 2026). Novel ctDNA biomarker class based on viral integration sites.",
-    "source": "https://www.biospace.com/press-releases/fda-breakthrough-for-first-viral-integration-mrd-liquid-biopsy-in-hcc-new-ctdna-biomarker-class",
-    "fdaAction": "Breakthrough Device Designation (April 2026)",
-    "dateFound": "2026-05-30"
   }
 ]
