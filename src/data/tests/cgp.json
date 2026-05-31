@@ -3493,8 +3493,8 @@
     ],
     "numPublications": 2,
     "numPublicationsCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)03179-4/fulltext | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 638-gene tissue CGP kit; CE-IVD; HRD analytic validation (Annals of Oncology 1253P) and real-world CE-IVD validation (PMC10531166)."
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 638-gene tissue CGP kit; CE-IVD; HRD analytic validation (Annals of Oncology 1253P) and real-world CE-IVD validation (PMC10531166). 2026-05-31: Vendor verified by Cédric Balsat (OncoDNA)."
   },
   {
     "id": "tds-33",
@@ -3534,7 +3534,7 @@
     ],
     "numPublications": 0,
     "numPublicationsCitations": "No peer-reviewed publications as of May 2026; analytical validation per vendor (https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/)",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 74-gene liquid-biopsy (ctDNA) CGP kit; RUO; analytical performance vendor-reported (no peer-reviewed publications yet)."
+    "vendorVerified": true,
+    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 74-gene liquid-biopsy (ctDNA) CGP kit; RUO; analytical performance vendor-reported (no peer-reviewed publications yet). 2026-05-31: Vendor verified by Cédric Balsat (OncoDNA)."
   }
 ]

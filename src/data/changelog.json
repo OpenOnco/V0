@@ -1,5 +1,29 @@
 [
   {
+    "date": "May 31, 2026",
+    "type": "verified",
+    "testId": "tds-32",
+    "testName": "OncoDEEP Kit",
+    "vendor": "OncoDNA",
+    "category": "TDS",
+    "description": "Vendor verified by Cédric Balsat (Product Development Specialist, OncoDNA) via email-verified portal submission from c.balsat@oncodna.com. No corrections submitted.",
+    "contributor": "Cédric Balsat",
+    "affiliation": "OncoDNA",
+    "citation": null
+  },
+  {
+    "date": "May 31, 2026",
+    "type": "verified",
+    "testId": "tds-33",
+    "testName": "OncoSELECT Kit",
+    "vendor": "OncoDNA",
+    "category": "TDS",
+    "description": "Vendor verified by Cédric Balsat (Product Development Specialist, OncoDNA) via email-verified portal submission from c.balsat@oncodna.com. No corrections submitted.",
+    "contributor": "Cédric Balsat",
+    "affiliation": "OncoDNA",
+    "citation": null
+  },
+  {
     "date": "May 9, 2026",
     "type": "updated",
     "testId": "ecd-1",
