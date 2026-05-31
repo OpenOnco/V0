@@ -3452,5 +3452,89 @@
     "relatedTests": "NEO PanTracer Tissue (tds-15): predecessor tissue CGP without bundled IHC. NEO PanTracer LBx (tds-30): liquid biopsy complement. Automatically reflexes to PanTracer LBx when tissue is insufficient.",
     "technologyDifferentiator": "First CGP test bundling NGS with tumor-type-directed IHC in a single coordinated order. Eliminates sequential testing workflows — physicians get all guideline-relevant biomarkers upfront.",
     "dateAdded": "2026-03-23"
+  },
+  {
+    "id": "tds-32",
+    "name": "OncoDEEP Kit",
+    "vendor": "OncoDNA",
+    "productType": "Laboratory IVD Kit",
+    "sampleCategory": "Tissue",
+    "approach": "Tissue CGP",
+    "method": "Hybrid-capture NGS kit for FFPE solid-tumor tissue enabling decentralized in-house comprehensive genomic profiling; 638 genes with intronic tiling for detection of ALK, RET and ROS1 rearrangements. Detects SNVs, indels, CNVs and LOH and reports MSI, TMB and HRD. Paired with the OncoKDM interpretation platform.",
+    "methodCitations": "https://oncodna.com/en/oncodeep-638-genes/ | https://oncodna.com/content/uploads/2026/05/oncodeep_kit_performance-summary-table.pdf",
+    "genesAnalyzed": 638,
+    "genesAnalyzedCitations": "https://oncodna.com/en/oncodeep-638-genes/",
+    "geneListUrl": "https://www.oncodna.com/en/products/oncodeep/",
+    "biomarkersReported": [
+      "SNVs",
+      "Indels",
+      "CNVs",
+      "LOH",
+      "Fusions",
+      "MSI",
+      "TMB",
+      "HRD"
+    ],
+    "biomarkersReportedCitations": "https://oncodna.com/en/oncodeep-638-genes/ | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
+    "cancerTypes": [
+      "All solid tumors"
+    ],
+    "cancerTypesCitations": "https://www.oncodna.com/en/products/oncodeep/",
+    "targetPopulation": "Patients with solid tumors requiring comprehensive genomic profiling from tumor tissue to guide targeted-therapy selection",
+    "targetPopulationCitations": "https://www.oncodna.com/en/products/oncodeep/",
+    "fdaStatus": "CE-IVD marked (EU); not FDA-cleared/approved",
+    "fdaStatusCitations": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/ | https://www.oncodna.com/en/products/oncodeep/",
+    "reimbursement": "Not established (US); decentralized kit run in-house by EU laboratories",
+    "reimbursementCitations": "https://www.oncodna.com/en/products/oncodeep/",
+    "tat": "Decentralized in-house workflow (marketed as ultra-fast NGS); turnaround set by performing laboratory",
+    "tatCitations": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
+    "availableRegions": [
+      "EU"
+    ],
+    "numPublications": 2,
+    "numPublicationsCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)03179-4/fulltext | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 638-gene tissue CGP kit; CE-IVD; HRD analytic validation (Annals of Oncology 1253P) and real-world CE-IVD validation (PMC10531166)."
+  },
+  {
+    "id": "tds-33",
+    "name": "OncoSELECT Kit",
+    "vendor": "OncoDNA",
+    "productType": "Laboratory IVD Kit",
+    "sampleCategory": "Blood/Plasma",
+    "approach": "Liquid CGP",
+    "method": "Targeted NGS liquid-biopsy kit profiling circulating tumor DNA (ctDNA) from plasma (2 x 10 mL Streck tubes) for decentralized in-house testing; 74 genes detecting SNVs, indels, CNVs, gene fusions, TERT promoter and splicing variants. Vendor analytical performance: sensitivity >96.9%, specificity >99%, accuracy >99%, limit of detection 0.25-1% by variant type. Paired with the OncoKDM interpretation platform.",
+    "methodCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "genesAnalyzed": 74,
+    "genesAnalyzedCitations": "https://oncodna.com/en/oncoselect-74-genes/",
+    "geneListUrl": "https://oncodna.com/en/oncoselect-74-genes/",
+    "biomarkersReported": [
+      "SNVs",
+      "Indels",
+      "CNVs",
+      "Fusions",
+      "TERT promoter",
+      "Splicing variants"
+    ],
+    "biomarkersReportedCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "cancerTypes": [
+      "All solid tumors"
+    ],
+    "cancerTypesCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "targetPopulation": "Adults with stage III/IV solid tumors requiring genomic profiling when tissue biopsy is unavailable, limited, or outdated",
+    "targetPopulationCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "fdaStatus": "RUO (Research Use Only); not FDA-cleared/approved",
+    "fdaStatusCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "reimbursement": "Not established (RUO)",
+    "reimbursementCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "tat": "Not specified by vendor (in-house kit workflow)",
+    "tatCitations": "https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/",
+    "availableRegions": [
+      "EU"
+    ],
+    "numPublications": 0,
+    "numPublicationsCitations": "No peer-reviewed publications as of May 2026; analytical validation per vendor (https://oncodna.com/for-laboratories/liquid-biopsy-oncoselect/)",
+    "vendorVerified": false,
+    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 74-gene liquid-biopsy (ctDNA) CGP kit; RUO; analytical performance vendor-reported (no peer-reviewed publications yet)."
   }
 ]
