@@ -1,6 +1,18 @@
 [
   {
     "date": "May 31, 2026",
+    "type": "updated",
+    "testId": "tds-32",
+    "testName": "OncoDEEP Kit",
+    "vendor": "OncoDNA",
+    "category": "TDS",
+    "description": "TAT updated to 5 working days per vendor email from Cédric Balsat (OncoDNA).",
+    "contributor": "Cédric Balsat",
+    "affiliation": "OncoDNA",
+    "citation": null
+  },
+  {
+    "date": "May 31, 2026",
     "type": "verified",
     "testId": "tds-32",
     "testName": "OncoDEEP Kit",

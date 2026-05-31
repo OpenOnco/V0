@@ -3486,15 +3486,15 @@
     "fdaStatusCitations": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/ | https://www.oncodna.com/en/products/oncodeep/",
     "reimbursement": "Not established (US); decentralized kit run in-house by EU laboratories",
     "reimbursementCitations": "https://www.oncodna.com/en/products/oncodeep/",
-    "tat": "Decentralized in-house workflow (marketed as ultra-fast NGS); turnaround set by performing laboratory",
-    "tatCitations": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
+    "tat": "5 working days (vendor-reported target for decentralized in-house workflow)",
+    "tatCitations": "Vendor email from Cédric Balsat (OncoDNA), 2026-05-31",
     "availableRegions": [
       "EU"
     ],
     "numPublications": 2,
     "numPublicationsCitations": "https://www.annalsofoncology.org/article/S0923-7534(23)03179-4/fulltext | https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10531166/",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 638-gene tissue CGP kit; CE-IVD; HRD analytic validation (Annals of Oncology 1253P) and real-world CE-IVD validation (PMC10531166). 2026-05-31: Vendor verified by Cédric Balsat (OncoDNA)."
+    "vendorRequestedChanges": "2026-05-31: Added via vendor submission by Cedric Balsat (OncoDNA), email-verified c.balsat@oncodna.com. 638-gene tissue CGP kit; CE-IVD; HRD analytic validation (Annals of Oncology 1253P) and real-world CE-IVD validation (PMC10531166). 2026-05-31: Vendor verified by Cédric Balsat (OncoDNA). 2026-05-31: TAT updated to 5 working days per vendor email."
   },
   {
     "id": "tds-33",
