@@ -12,7 +12,7 @@
     "methodCitations": "https://myriad.com/genetic-tests/myrisk-hereditary-cancer/technical-specifications/",
     "sequencingPlatform": "Illumina",
     "genesAnalyzed": 63,
-    "genesAnalyzedCitations": "https://myriad.com/gene-table/",
+    "genesAnalyzedCitations": "https://myriad-web.s3.amazonaws.com/myRisk/Gene+Table.pdf",
     "keyGenes": [
       "BRCA1",
       "BRCA2",
@@ -57,7 +57,7 @@
     "nyApproved": true,
     "reimbursement": "Broad Coverage",
     "reimbursementNotes": "Commercial, Medicare, Medicaid; 97% of private insurance covers hereditary cancer testing",
-    "selfPayPrice": 249,
+    "selfPayPrice": 39,
     "selfPayPriceCitations": "https://myriad.com/patients-families/myrisk-testing-options/",
     "financialAssistance": "Myriad Financial Assistance Program; free cascade testing for relatives within 90 days",
     "cptCodes": "81162, 81211, 81213, 81214",
@@ -84,7 +84,8 @@
     "uniqueFeatures": "Integrates Polygenic Risk Score (PRS) for breast cancer; RiskScore provides precise risk for women who test negative for mutations; largest hereditary cancer database",
     "limitations": "Panel size (63 genes) smaller than some competitors (80+)",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch"
+    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch",
+    "selfPayPriceNotes": "$39 = order/kit fee. $249 is an out-of-pocket threshold that triggers a Myriad call, NOT a list/self-pay price (myriad.com/patients-families/myrisk-testing-options). True self-pay price not publicly fixed."
   },
   {
     "id": "hct-2",
@@ -152,7 +153,7 @@
     "medicareRate": 1303.95,
     "medicareStatus": "Priced",
     "medicareEffective": "2025-Q4",
-    "tat": "10-21 days",
+    "tat": "10-21 days (14 days average)",
     "availableRegions": [
       "US",
       "International"
@@ -247,7 +248,11 @@
     "numPublicationsNotes": "LaDuca et al. 2014 (PMID: 24763289) and extensive follow-up publications",
     "uniqueFeatures": "+RNAinsight available (paired RNA/DNA testing) to improve VUS resolution; updated to 90 genes per 2024 menu update",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch"
+    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch",
+    "genesAnalyzedNotes": "78-gene base panel; expandable to 90 genes with pancreatitis (5 genes: CFTR, CPA1, CTRC, PRSS1, SPINK1) and limited-evidence (7 genes) add-ons",
+    "nyApprovalNumber": "NYS CLEP 73884",
+    "testCode": "8875",
+    "analyticalSensitivityNotes": "Designed to detect >99% of described mutations in tested genes"
   },
   {
     "id": "hct-4",
@@ -448,7 +453,7 @@
     "medicareRate": 1303.95,
     "medicareStatus": "Priced",
     "medicareEffective": "2025-Q4",
-    "tat": "14-21 days",
+    "tat": "21-30 days (plus 7-10 days if CNV confirmation needed)",
     "availableRegions": [
       "US"
     ],
@@ -478,17 +483,33 @@
     "genesAnalyzed": 27,
     "genesAnalyzedCitations": "https://womenshealth.labcorp.com/providers/hereditary-cancer/vistaseq",
     "keyGenes": [
+      "APC",
+      "ATM",
+      "BARD1",
+      "BMPR1A",
       "BRCA1",
       "BRCA2",
+      "BRIP1",
+      "CDH1",
+      "CDK4",
+      "CDKN2A",
+      "CHEK2",
+      "EPCAM",
+      "FAM175A",
       "MLH1",
       "MSH2",
       "MSH6",
-      "PMS2",
-      "EPCAM",
-      "APC",
       "MUTYH",
-      "TP53",
-      "PTEN"
+      "NBN",
+      "PALB2",
+      "PMS2",
+      "PRKAR1A",
+      "PTEN",
+      "RAD51C",
+      "RAD51D",
+      "SMAD4",
+      "STK11",
+      "TP53"
     ],
     "syndromesDetected": [
       "HBOC",
@@ -513,7 +534,7 @@
     "reimbursement": "Broad Coverage",
     "reimbursementNotes": "Insurance/Medicare",
     "financialAssistance": "Labcorp Patient Assistance",
-    "cptCodes": "81432, 81433",
+    "cptCodes": "81162; 81201; 81203; 81292; 81294; 81295; 81297; 81298; 81300; 81307; 81317; 81319; 81321; 81323; 81351; 81403; 81404 (x2); 81405 (x2); 81406 (x3); 81408; 81479",
     "medicareRate": 1303.95,
     "medicareStatus": "Priced",
     "medicareEffective": "2025-Q4",
@@ -760,18 +781,28 @@
     "name": "Invitae Hereditary Breast Cancer Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
+    "sampleCategory": "Blood (3mL whole blood, K2/K3 EDTA purple-top, preferred), saliva, buccal swab, or gDNA",
     "genesAnalyzed": 18,
     "genesAnalyzedCitations": "https://www.invitae.com/providers/test-catalog/test-01202",
     "keyGenes": [
+      "ATM",
+      "BARD1",
       "BRCA1",
       "BRCA2",
-      "PALB2",
-      "TP53",
-      "PTEN",
       "CDH1",
-      "ATM",
-      "CHEK2"
+      "CHEK2",
+      "NF1",
+      "PALB2",
+      "PTEN",
+      "RAD51C",
+      "RAD51D",
+      "STK11",
+      "TP53",
+      "BRIP1",
+      "FANCC",
+      "FANCM",
+      "NTHL1",
+      "RECQL"
     ],
     "syndromesDetected": [
       "HBOC",
@@ -781,10 +812,11 @@
     ],
     "fdaStatus": "CLIA LDT",
     "nyApproved": "Varies by test / state rules",
-    "tat": "Varies by order",
+    "tat": "10–21 calendar days (14 days average)",
     "tatCitations": "https://www.invitae.com/providers/test-catalog/test-01202",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "method": "Next-generation sequencing (NGS) with full-gene sequencing and exon-level deletion/duplication analysis; >99% analytical sensitivity and specificity"
   },
   {
     "id": "hct-12",
@@ -792,19 +824,23 @@
     "name": "Invitae Hereditary Breast Cancer Guidelines-Based Panel",
     "vendor": "Invitae",
     "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
+    "sampleCategory": "Blood, saliva, buccal swab, or genomic DNA",
     "genesAnalyzed": 13,
     "genesAnalyzedCitations": "https://www.invitae.com/providers/test-catalog/test-01206",
     "keyGenes": [
+      "ATM",
+      "BARD1",
       "BRCA1",
       "BRCA2",
-      "TP53",
-      "PTEN",
-      "STK11",
-      "PALB2",
       "CDH1",
-      "ATM",
-      "CHEK2"
+      "CHEK2",
+      "NF1",
+      "PALB2",
+      "PTEN",
+      "RAD51C",
+      "RAD51D",
+      "STK11",
+      "TP53"
     ],
     "syndromesDetected": [
       "HBOC",
@@ -815,7 +851,9 @@
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "tat": "10-21 calendar days (14 days average)",
+    "method": "Full-gene sequencing and deletion/duplication analysis by NGS; >99% analytical sensitivity and specificity for SNVs, indels <15bp, and exon-level del/dup"
   },
   {
     "id": "hct-13",
@@ -886,18 +924,44 @@
   {
     "id": "hct-17",
     "category": "HCT",
-    "name": "VistaSeq Hereditary Colorectal Cancer Panel",
+    "name": "VistaSeq Colorectal Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
+    "methodCitations": "https://www.labcorp.com/tests/481363/vistaseq-colorectal-cancer-panel",
     "cancerTypesAssessed": [
       "Colorectal"
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "keyGenes": [
+      "APC",
+      "ATM",
+      "AXIN2",
+      "BLM",
+      "BMPR1A",
+      "BRCA1",
+      "BRCA2",
+      "CDH1",
+      "CDKN2A",
+      "CHEK2",
+      "EPCAM",
+      "MLH1",
+      "MSH2",
+      "MSH6",
+      "MUTYH",
+      "PMS2",
+      "POLD1",
+      "POLE",
+      "PTEN",
+      "SMAD4",
+      "STK11",
+      "TP53"
+    ],
+    "genesAnalyzed": 22,
+    "testCode": "481363"
   },
   {
     "id": "hct-19",
@@ -918,34 +982,66 @@
   {
     "id": "hct-21",
     "category": "HCT",
-    "name": "VistaSeq Hereditary Pancreatic Cancer Panel",
+    "name": "VistaSeq Pancreatic Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
+    "method": "Next-generation sequencing (germline DNA sequence analysis) of a 14-gene pancreatic cancer subpanel",
+    "methodCitations": "https://www.labcorp.com/tests/481385/vistaseq-pancreatic-cancer-panel",
     "cancerTypesAssessed": [
       "Pancreatic"
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "keyGenes": [
+      "APC",
+      "ATM",
+      "BRCA1",
+      "BRCA2",
+      "CDKN2A",
+      "EPCAM",
+      "MLH1",
+      "MSH2",
+      "MSH6",
+      "PALB2",
+      "PMS2",
+      "STK11",
+      "TP53",
+      "VHL"
+    ],
+    "genesAnalyzed": 14,
+    "testCode": "481385"
   },
   {
     "id": "hct-22",
     "category": "HCT",
-    "name": "VistaSeq Hereditary Prostate Cancer Panel",
+    "name": "VistaSeq Prostate Cancer Panel",
     "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
+    "method": "NGS of coding regions and flanking splice sites (+/-10 bp) plus deletion/duplication analysis (aCGH or MLPA); clinically significant findings confirmed by Sanger sequencing or qPCR",
     "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
     "cancerTypesAssessed": [
       "Prostate"
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "keyGenes": [
+      "ATM",
+      "BRCA1",
+      "BRCA2",
+      "CHEK2",
+      "HOXB13",
+      "MLH1",
+      "MSH2",
+      "MSH6",
+      "PALB2",
+      "PMS2"
+    ],
+    "genesAnalyzed": 10,
+    "testCode": "483555"
   },
   {
     "id": "hct-24",
@@ -961,7 +1057,10 @@
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "method": "Next-generation sequencing (Illumina) with custom target-capture enrichment of BRCA1 exons and intron/exon junctions (+/-20 nt); minimum mean coverage 40X; segments failing read-depth rescued by bidirectional Sanger sequencing. Single-site analysis limited to the region containing the documented familial variant.",
+    "testCode": "485066",
+    "testType": "Known familial variant (single-site) targeted analysis — requires documentation of the relative's positive BRCA1 result; tests only the specific BRCA1 region containing that variant."
   },
   {
     "id": "hct-25",
@@ -977,15 +1076,19 @@
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "method": "Next-generation sequencing (Illumina platform, custom-capture target enrichment, minimum 40X mean coverage); regions failing minimum read depth are rescued by bi-directional Sanger sequencing. Targeted analysis of only the specific BRCA2 region containing the known familial variant.",
+    "testCode": "485081",
+    "sampleType": "Whole blood or saliva (Oragene Dx collection kit)",
+    "testType": "For individuals with a family member who carries a known BRCA2 pathogenic variant; tests only the specific region of BRCA2 containing the familial variant. Requires the affected relative's lab report or genetic counseling letter documenting the variant."
   },
   {
     "id": "hct-27",
     "category": "HCT",
     "name": "Gastric Cancer Panel",
-    "vendor": "PreventionGenetics (Abbott)",
+    "vendor": "PreventionGenetics (Exact Sciences)",
     "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
+    "sampleCategory": "Blood, Buccal, Saliva, or Tissue",
     "method": "NGS with CNV (PGselect Platform)",
     "methodCitations": "https://www.preventiongenetics.com/tests/gastric-cancer-panel",
     "genesAnalyzed": 19,
@@ -995,7 +1098,9 @@
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "tat": "2-3 weeks (7-16 days STAT)",
+    "fdaStatusNotes": "New York State approved; CLIA/CAP laboratory-developed test, not FDA cleared or approved."
   },
   {
     "id": "hct-28",
