@@ -31,7 +31,7 @@ const Header = ({ currentPage, onNavigate }) => {
         <button
           type="button"
           className="cursor-pointer flex items-center bg-transparent border-none p-0 flex-shrink-0"
-          onClick={() => onNavigate('news-home')}
+          onClick={() => onNavigate('home')}
           aria-label="Go to home page"
         >
           <img src="/OO_logo_2.png" alt="OpenOnco" className="h-10 sm:h-11" />
