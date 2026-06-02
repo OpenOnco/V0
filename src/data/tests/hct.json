@@ -884,22 +884,6 @@
     "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
   },
   {
-    "id": "hct-16",
-    "category": "HCT",
-    "name": "VistaSeq Hereditary Breast Cancer Panel",
-    "vendor": "Labcorp",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
-    "cancerTypesAssessed": [
-      "Breast"
-    ],
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
     "id": "hct-17",
     "category": "HCT",
     "name": "VistaSeq Hereditary Colorectal Cancer Panel",
@@ -916,22 +900,6 @@
     "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
   },
   {
-    "id": "hct-18",
-    "category": "HCT",
-    "name": "VistaSeq Hereditary Ovarian Cancer Panel",
-    "vendor": "Labcorp",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
-    "cancerTypesAssessed": [
-      "Ovarian"
-    ],
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
     "id": "hct-19",
     "category": "HCT",
     "name": "VistaSeq Hereditary Endometrial Cancer Panel",
@@ -942,22 +910,6 @@
     "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
     "cancerTypesAssessed": [
       "Endometrial"
-    ],
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
-    "id": "hct-20",
-    "category": "HCT",
-    "name": "VistaSeq Hereditary Gastric Cancer Panel",
-    "vendor": "Labcorp",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
-    "cancerTypesAssessed": [
-      "Gastric"
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
@@ -990,22 +942,6 @@
     "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
     "cancerTypesAssessed": [
       "Prostate"
-    ],
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
-    "id": "hct-23",
-    "category": "HCT",
-    "name": "VistaSeq Hereditary Melanoma Cancer Panel",
-    "vendor": "Labcorp",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
-    "cancerTypesAssessed": [
-      "Melanoma"
     ],
     "fdaStatus": "CLIA LDT",
     "vendorVerified": false,
