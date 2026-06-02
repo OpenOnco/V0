@@ -90,8 +90,8 @@
   {
     "id": "hct-2",
     "category": "HCT",
-    "name": "Invitae Multi-Cancer Panel",
-    "vendor": "Invitae (Labcorp)",
+    "name": "Multi-Cancer Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "sampleType": "Whole blood or saliva",
@@ -148,7 +148,7 @@
     "listPrice": 250,
     "selfPayPrice": 250,
     "selfPayPriceCitations": "https://www.invitae.com/us/providers/billing",
-    "financialAssistance": "Invitae Patient Assistance Program; free family testing for 90 days",
+    "financialAssistance": "Patient Assistance Program; free family testing for 90 days",
     "cptCodes": "81432, 81433",
     "medicareRate": 1303.95,
     "medicareStatus": "Priced",
@@ -392,7 +392,7 @@
     "variantReclassificationPolicy": true,
     "minimumAge": 18,
     "uniqueFeatures": "Focus on accessibility and user experience; 30-gene panel covers most actionable risks; strong employer/enterprise market presence",
-    "limitations": "Smaller panel than Myriad/Invitae; TAT is slower (3-5 weeks)",
+    "limitations": "Smaller panel than Myriad/Labcorp; TAT is slower (3-5 weeks)",
     "vendorVerified": false,
     "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch"
   },
@@ -778,8 +778,8 @@
   {
     "id": "hct-11",
     "category": "HCT",
-    "name": "Invitae Hereditary Breast Cancer Panel",
-    "vendor": "Invitae",
+    "name": "Hereditary Breast Cancer Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood (3mL whole blood, K2/K3 EDTA purple-top, preferred), saliva, buccal swab, or gDNA",
     "genesAnalyzed": 18,
@@ -821,8 +821,8 @@
   {
     "id": "hct-12",
     "category": "HCT",
-    "name": "Invitae Hereditary Breast Cancer Guidelines-Based Panel",
-    "vendor": "Invitae",
+    "name": "Hereditary Breast Cancer Guidelines-Based Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood, saliva, buccal swab, or genomic DNA",
     "genesAnalyzed": 13,
@@ -858,8 +858,8 @@
   {
     "id": "hct-13",
     "category": "HCT",
-    "name": "Invitae BRCA1 and BRCA2 STAT Panel",
-    "vendor": "Invitae",
+    "name": "BRCA1 and BRCA2 STAT Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "sampleType": "3 mL whole blood in purple-top EDTA tube; alternate: saliva",
@@ -882,8 +882,8 @@
   {
     "id": "hct-14",
     "category": "HCT",
-    "name": "Invitae Hereditary Thyroid Cancer Panel",
-    "vendor": "Invitae",
+    "name": "Hereditary Thyroid Cancer Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "genesAnalyzed": 8,
@@ -908,8 +908,8 @@
   {
     "id": "hct-15",
     "category": "HCT",
-    "name": "Invitae Hereditary Pancreatic Cancer Panel",
-    "vendor": "Invitae",
+    "name": "Hereditary Pancreatic Cancer Panel",
+    "vendor": "Labcorp",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "method": "NGS germline multi-gene panel",
@@ -962,22 +962,6 @@
     ],
     "genesAnalyzed": 22,
     "testCode": "481363"
-  },
-  {
-    "id": "hct-19",
-    "category": "HCT",
-    "name": "VistaSeq Hereditary Endometrial Cancer Panel",
-    "vendor": "Labcorp",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline hereditary cancer focused subpanel",
-    "methodCitations": "https://oncology.labcorp.com/vistaseq-hereditary-cancer",
-    "cancerTypesAssessed": [
-      "Endometrial"
-    ],
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
   },
   {
     "id": "hct-21",
