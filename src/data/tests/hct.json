@@ -665,9 +665,11 @@
     "cascadeTestingOffered": "Yes",
     "variantReclassificationPolicy": true,
     "pediatricTesting": true,
-    "uniqueFeatures": "Expertise in rare diseases; often handles complex cases; powers Tempus xG germline testing",
+    "uniqueFeatures": "Expertise in rare diseases; often handles complex cases",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch"
+    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch",
+    "availability": "Discontinued",
+    "discontinuedNotes": "GeneDx exited hereditary cancer testing effective 2025-09-30 (last order date 2025-09-16)."
   },
   {
     "id": "hct-10",
@@ -721,8 +723,8 @@
       "Hematologic"
     ],
     "analyticalSensitivity": 99.9,
-    "analyticalSensitivityNotes": ">99% at 50x coverage",
-    "analyticalSpecificity": 99.9,
+    "analyticalSensitivityNotes": ">98% at 50x coverage (GTR 531711)",
+    "analyticalSpecificity": 96,
     "deletionDuplicationAnalysis": "Yes",
     "fdaStatus": "CLIA LDT",
     "fdaStatusNotes": "CLIA Certified, CAP Accredited",
@@ -749,7 +751,8 @@
     "uniqueFeatures": "Largest panel available (154 genes); offers pediatric-specific panels; appeals to specialists wanting comprehensive coverage",
     "limitations": "Large gene lists increase VUS rate",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch"
+    "vendorRequestedChanges": "2026-01-08: Added via OpenOnco HCT category launch",
+    "orderCode": "FT-TP00048"
   },
   {
     "id": "hct-11",
@@ -848,14 +851,14 @@
     "genesAnalyzed": 8,
     "genesAnalyzedCitations": "https://www.invitae.com/providers/test-catalog/test-01301",
     "keyGenes": [
-      "RET",
-      "PTEN",
       "APC",
+      "CHEK2",
       "DICER1",
       "PRKAR1A",
-      "SDHB",
-      "SDHD",
-      "TP53"
+      "PTEN",
+      "RET",
+      "TP53",
+      "WRN"
     ],
     "cancerTypesAssessed": [
       "Thyroid"
@@ -1041,21 +1044,6 @@
     "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
   },
   {
-    "id": "hct-26",
-    "category": "HCT",
-    "name": "Full Comprehensive Cancer Panel (Pan-Cancer)",
-    "vendor": "Fulgent Genetics",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood",
-    "method": "Germline hereditary cancer testing; comprehensive panel",
-    "methodCitations": "https://www.fulgentgenetics.com/products/oncology/hereditarycancer.html",
-    "genesAnalyzed": 154,
-    "genesAnalyzedCitations": "https://fulgentgenetics.com/content/flyer/FLY-Hereditary_Cancer-2024-V1.pdf",
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
     "id": "hct-27",
     "category": "HCT",
     "name": "Gastric Cancer Panel",
@@ -1077,7 +1065,7 @@
     "id": "hct-28",
     "category": "HCT",
     "name": "PTEN Hamartoma Tumor Syndrome via the PTEN Gene",
-    "vendor": "PreventionGenetics (Abbott)",
+    "vendor": "PreventionGenetics (Exact Sciences)",
     "productType": "Central Lab Service",
     "sampleCategory": "Blood or Saliva",
     "genesAnalyzed": 1,
@@ -1093,39 +1081,12 @@
     "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
   },
   {
-    "id": "hct-29",
-    "category": "HCT",
-    "name": "FoundationOne Germline",
-    "vendor": "Foundation Medicine",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Germline testing",
-    "methodCitations": "https://www.foundationmedicine.com/test/germline-testing",
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
-    "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639"
-  },
-  {
-    "id": "hct-30",
-    "category": "HCT",
-    "name": "FoundationOne Germline More",
-    "vendor": "Foundation Medicine",
-    "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
-    "method": "Expanded germline testing offering",
-    "methodCitations": "https://www.foundationmedicine.com/test/germline-testing",
-    "fdaStatus": "CLIA LDT",
-    "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
-  },
-  {
     "id": "hct-31",
     "category": "HCT",
     "name": "BRACAnalysis CDx",
     "vendor": "Myriad Genetics",
     "productType": "Central Lab Service",
-    "sampleCategory": "Blood or Saliva",
+    "sampleCategory": "Blood (whole blood, EDTA)",
     "genesAnalyzed": 2,
     "genesAnalyzedCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf14/P140020b.pdf",
     "keyGenes": [
@@ -1134,14 +1095,15 @@
     ],
     "fdaStatus": "FDA Approved (PMA)",
     "fdaStatusNotes": "FDA-approved companion diagnostic for PARP inhibitors",
-    "cptCodes": "0137U",
+    "cptCodes": "81162",
     "medicareRate": 282.88,
-    "medicareStatus": "Priced",
+    "medicareStatus": "Needs review",
     "medicareEffective": "2025-Q4",
-    "adltStatus": true,
-    "cptCodesNotes": "BRACAnalysis CDx PLA code for full BRCA1/2 sequencing plus large rearrangement analysis.",
+    "adltStatus": false,
+    "cptCodesNotes": "81162 = full BRCA1/2 sequencing plus large rearrangement (deletion/duplication) analysis. Corrected from 0137U, which is Ambry Genetics RNAinsight (PALB2 mRNA), not this test.",
     "vendorVerified": false,
-    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission"
+    "vendorRequestedChanges": "2026-01-09: Initial entry from batch submission",
+    "medicareNotes": "Prior rate ($282.88) was derived from the incorrect CPT 0137U; re-derive for 81162."
   },
   {
     "id": "hct-32",
@@ -1201,7 +1163,7 @@
     "deletionDuplicationAnalysis": "Yes",
     "prsIncluded": true,
     "prsNotes": "Multi-ancestry polygenic risk scores modulate penetrance of monogenic variants; ~50% of CHEK2 carriers fall above/below guideline thresholds when PRS factored in. PRS identifies ~20% of breast cancer cases where high genetic risk caused disease beyond BRCA1/2/ATM/CHEK2/PALB2.",
-    "prsCitations": "Nature Communications (multi-ancestry PRS validation); Baylor College of Medicine collaboration",
+    "prsCitations": "Nature Communications (multi-ancestry PRS validation); Broad Institute collaboration",
     "fdaStatus": "CLIA LDT",
     "fdaStatusNotes": "Launched October 2025",
     "reimbursement": "Coverage Varies",
@@ -1220,7 +1182,7 @@
     "limitations": "PRS utility varies by ancestry; newer platform with less published validation than established competitors",
     "numPublications": 1,
     "numPublicationsPlus": true,
-    "numPublicationsNotes": "Nature Communications (multi-ancestry PRS); ASHG 2024 presentations",
+    "numPublicationsNotes": "Tsoulos et al., Diagnostics (Basel) 2024 — PMID 39202314 (PRS + NGS panel for hereditary breast cancer risk); ASHG 2024 presentations",
     "vendorVerified": false,
     "vendorRequestedChanges": "2026-01-11: Added via vendor submission from Giordano Botta (CEO, Allelica). Cancer-focused subset of multi-disease AbsoluteDx platform."
   },
