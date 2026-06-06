@@ -12,36 +12,19 @@
     "name": "Caris ChromoSeq",
     "vendor": "Caris Life Sciences",
     "category": "TDS",
-    "summary": "Whole genome tumor profiling assay for myeloid malignancies (AML, MDS, MPN). >200X depth of coverage, ~1.6B reads per patient. MolDX approved. Hematologic CGP — evaluate if in scope.",
+    "summary": "Whole genome tumor profiling assay for myeloid malignancies (AML, MDS, MPN). >200X depth of coverage, ~1.6B reads per patient. MolDX approved. Hematologic CGP \u2014 evaluate if in scope.",
     "source": "https://finance.yahoo.com/sectors/healthcare/articles/caris-life-sciences-q1-earnings-213936656.html",
     "fdaAction": "MolDX approved (early May 2026)",
     "dateFound": "2026-05-23"
   },
   {
-    "name": "FoundationOne MRD",
-    "vendor": "Foundation Medicine",
-    "category": "MRD",
-    "summary": "Tumor-informed MRD test combining whole-genome sequencing + digital PCR for structural variant detection. Built on SAGA Diagnostics platform (acquired by Roche/FMI April 2026 for $595M). Medicare-covered for early-stage breast cancer. TAT: 2-3 weeks initial, 1-3 days follow-up. Distinct from FoundationOne Tracker MRD (mrd-10) which uses a different approach.",
-    "source": "https://www.biospace.com/press-releases/foundation-medicine-launches-foundationone-mrd-first-of-its-kind-molecular-residual-disease-test-to-combine-structural-variants-and-digital-pcr",
-    "fdaAction": "Commercial launch (late May/early June 2026)",
-    "dateFound": "2026-06-06"
-  },
-  {
-    "name": "Caris MI Clarity",
-    "vendor": "Caris Life Sciences",
-    "category": "TDS",
-    "summary": "AI-powered prognostic test for HR+/HER2-, node-negative, postmenopausal early-stage breast cancer. Predicts both early (0-5 yr) and late (5-15 yr) distant recurrence risk using computational pathology on H&E slides. Results in 3 business days. Competes with Oncotype DX (tds-19).",
-    "source": "https://www.prnewswire.com/news-releases/caris-life-sciences-launches-caris-mi-clarity-the-first-and-only-ai-powered-test-to-predict-both-early-and-late-distant-recurrence-risk-in-breast-cancer-at-the-time-of-diagnosis-302762431.html",
-    "fdaAction": "Commercial launch (May 5, 2026)",
-    "dateFound": "2026-06-06"
-  },
-  {
     "name": "TOBY Urine MCED",
     "vendor": "TOBY Inc.",
     "category": "ECD",
-    "summary": "First urine-based multi-cancer early detection (MCED) test to receive FDA Breakthrough Device Designation. Analyzes volatile organic compounds (VOCs) in urine using spectroscopy and machine learning. Very early stage — no PMA filed.",
+    "summary": "First urine-based multi-cancer early detection (MCED) test to receive FDA Breakthrough Device Designation. Analyzes volatile organic compounds (VOCs) in urine using spectroscopy and machine learning. Very early stage \u2014 no PMA filed.",
     "source": "https://www.prnewswire.com/news-releases/toby-receives-fda-breakthrough-device-designation-for-its-urine-based-multi-cancer-early-detection-mced-test-302741283.html",
     "fdaAction": "FDA Breakthrough Device Designation (April 14, 2026)",
-    "dateFound": "2026-06-06"
+    "dateFound": "2026-06-06",
+    "status": "deferred \u2014 reviewed 2026-06-06; pre-validation (BDD only), revisit on launch/validation"
   }
 ]
