@@ -1060,7 +1060,7 @@
     "clinicalSettingsNotes": "Most broadly validated across clinical settings. Neoadjuvant: breast cancer (I-SPY2 trial, Medicare covered). Post-surgery: landmark ~4 weeks (75% NSCLC sens). Post-adjuvant: after chemo completion. Surveillance: longitudinal monitoring (94% NSCLC sens). Medicare covers all settings for CRC, breast, bladder, NSCLC, ovarian.",
     "totalParticipants": 2000,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT04264702",
-    "numPublications": 103,
+    "numPublications": 104,
     "numPublicationsCitations": "https://www.natera.com/company/news/natera-announces-publication-of-over-100-peer-reviewed-papers-on-signateratm/",
     "numPublicationsPlus": true,
     "nccnNamedInGuidelines": true,

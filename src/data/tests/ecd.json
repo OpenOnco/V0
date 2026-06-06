@@ -75,6 +75,8 @@
     "nccnNamedInGuidelines": true,
     "nccnGuidelineReference": "NCCN Colorectal Cancer Screening V.1.2025 (June 2025)",
     "nccnGuidelinesNotes": "Added to NCCN CRC Screening Guidelines in June 2025 as an acceptable screening option for average-risk adults with 3-year screening interval recommendation. First blood-based test included in NCCN CRC screening guidelines.",
+    "acsGuidelineReference": "ACS Colorectal Cancer Screening Guideline (2026 update, May 27, 2026)",
+    "acsGuidelinesNotes": "Included in updated ACS CRC Screening Guideline (May 27, 2026) as a recommended blood-based screening option for patients who decline stool-based or visual exams. First and only FDA-approved blood test in both ACS and NCCN CRC screening guidelines.",
     "medicareCoverage": {
       "status": "COVERED",
       "policyType": "NCD",
@@ -767,7 +769,7 @@
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866 | https://grail.com/press-releases/grail-pathfinder-2-results-show-galleri-multi-cancer-early-detection-blood-test-increased-cancer-detection-more-than-seven-fold-when-added-to-uspstf-a-and-b-recommended-screenings/",
     "totalParticipants": 188535,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
-    "numPublications": 23,
+    "numPublications": 27,
     "numPublicationsPlus": true,
     "financialAssistance": "Billing support available. Contact: (833) 694-2553",
     "medicareCoverage": {
