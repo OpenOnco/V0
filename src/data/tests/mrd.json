@@ -15,10 +15,10 @@
       "Multi-solid"
     ],
     "indicationsNotes": "Tumor-informed MRD assay for multiple common and rare solid tumors; Quest/Resolution MRD platform, FDA Breakthrough Device designation for Stage II CRC (Aug 2025). NEJM validation (Apr 2025): MRD detected recurrence median 1.4 months post-surgery vs 6.1 months for imaging.",
-    "sensitivity": 95,
+    "sensitivity": null,
     "sensitivityCitations": "https://haystackmrd.com/",
-    "sensitivityNotes": "Headline 95% sensitivity is analytical; clinical sensitivity by stage not yet published from large prospective cohorts.",
-    "sensitivityStagesReported": "Analytical validation (stages not specified)",
+    "sensitivityNotes": "No published clinical or analytical sensitivity percentage. The previously listed 95% conflated the LoD95 detection rate (95% of replicates detected at ~6 ppm / 0.0006% tumor fraction) with sensitivity — see lod95/lodNotes.",
+    "sensitivityStagesReported": null,
     "specificity": 100,
     "specificityCitations": "https://haystackmrd.com/clinicians/ | https://doi.org/10.1016/S1525-1578(24)00232-0",
     "specificityNotes": "Analytical specificity of 100% with zero false positives reported. ⚠️ Analytical validation; clinical specificity from large cohorts pending. (J Mol Diagn 2024;26(11):S100)",
@@ -437,13 +437,11 @@
       },
       "privatePayers": {
         "aetna": {
-          "status": "PARTIAL",
-          "policy": "CPB 0715",
-          "policyUrl": "https://www.aetna.com/cpb/medical/data/700_799/0715.html",
-          "coveredIndications": [
-            "CRC Stage II-III"
-          ],
-          "notes": "CRC coverage only"
+          "status": "NOT_COVERED",
+          "policy": "CPB 0352",
+          "policyUrl": "https://www.aetna.com/cpb/medical/data/300_399/0352.html",
+          "coveredIndications": [],
+          "notes": "ctDNA MRD (incl. Signatera for stage II/III CRC) classified experimental/not medically necessary under Tumor Markers policy CPB 0352."
         },
         "cigna": {
           "status": "EXPERIMENTAL",
@@ -1216,13 +1214,13 @@
     "sensitivity": 61.1,
     "sensitivityNotes": "Landmark sensitivity 61.1% from GALAXY (CIRCULATE-Japan) 80-patient CRC subset. Longitudinal sensitivity 83.3%. Headline uses landmark value.",
     "sensitivityCitations": "https://www.businesswire.com/news/home/20240515005320/en/",
-    "specificity": 94,
+    "specificity": 87.9,
     "specificityCitations": "https://www.businesswire.com/news/home/20240515005320/en/",
-    "specificityNotes": "Landmark specificity 94% from GALAXY subset. Longitudinal specificity 89.5%.",
+    "specificityNotes": "Landmark specificity 87.9% (29/33 nonrecurrent MRD-negative) from GALAXY (CIRCULATE-Japan) CRC subset; longitudinal specificity 89.5%. Corrected from an unsupported 94% (Nakamura et al., Clin Cancer Res 2025;31(2):328-338).",
     "landmarkSensitivity": 61.1,
     "landmarkSensitivityNotes": "CRC landmark sensitivity from GALAXY (CIRCULATE-Japan) subset analysis of 80 resected stage II-III colorectal cancer patients.",
     "landmarkSensitivityCitations": "https://www.businesswire.com/news/home/20240515005320/en/ | Tempus BusinessWire press release May 2024",
-    "landmarkSpecificity": 94,
+    "landmarkSpecificity": 87.9,
     "landmarkSpecificityNotes": "CRC landmark specificity from GALAXY (CIRCULATE-Japan) subset analysis.",
     "landmarkSpecificityCitations": "https://www.businesswire.com/news/home/20240515005320/en/ | Tempus BusinessWire press release May 2024",
     "longitudinalSensitivity": 83.3,
@@ -1543,14 +1541,14 @@
     "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "financialAssistance": "Financial Assistance Program - qualifying patients pay max $100, Medicaid $0. Prior auth & appeals support included. Contact: 888.988.3639",
     "medicareCoverage": {
-      "status": "COVERED",
-      "policyType": "LCD",
-      "policyNumber": "L38779",
+      "status": "NOT_COVERED",
+      "policyType": null,
+      "policyNumber": null,
       "policyName": null,
       "coveredIndications": [],
       "reimbursementRate": null,
       "cptCode": null,
-      "notes": "Partnership with Natera - uses Signatera platform",
+      "notes": "MRD application is investigational / not FDA-cleared. FoundationOne Tracker's June 2023 MolDX Medicare coverage applies only to ICI treatment-response monitoring (tracked under TRM, trm-6), not MRD. No L38779 MRD coverage applies to this record.",
       "lastVerified": "2026-01-13"
     },
     "coverageCrossReference": {
@@ -1611,12 +1609,12 @@
       "Multi-solid tumors"
     ],
     "indicationsNotes": "Sensitive MRD assay offered for research use in early- and late-stage solid tumors. Available through Foundation's FlexOMx Lab for drug-development studies requiring deep ctDNA detection (e.g., early-stage or low-shedding cancers).",
-    "sensitivity": 90,
+    "sensitivity": null,
     "sensitivityCitations": "Foundation Medicine press release, September 23, 2025; https://www.foundationmedicine.com/monitoring-portfolio",
-    "sensitivityNotes": "90% analytical sensitivity at 10 ppm tumor fraction threshold in feasibility studies; cross-indication sensitivity values are study-specific.",
-    "specificity": 100,
+    "sensitivityNotes": "No quantitative analytical sensitivity figure is published. Foundation Medicine describes the RUO assay as offering high sensitivity; it detects ctDNA tumor fraction down to ~10 ppm (0.001%) in feasibility studies (see lod). The previously listed 90% was not source-supported.",
+    "specificity": null,
     "specificityCitations": "Foundation Medicine Monitoring Portfolio technical specifications.",
-    "specificityNotes": "100% analytical specificity reported in feasibility data. ⚠️ Feasibility data only; clinical specificity study- and tumor-specific.",
+    "specificityNotes": "No numeric specificity value is published; Foundation Medicine reports qualitatively 'high specificity' in feasibility/analytical (RUO) data. Clinical specificity is study- and tumor-specific. The previously listed 100% was not source-supported.",
     "analyticalValidationWarning": true,
     "validationCohortStudy": "Foundation Medicine feasibility studies (RUO)",
     "lod": "10 ppm (≈0.001%)",
@@ -2164,9 +2162,9 @@
     "sensitivity": 90.62,
     "sensitivityCitations": "https://www.oncotarget.com/article/28654/text/ | Boehm N et al. Oncotarget 2025;16:329-336",
     "sensitivityNotes": "Positive percent agreement 90.62% (95% CI 74.98-98.02%) in DLBCL analytical validation. End-of-treatment MRD detection identified 90% of patients who later relapsed vs 45% for PET/CT.",
-    "specificity": 97.65,
+    "specificity": 77.78,
     "specificityCitations": "https://www.oncotarget.com/article/28654/text/ | Boehm N et al. Oncotarget 2025;16:329-336",
-    "specificityNotes": "Negative percent agreement 97.65% (95% CI 87.43-99.94%) in DLBCL validation. False positive rate 0.24%.",
+    "specificityNotes": "Negative percent agreement 77.78% (95% CI 52.73-93.59%) in DLBCL validation (Boehm et al., Oncotarget 2025;16:329-336). False positive rate 0.24%. Corrected from an unsupported 97.65%.",
     "lod": "0.7 ppm",
     "lod95": "0.7 ppm",
     "lod95Citations": "https://www.natera.com/company/news/natera-acquires-foresight-diagnostics/",
@@ -3101,9 +3099,9 @@
     "validationCohortStudy": "British Journal of Cancer 2023 (n=98 CRC patients)",
     "lod": "0.0005% VAF",
     "lod95": "0.001%",
-    "lod95Citations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0302129",
+    "lod95Citations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
     "lodNotes": "Detection threshold ~0.0005% VAF (5 ppm) for bespoke regions; LOD95 of 0.001% (10 ppm). Limit of blank 0.0003% for bespoke regions. Achieved through large-scale mutation tracking combined with ultra-deep sequencing.",
-    "lodCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0302129",
+    "lodCitations": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334282",
     "leadTimeVsImaging": null,
     "leadTimeVsImagingNotes": "Postoperative MRD positivity strongly associated with recurrence (adjusted HR 8.40, 95% CI 3.49-20.2). Patients with MRD clearance after adjuvant therapy showed significantly better outcomes.",
     "leadTimeVsImagingCitations": "https://www.nature.com/articles/s41416-023-02300-3",
@@ -4014,8 +4012,8 @@
     "reimbursement": "N/A - Discontinued",
     "reimbursementNote": "RaDaR is no longer on the market due to legal proceedings. The successor test is RaDaR ST (mrd-5), which is currently available.",
     "isDiscontinued": true,
-    "discontinuedDate": "February 2026",
-    "discontinuedReason": "RaDaR discontinued due to legal proceedings. Successor test marketed as RaDaR ST (mrd-5).",
+    "discontinuedDate": "September 2024",
+    "discontinuedReason": "RaDaR (v1.0) removed from the US market under a Natera patent-infringement permanent injunction (Sept 23, 2024). Redesigned successor RaDaR ST (mrd-5) launched Feb 2026.",
     "commercialPayers": [
       "Blue Shield of California"
     ],
@@ -4030,16 +4028,14 @@
     "numPublicationsPlus": true,
     "financialAssistance": "Patient billing support and appeals assistance. Contact: 866.776.5907 (Option 9)",
     "medicareCoverage": {
-      "status": "COVERED",
+      "status": "DISCONTINUED",
       "policyType": "LCD",
       "policyNumber": "L38779",
       "policyName": "MolDX: Minimal Residual Disease Testing for Cancer",
-      "coveredIndications": [
-        "HR+/HER2- breast cancer (stage II/III, 5+ years post-diagnosis, NED)"
-      ],
+      "coveredIndications": [],
       "reimbursementRate": null,
       "cptCode": null,
-      "notes": "MolDX coverage announced July 2023. Tumor-informed, tracks up to 48 variants.",
+      "notes": "Product discontinued (US market removal Sept 2024); historical MolDX coverage under L38779 no longer applicable. See RaDaR ST (mrd-5).",
       "lastVerified": "2026-01-13"
     },
     "coverageCrossReference": {
