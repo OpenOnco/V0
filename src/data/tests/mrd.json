@@ -3707,7 +3707,9 @@
         "patientGuidance": "Product no longer available. Consider Guardant360 CDx or Reveal for current options.",
         "keyInsight": "Deprecated product; Guardant has moved to other offerings."
       }
-    }
+    },
+    "tumorInformed": false,
+    "clinicalAvailability": "Single-lab CLIA-certified / NYS CLEP-approved LDT offered by Guardant Health (Redwood City, CA) under FDA enforcement discretion; ordered as a send-out clinical test. NIH GTR (test 593444) lists it as Approved/available, but Guardant has de-emphasized it (appears sun-setted ~Dec 2025) in favor of Guardant Reveal TRM for advanced/metastatic monitoring."
   },
   {
     "id": "trm-2",
@@ -3805,7 +3807,13 @@
         "keyInsight": "IO Monitoring has unique Medicare coverage but commercial payers don't distinguish it from experimental MRD."
       }
     },
-    "financialAssistance": "Financial Assistance: $0–$149 based on income (apply at care.natera.com). Prompt-Pay Cash: $349 if paid within 60 days. Interest-free 12-month payment plans. Contact: 650-489-9050 or signaterapc@natera.com"
+    "financialAssistance": "Financial Assistance: $0–$149 based on income (apply at care.natera.com). Prompt-Pay Cash: $349 if paid within 60 days. Interest-free 12-month payment plans. Contact: 650-489-9050 or signaterapc@natera.com",
+    "tumorInformed": true,
+    "turnaroundTime": "7-10 days for serial blood draws; initial bespoke assay design ~3-4 weeks",
+    "specificity": 99.9,
+    "specificityNotes": "~99.9% (analytical specificity in wild-type DNA; shared Signatera analytical validation)",
+    "specificityCitations": "https://aacrjournals.org/cancerres/article/78/13_Supplement/4542/628840/",
+    "clinicalAvailability": "Clinically available as an LDT in Natera's CLIA-certified/CAP-accredited lab; Medicare-covered for ICI treatment-response monitoring (LCD L38779)"
   },
   {
     "id": "trm-4",
@@ -3878,7 +3886,9 @@
         "patientGuidance": "RUO status limits coverage. Verify before testing.",
         "keyInsight": "RUO designation creates coverage barriers."
       }
-    }
+    },
+    "tumorInformed": false,
+    "clinicalAvailability": "Research use only (RUO); clinical availability announced as expected later in 2025 per Tempus' June 2, 2025 xM for TRM announcement. Used mainly in research and biopharma collaborations; not yet a standard reimbursed clinical assay."
   },
   {
     "id": "trm-5",
@@ -3984,7 +3994,9 @@
         "patientGuidance": "Product no longer available. See RaDaR ST (mrd-5) for current NeoGenomics MRD testing.",
         "keyInsight": "Discontinued due to legal proceedings; successor is RaDaR ST."
       }
-    }
+    },
+    "tumorInformed": true,
+    "turnaroundTime": "7 days (plasma cfDNA analysis); ~4 weeks for initial personalized panel design/build"
   },
   {
     "id": "trm-6",
@@ -4094,7 +4106,15 @@
         "patientGuidance": "Medicare patients: coverage for treatment response monitoring. Commercial: expect denial - therapy monitoring not covered.",
         "keyInsight": "Foundation's partnership with Natera provides Medicare access but commercial payers don't cover TRM indication."
       }
-    }
+    },
+    "sensitivity": 97.3,
+    "sensitivityNotes": ">97.3% at ≥5 mean tumor molecules per mL (MTM/mL), using the most conservative two-alteration configuration",
+    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/38753705/",
+    "specificity": 99.6,
+    "specificityNotes": "99.6% at the sample level",
+    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/38753705/",
+    "turnaroundTime": "7-10 days from sample receipt to clinical report (monitoring draws); baseline panel design derived from prior FoundationOne CDx tumor sequencing",
+    "tumorInformed": true
   },
   {
     "id": "trm-7",
@@ -4184,7 +4204,8 @@
         "patientGuidance": "No specific coverage for monitoring use. Consider alternatives with established coverage.",
         "keyInsight": "FoundationOne Liquid CDx is covered for profiling but Monitor use case lacks coverage."
       }
-    }
+    },
+    "tumorInformed": false
   },
   {
     "id": "trm-8",
@@ -4285,7 +4306,9 @@
         "patientGuidance": "Self-pay only. No insurance coverage available.",
         "keyInsight": "BillionToOne operates on self-pay model; no coverage pathway."
       }
-    }
+    },
+    "tumorInformed": false,
+    "turnaroundTime": "~10 days typical (average 9.1 days from sample receipt to final report; 95% of samples completed in <15 days)"
   },
   {
     "id": "trm-11",
@@ -4653,7 +4676,7 @@
     "sensitivityNotes": "Per real-world cohort study (PMC11333675): Molecular response status correlated with real-world overall survival. Combines with imaging for improved outcome prediction beyond imaging alone.",
     "specificity": null,
     "specificityNotes": "Study demonstrated that model incorporating xM for TRM molecular response + imaging is more predictive of rwOS outcomes than imaging alone.",
-    "lod": null,
+    "lod": "No traditional LOD published; validation study reports a Limit of Blank of 0.6% tumor fraction (95th percentile of TF in healthy controls). Tumor fraction quantified via multi-parametric CNV+VAF ensemble algorithm.",
     "lodNotes": "Tumor fraction quantification via ensemble algorithm. Specific LOD not publicly disclosed.",
     "fdaStatus": "RUO (Research Use Only)",
     "fdaStatusNotes": "Currently available for Research Use Only as of June 2025. Clinical availability expected later in 2025.",
@@ -4723,7 +4746,8 @@
         "patientGuidance": "Not for clinical use. Research and biopharma applications only.",
         "keyInsight": "RUO status means no coverage pathway exists."
       }
-    }
+    },
+    "tumorInformed": false
   },
   {
     "id": "mrd-30",
@@ -4742,20 +4766,20 @@
     ],
     "cancerTypesNotes": "Limited commercial launch for breast cancer (March 2026). CRC and renal cancer expansion planned later 2026.",
     "indicationsNotes": null,
-    "sensitivity": null,
-    "sensitivityCitations": null,
-    "sensitivityNotes": "Clinical data published in The Lancet Oncology; commercial sensitivity/specificity not yet separately reported.",
+    "sensitivity": 93,
+    "sensitivityCitations": "https://www.biospace.com/press-releases/myriad-genetics-shares-new-clinical-data-demonstrating-sensitivity-of-precise-mrd-across-multiple-cancer-types",
+    "sensitivityNotes": "93% baseline ctDNA detection (sensitivity) reported across solid tumor types, consistent across stage, nodal status, and subtype. Commercial per-indication sensitivity not separately broken out. Underlying AccuScan WGS validation (PMC11393307) showed ~90% landmark sensitivity in CRC.",
     "sensitivityStagesReported": null,
     "stageIISensitivity": null,
     "stageIISensitivityNotes": null,
     "stageIIISensitivity": null,
     "stageIIISensitivityNotes": null,
-    "specificity": null,
-    "specificityCitations": null,
-    "specificityNotes": null,
+    "specificity": 99.66,
+    "specificityCitations": "https://myriad.com/oncology/precise-mrd-test/",
+    "specificityNotes": "99.66% clinical specificity per Myriad product page (analytical validation, AccuScan WGS platform).",
     "lod": "1 ppm",
-    "lod95": null,
-    "lodCitations": null,
+    "lod95": 1.45,
+    "lodCitations": "https://myriad.com/oncology/precise-mrd-test/",
     "lodNotes": "Detection down to 1 part per million (0.0001% tumor fraction). 94% of patients tested at baseline had ctDNA levels below 100 ppm.",
     "leadTimeVsImaging": null,
     "leadTimeVsImagingCitations": null,
@@ -4803,7 +4827,10 @@
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "dataSourceNotes": "Launched March 2, 2026. Source: Myriad press release."
+    "dataSourceNotes": "Launched March 2, 2026. Source: Myriad press release.",
+    "lod95Notes": "1.45 ppm",
+    "lod95Citations": "https://myriad.com/oncology/precise-mrd-test/",
+    "tumorInformed": true
   },
   {
     "id": "mrd-kit-1",
@@ -4942,7 +4969,10 @@
         "patientGuidance": "Excellent coverage across Medicare and commercial payers due to FDA clearance.",
         "keyInsight": "FDA clearance = commercial coverage. Gold standard for heme MRD."
       }
-    }
+    },
+    "tat": "7 days (fresh specimens); 14 days (stored specimens), from sample receipt and reconciliation at Adaptive's Seattle lab",
+    "turnaroundTime": "Approximately 7 days for fresh specimens, 14 days for stored specimens (central-lab service); measured from sample receipt and reconciliation. Distributed IVD kit form has no single vendor TAT (depends on running lab).",
+    "tumorInformed": true
   },
   {
     "id": "mrd-kit-2",
@@ -5037,7 +5067,8 @@
         "patientGuidance": "Coverage as clonality assay; verify MRD-specific coverage with payer.",
         "keyInsight": "Often reimbursed as clonality testing rather than MRD-specific."
       }
-    }
+    },
+    "tumorInformed": true
   },
   {
     "id": "mrd-kit-3",
@@ -5131,7 +5162,8 @@
         "patientGuidance": "Flow cytometry MRD generally well-covered; different from ctDNA MRD.",
         "keyInsight": "Flow cytometry MRD has established coverage; different pathway than ctDNA."
       }
-    }
+    },
+    "tumorInformed": false
   },
   {
     "id": "mrd-26",
@@ -5483,7 +5515,11 @@
         "patientGuidance": "This test is not currently available in US markets. K-4CARE is commercially available in Vietnam and Singapore. US launch is planned via Pangea Laboratory partnership but no timeline confirmed.",
         "keyInsight": "Gene Solutions is a Vietnam-based company with CAP-accredited labs. US market entry is in progress but no FDA clearance or US payer coverage pathway established."
       }
-    }
+    },
+    "tumorInformed": true,
+    "lod": "0.05% VAF (variant allele frequency); ctDNA detected in plasma at an LOD of 0.05% using CGP-informed personalized mutation tracking with ultra-deep (100,000X) sequencing",
+    "turnaroundTime": "~8 working days for ctDNA-MRD monitoring (~5 working days for CGP)",
+    "tat": "~8 working days (ctDNA-MRD)"
   },
   {
     "id": "mrd-29",
@@ -5590,7 +5626,10 @@
     "isClinicalLDT": true,
     "vendorVerified": false,
     "technologyDifferentiator": "Blood-based flow cytometry MRD test for myeloma with 5-day specimen stability. Eliminates need for bone marrow biopsy. Comparable sensitivity to NGS-based approaches.",
-    "dateAdded": "2026-02-05"
+    "dateAdded": "2026-02-05",
+    "turnaroundTime": "24 to 72 hours",
+    "tat": "24-72 hours",
+    "tumorInformed": false
   },
   {
     "id": "mrd-31",
@@ -5646,6 +5685,7 @@
     "isInvestigational": true,
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "TFDA-accredited LDT (Taiwan); FDA Breakthrough Device Designation (April 21, 2026) for US pathway; not yet FDA-cleared/approved.",
-    "dateAdded": "2026-05-30"
+    "dateAdded": "2026-05-30",
+    "tumorInformed": true
   }
 ]

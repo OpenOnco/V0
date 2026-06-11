@@ -3166,7 +3166,7 @@
     "tatNotes": "14 working days from sample receipt",
     "sampleType": "Venous blood (EDTA)",
     "sampleVolume": "10ml",
-    "listPrice": null,
+    "listPrice": "~£995–£1,105 (UK self-pay; e.g. Midland Health £1,105, The Health Suite from £995, Innermost Healthcare £1,100). No published vendor MSRP — Datar sells via clinics/distributors and pricing varies by region/provider.",
     "listPriceNotes": "Contact vendor for pricing",
     "numPublications": 3,
     "numPublicationsCitations": "",
@@ -3187,7 +3187,8 @@
       "submitterEmail": "jigar.pandya@datarpgx.org",
       "submitterType": "expert",
       "submittedDate": "2026-01-07"
-    }
+    },
+    "turnaroundTime": "Up to 14 working days (vendor); UK resellers report 10–20 working days / ~2–3 weeks from sample receipt"
   },
   {
     "id": "ecd-27",
@@ -3263,7 +3264,8 @@
       "submitterType": "vendor",
       "submittedDate": "2025-12-09",
       "clarificationDate": "2026-01-08"
-    }
+    },
+    "sampleType": "Blood (simple blood draw); plasma cfDNA. Specific collection tube type and volume not publicly disclosed by vendor."
   },
   {
     "id": "ecd-35",
@@ -3501,7 +3503,9 @@
     "vendorRequestedChanges": "",
     "testScope": "Single-cancer",
     "screeningPopulation": "Men with elevated PSA (≥3 ng/mL) or abnormal DRE considering biopsy",
-    "intendedUse": "Reflex test after elevated PSA to help determine need for prostate biopsy"
+    "intendedUse": "Reflex test after elevated PSA to help determine need for prostate biopsy",
+    "sampleType": "Serum (2 SST serum-separator tubes, spun down)",
+    "turnaroundTime": "3-5 business days"
   },
   {
     "id": "ecd-30",
@@ -3527,15 +3531,18 @@
     "cancerTypesNotes": "Pan-cancer biomarker applicable to 16+ cancer types. GAST gene (encoding progastrin) is activated across multiple tumor origins. For non-pregnant adults 18+.",
     "cancerTypesCitations": "https://pubmed.ncbi.nlm.nih.gov/31877416/",
     "sampleTubeType": "EDTA",
+    "sampleType": "EDTA plasma (separated from whole blood, frozen)",
     "sampleCollectionNotes": "Frozen plasma required. Store at -20°C or 2-8°C. Do not freeze whole blood.",
     "sampleCitations": "https://www.proteanbiodx.com/ordering",
     "requiresTumorTissue": "No",
     "requiresTumorTissueNotes": "Blood-based biomarker only",
     "requiresMatchedNormal": "No",
-    "sensitivityNotes": "Median hPG80 in cancer patients: 4.88 pM vs 1.05 pM in healthy donors (p<0.0001). Detected in 84% of HCC patients.",
-    "sensitivityCitations": "https://pubmed.ncbi.nlm.nih.gov/31877416/",
-    "specificityNotes": "High analytical specificity - no cross-reactivity with other gastrin peptides. No interference from PPI usage.",
-    "specificityCitations": "https://pubmed.ncbi.nlm.nih.gov/34494619/",
+    "sensitivity": 49,
+    "specificity": 90,
+    "sensitivityNotes": "49 (lung-cancer best-case, Se 49% / Sp 90% at >7.73 pM; ONCOPRO prospective study, n=421, 16 cancers, global AUC 0.63 — no single pan-cancer headline value exists; HCC Se 48%; early-onset breast Se 47.6%)",
+    "sensitivityCitations": "https://biomarkerres.biomedcentral.com/articles/10.1186/s40364-025-00793-z",
+    "specificityNotes": "90 (clinical specificity at >7.73 pM cutoff, ONCOPRO lung/HCC cohorts; analytical specificity high with no gastrin-peptide cross-reactivity)",
+    "specificityCitations": "https://biomarkerres.biomedcentral.com/articles/10.1186/s40364-025-00793-z",
     "lod": "1 pM",
     "lodNotes": "LoD: 1 pM. LoQ: 3.3 pM. Linear 0-50 pM.",
     "lodCitations": "https://pubs.rsc.org/en/content/articlelanding/2021/ay/d1ay00986a",
@@ -3771,7 +3778,7 @@
     "tat": null,
     "tatNotes": null,
     "tatCitations": null,
-    "sampleType": null,
+    "sampleType": "Blood (plasma cell-free DNA)",
     "sampleVolume": null,
     "sampleVolumeMl": null,
     "sampleTubeType": null,
@@ -3863,6 +3870,7 @@
       "cptCode": null,
       "notes": "Investigational; not yet commercially available. LDT launch planned H2 2026.",
       "lastVerified": "2026-03-23"
-    }
+    },
+    "sampleType": "Blood (plasma); cfDNA methylation sequencing + plasma protein immunoassays"
   }
 ]

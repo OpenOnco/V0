@@ -2369,7 +2369,8 @@
       "cptCode": "0543U",
       "notes": "FDA PMA approved Aug 27 2024 (P230011). 517-gene CGP IVD kit. CMS CLFS rate effective Jan 1, 2026.",
       "lastVerified": "2026-02-09"
-    }
+    },
+    "turnaroundTime": "4-5 days (vendor assay workflow, extracted DNA/RNA to report: ~2 days library prep + enrichment, automated NextSeq 550Dx sequencing, 8-10 hr analysis). Note: end-to-end clinical TAT is set by the operating lab (kit is distributable IVD); the record's existing lab-side estimate is 10-14 days."
   },
   {
     "id": "tds-kit-2",
@@ -2430,7 +2431,10 @@
     "tat": "10-14 days",
     "totalParticipants": 5000,
     "numPublications": 30,
-    "technologyDifferentiator": "First CE-IVDR comprehensive CGP kit. Part of elio platform family including plasma focus Dx for liquid biopsy. PGDx analytics platform included."
+    "technologyDifferentiator": "First CE-IVDR comprehensive CGP kit. Part of elio platform family including plasma focus Dx for liquid biopsy. PGDx analytics platform included.",
+    "turnaroundTime": "5 days (analytical, isolated nucleic acid to variant report; vendor-stated kit TAT)",
+    "reimbursementNote": "Covered/priced by Medicare via PLA code 0250U; CMS national reimbursement rate $2,919.60 (effective Jan 1, 2022; ADLT-priced)",
+    "reimbursementCitations": "https://www.businesswire.com/news/home/20220125005131/en/PGDx-Announces-an-Updated-Medicare-Reimbursement-Rate-for-the-elio%E2%84%A2-tissue-complete-Test"
   },
   {
     "id": "tds-kit-4",
@@ -2505,7 +2509,8 @@
     "numPublicationsPlus": true,
     "technologyDifferentiator": "Automated sample-to-report workflow on Genexus platform. Same 517-gene content as GeneStudio S5 version but with 24-27 hour TAT vs 3 days. Slightly different analytical performance profile.",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2026-03-23: New test submitted by Dinesh Cyanam, Thermo Fisher Scientific. Genexus platform variant of existing OCA Plus (tds-kit-4)."
+    "vendorRequestedChanges": "2026-03-23: New test submitted by Dinesh Cyanam, Thermo Fisher Scientific. Genexus platform variant of existing OCA Plus (tds-kit-4).",
+    "turnaroundTime": "24-27 hours (sample-to-report on Ion Torrent Genexus; vs ~3 days on GeneStudio S5)"
   },
   {
     "id": "tds-kit-5",
@@ -2798,7 +2803,9 @@
     "totalParticipants": 137,
     "totalParticipantsNotes": "International multicenter analytical validation across 10+ centers in 8 countries (France, Germany, Austria, Netherlands, Spain, Italy, Greece, India)",
     "numPublications": 1,
-    "technologyDifferentiator": "Decentralized IVD kit for in-house hospital liquid biopsy. Compact 32-gene actionability-focused panel (>80% ESCAT Level I). DNA-only workflow with UMI/UDI error correction. Integrated Hedera Prime CE-IVD software with OncoKB for automated therapy matching. Hedera Comply program supports CE-IVDR local validation."
+    "technologyDifferentiator": "Decentralized IVD kit for in-house hospital liquid biopsy. Compact 32-gene actionability-focused panel (>80% ESCAT Level I). DNA-only workflow with UMI/UDI error correction. Integrated Hedera Prime CE-IVD software with OncoKB for automated therapy matching. Hedera Comply program supports CE-IVDR local validation.",
+    "turnaroundTime": "5 calendar days (kit assay sample-to-report workflow; final clinical TAT depends on the lab running the kit)",
+    "msi": "Reported (MSI status determined directly from ctDNA; one of the panel's headline biomarkers alongside ESR1 and METex14)"
   },
   {
     "id": "tds-kit-13",
@@ -3046,7 +3053,8 @@
     "citationUrls": [
       "https://www.sophiagenetics.com/sophia-ddm-for-genomics/liquid-biopsy/msk-access/"
     ],
-    "vendorVerified": true
+    "vendorVerified": true,
+    "turnaroundTime": "~5 days (cfDNA sample to report)"
   },
   {
     "id": "tds-kit-18",
@@ -3279,7 +3287,7 @@
     "fdaStatusNotes": "US validation underway with Pangea Laboratory",
     "fdaCompanionDxCount": 0,
     "reimbursement": "Not covered",
-    "reimbursementNote": "No US coverage",
+    "reimbursementNote": "Not covered (no US commercial availability; not FDA cleared; offered only in Asian markets with US launch planned)",
     "clinicalAvailability": "Commercial in Asian markets; US launch planned",
     "availableRegions": [
       "Singapore",
@@ -3293,7 +3301,12 @@
     "isClinicalLDT": true,
     "regulatoryStatusNotes": "CAP-accredited NGS laboratories",
     "vendorVerified": true,
-    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test - also listed in MRD category for personalized ctDNA monitoring. 2026-01-23: Gene count corrected to 504 (commercial product vs. 473 in publication); verified by David Schlesinger (Gene Solutions)"
+    "vendorRequestedChanges": "2026-01-22: Initial submission by David Schlesinger (Gene Solutions). Note: K-4CARE is a dual-function test - also listed in MRD category for personalized ctDNA monitoring. 2026-01-23: Gene count corrected to 504 (commercial product vs. 473 in publication); verified by David Schlesinger (Gene Solutions)",
+    "turnaroundTime": "8 days",
+    "tat": "8 days (vendor product page; ~5 working days for the CGP component per the dual-profiling upgrade announcement)",
+    "msi": "Reported (MSI status; analytical validation: 94% sensitivity, >99% specificity)",
+    "tmb": "Reported (TMB; 97% correlation with whole-exome sequencing)",
+    "reimbursementCitations": "https://genesolutions.com/our-test/k-4care"
   },
   {
     "id": "tds-29",
@@ -3319,7 +3332,7 @@
     "fdaStatus": "CLIA LDT",
     "fdaStatusNotes": "CLIA-certified, CAP-accredited laboratory-developed test performed at Veracyte (San Diego, CA).",
     "reimbursement": "Medicare and commercial coverage",
-    "reimbursementNote": "Medicare coverage via Palmetto GBA MolDX LCD. Broad commercial payer coverage.",
+    "reimbursementNote": "Covered. Medicare coverage under Palmetto GBA MolDX LCD 'Prostate Cancer Genomic Classifier Assay for Men with Localized Disease' (L38341), spanning very-low through very-high and node-positive NCCN risk groups at initial diagnosis and post-prostatectomy.",
     "clinicalAvailability": "Clinical LDT – Central lab",
     "clinicalAvailabilityNotes": "Performed at Veracyte central laboratory. Available in US.",
     "availableRegions": [
@@ -3335,7 +3348,11 @@
     "vendorVerified": false,
     "isClinicalLDT": true,
     "technologyDifferentiator": "Most validated genomic classifier for prostate cancer treatment decisions. Predicts metastasis risk post-prostatectomy, radiation therapy benefit (STAMPEDE Phase 3: 36% death risk reduction), and hormone therapy benefit in recurrent disease (BALANCE).",
-    "dateAdded": "2026-02-05"
+    "dateAdded": "2026-02-05",
+    "genesAnalyzed": 22,
+    "turnaroundTime": "2-3 weeks from sample receipt at Veracyte laboratory",
+    "tat": "2-3 weeks",
+    "reimbursementCitations": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?LCDId=38341"
   },
   {
     "id": "tds-30",
