@@ -959,11 +959,11 @@
     "performanceNotes": "CRC sensitivity 93-94% with 100% Stage I detection; advanced adenoma 45-46%; specificity 88%; outperforms FIT (94% vs 78% CRC; 46% vs 29% AA).",
     "leadTimeNotes": "Non-invasive RNA-based alternative; 100% Stage I sensitivity notable",
     "fdaStatus": "FDA-approved PMA May 3 2024; Breakthrough Device Designation January 2020",
-    "reimbursement": "Coverage Varies",
-    "reimbursementNote": "Medicare coverage pending - NCD reconsideration requested; NCCN Guidelines included",
+    "reimbursement": "Covered (Medicare)",
+    "reimbursementNote": "Medicare covered under NCD 210.3 (CRC screening) as of June 2026 for average-risk adults 45-85 every 3 years; NCCN and ACS included.",
     "commercialPayers": [],
     "commercialPayersCitations": "",
-    "commercialPayersNotes": "Emerging commercial and Medicaid coverage; no stable payer list yet. Medicare coverage pending NCD reconsideration.",
+    "commercialPayersNotes": "Emerging commercial and Medicaid coverage; no stable payer list yet. Medicare covers under NCD 210.3 (June 2026).",
     "clinicalAvailability": "Launched via Labcorp partnership late 2024/early 2025",
     "tat": "Not publicly specified",
     "sampleType": "At-home stool collection (simplified kit FDA-approved 2025)",
@@ -982,19 +982,20 @@
     "numPublications": 3,
     "numPublicationsPlus": true,
     "medicareCoverage": {
-      "status": "PENDING_COVERAGE",
+      "status": "COVERED",
       "policyType": "NCD",
       "policyNumber": "210.3",
       "policyName": "Colorectal Cancer Screening Tests",
       "coveredIndications": [
         "CRC screening",
-        "Ages 45+",
-        "Average risk"
+        "Average risk",
+        "Ages 45-85",
+        "Every 3 years"
       ],
       "reimbursementRate": null,
       "cptCode": null,
-      "notes": "PENDING Medicare coverage. First FDA-approved stool RNA test for CRC screening. 94% CRC sensitivity, 88% specificity.",
-      "lastVerified": "2026-01-13"
+      "notes": "CMS granted Medicare coverage for ColoSense under the NCD for CRC screening tests (210.3), June 2026. Average-risk adults 45-85, every 3 years. First FDA-approved stool-RNA CRC screening test.",
+      "lastVerified": "2026-06-10"
     }
   },
   {
@@ -2568,7 +2569,6 @@
       "lastVerified": "2026-01-13"
     }
   },
-  
   {
     "id": "ecd-kit-1",
     "sampleCategory": "Stool",
@@ -2663,11 +2663,11 @@
     "npvCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf13/P130001C.pdf",
     "npvNotes": "NPV 99.7% for CRC in PRESEPT average-risk screening population",
     "fdaStatus": "FDA-approved (2016)",
-    "reimbursement": "Coverage variable/limited",
-    "reimbursementNote": "Medicare coverage has faced challenges; commercial coverage limited. Verify current coverage before ordering.",
+    "reimbursement": "Not covered by Medicare (screening)",
+    "reimbursementNote": "Medicare final NCD 90.2 (Blood-Based CRC Screening; CAG-00454N), effective 2021-01-19, of national NON-COVERAGE for Epi proColon. CMS covers blood-based CRC screening only with FDA authorization AND sensitivity >=74% / specificity >=90% vs colonoscopy; Epi proColon (~68%/~80%) does not qualify. A CLFS price on CPT 81327 is not coverage.",
     "cptCodes": "81327",
     "medicareRate": 192,
-    "medicareStatus": "Priced",
+    "medicareStatus": "Non-covered for screening (NCD 90.2 / CAG-00454N)",
     "medicareEffective": "2025-Q4",
     "cptCodesNotes": "SEPT9 (Septin 9) gene methylation analysis. Standard CPT code for methylated SEPT9 CRC screening.",
     "commercialPayers": [],
@@ -3150,7 +3150,7 @@
     "specificity": 96.3,
     "specificityCitations": "https://acsjournals.onlinelibrary.wiley.com/doi/10.1002/cncy.22366",
     "specificityNotes": "96.3% specificity in clinical validation",
-    "performanceCitations": "https://pubmed.ncbi.nlm.nih.gov/31743438/ | https://pubmed.ncbi.nlm.nih.gov/33029899/ | https://pubmed.ncbi.nlm.nih.gov/32898291/",
+    "performanceCitations": "https://pubmed.ncbi.nlm.nih.gov/32996712/ | https://pubmed.ncbi.nlm.nih.gov/32958586/",
     "performanceNotes": "Validated across multiple peer-reviewed publications; hallmark CTC clusters signify 230x higher one-year cancer risk",
     "fdaStatus": "CE-IVD",
     "fdaStatusNotes": "CE-IVD marked in Europe; not FDA-cleared in US",
@@ -3209,16 +3209,16 @@
     "targetPopulation": "High-risk asymptomatic individuals, NSAS triage, therapy selection when tissue unavailable",
     "indicationGroup": "MCED",
     "sensitivity": 53.5,
-    "sensitivityCitations": "https://www.nature.com/articles/s41467-024-46435-0 | Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
-    "sensitivityNotes": "~53.5% sensitivity for early-stage cancers at ~99% specificity in asymptomatic screening context. GIPXplore classifier achieved 81.62% overall accuracy with 95% specificity for pan-cancer detection. Cancer-specific AUCs from Nature Comms study: Multiple Myeloma 95.0%, Early-Stage Breast Cancer 90.1%, Colorectal Cancer 84.7%.",
+    "sensitivityCitations": "Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "sensitivityNotes": "Vendor-claimed ~53.5% sensitivity at ~99% specificity for early-stage cancers (unpublished internal data; not peer-reviewed). The cancer-specific figures from the Nature Communications 2024 study (PMID 38472221) are matched case-control discrimination metrics (CRC 84.7%, early-stage breast 90.1%, MM AUC 95.0%), NOT asymptomatic-screening sensitivity.",
     "sensitivityType": "observed (case-control)",
     "incidenceAdjustedSensitivity": null,
     "incidenceAdjustedSensitivityNotes": null,
     "incidenceAdjustedSensitivityCitations": null,
     "cancerTypeSensitivity": null,
     "specificity": 99,
-    "specificityCitations": "https://www.nature.com/articles/s41467-024-46435-0 | Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
-    "specificityNotes": "~99% specificity in early-stage screening context. 95% specificity for pan-cancer GIPXplore classifier. Near 100% specificity for all variant types on targeted panel.",
+    "specificityCitations": "Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
+    "specificityNotes": "Vendor-claimed ~99% specificity (unpublished internal data; not peer-reviewed). GIPXplore classifier vendor-reported 95% specificity for pan-cancer detection.",
     "tissueOfOrigin": true,
     "tissueOfOriginAccuracy": 88.7,
     "tissueOfOriginNotes": "88.7% TOO accuracy for true positives using fragmentomics-based cell type deconvolution. Leverages cell-type-specific epigenetic patterns; can identify contributions from 490+ cell types.",
@@ -3700,7 +3700,7 @@
     "vendor": "Harbinger Health",
     "testScope": "Multi-cancer — evaluation of suspected cancer (NOT asymptomatic screening)",
     "approach": "Blood-based cfDNA methylation MCED",
-    "method": "Proprietary cfDNA methylation platform with machine-learning classifiers (fragment-level methylation analysis; qMSP with LNA blockers; two-tier MLX + IIX system) for multi-cancer detection (~12 cancer types)",
+    "method": "Proprietary cfDNA methylation platform with machine-learning classifiers (fragment-level methylation analysis; two-tier MLX + IIX system) for multi-cancer detection (~12 cancer types)",
     "methodCitations": "https://harbinger-health.com/harbinger-health-establishes-resolve-as-a-new-category-for-cancer-detection/",
     "methodNotes": null,
     "cancerTypes": [
