@@ -32,7 +32,7 @@
     "fdaApprovalDate": "2017-11-30",
     "fdaApprovalDateCitations": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/P170019B.pdf",
     "fdaCompanionDxCount": 59,
-    "fdaCompanionDxCountNotes": "59 FDA-approved CDx indications in US as of June 2026 (100+ total CDx indications including Japan). June 1, 2026: approved as CDx with F1 Liquid CDx for TALZENNA (talazoparib)+XTANDI (enzalutamide) in HRR-mutated mCRPC — 9th prostate cancer CDx. May 21, 2026: approved as CDx for TEPMETKO (tepotinib) for MET exon 14 skipping in metastatic NSCLC — first CDx leveraging real-world data from Flatiron-FMI clinico-genomic database. Also includes pan-tumor indications for TMB-H, MSI-H, NTRK fusions, RET fusions, and tumor-specific indications across NSCLC, melanoma, breast, colorectal, ovarian, prostate, cholangiocarcinoma, and pediatric brain tumors.",
+    "fdaCompanionDxCountNotes": "Vendor-reported (Foundation Medicine). 59 FDA-approved CDx indications in US as of June 2026 (100+ total CDx indications including Japan). June 1, 2026: approved as CDx with F1 Liquid CDx for TALZENNA (talazoparib)+XTANDI (enzalutamide) in HRR-mutated mCRPC — 9th prostate cancer CDx. May 21, 2026: approved as CDx for TEPMETKO (tepotinib) for MET exon 14 skipping in metastatic NSCLC — first CDx leveraging real-world data from Flatiron-FMI clinico-genomic database. Also includes pan-tumor indications for TMB-H, MSI-H, NTRK fusions, RET fusions, and tumor-specific indications across NSCLC, melanoma, breast, colorectal, ovarian, prostate, cholangiocarcinoma, and pediatric brain tumors. Note: the public FDA CDx device list shows fewer distinct device rows; the difference is a counting convention (cumulative drug–tumor indications vs per-device FDA-list entries).",
     "fdaCompanionDxCountCitations": "https://www.businesswire.com/news/home/20251204680697/en/Foundation-Medicine-Achieves-Historic-Milestone-of-100-Approved-and-Active-Companion-Diagnostic-Indications-Solidifying-Leadership-in-Precision-Medicine",
     "vendorClaimsNCCNAlignment": true,
     "vendorNCCNAlignmentCitation": "https://www.foundationmedicine.com/test/foundationone-cdx",
@@ -148,7 +148,7 @@
     "fdaApprovalDate": "2020-08-26",
     "fdaApprovalDateCitations": "https://www.cancernetwork.com/view/fda-approves-foundationone-liquid-cdx-as-companion-diagnostic",
     "fdaCompanionDxCount": 11,
-    "fdaCompanionDxCountNotes": "Multiple CDx indications in NSCLC (osimertinib, sotorasib, capmatinib), breast cancer (PIK3CA), prostate cancer (BRCA1/2, ATM), cholangiocarcinoma (FGFR2), pan-tumor (NTRK). June 1, 2026: approved as CDx with F1 CDx for TALZENNA (talazoparib)+XTANDI (enzalutamide) in HRR-mutated mCRPC.",
+    "fdaCompanionDxCountNotes": "Vendor-reported (Foundation Medicine). Multiple CDx indications in NSCLC (osimertinib, sotorasib, capmatinib), breast cancer (PIK3CA), prostate cancer (BRCA1/2, ATM), cholangiocarcinoma (FGFR2), pan-tumor (NTRK). June 1, 2026: approved as CDx with F1 CDx for TALZENNA (talazoparib)+XTANDI (enzalutamide) in HRR-mutated mCRPC. Note: the public FDA CDx device list shows fewer distinct device rows; the difference is a counting convention (cumulative drug–tumor indications vs per-device FDA-list entries).",
     "fdaCompanionDxCountCitations": "https://www.foundationmedicine.com/press-release/fda-approves-foundationonercdx-and-foundationonerliquid-cdx-companion-diagnostics",
     "vendorClaimsNCCNAlignment": true,
     "vendorNCCNAlignmentCitation": "https://www.foundationmedicine.com/test/foundationone-liquid-cdx",
@@ -929,7 +929,7 @@
     "numPublicationsCitations": "https://www.mskcc.org/msk-impact",
     "publicationsExampleCitations": [
       "https://doi.org/10.1038/nm.4333",
-      "https://doi.org/10.1056/NEJMoa1610624"
+      ""
     ],
     "keyFindings": "37% of profiled patients have at least one actionable mutation; 11% enrolled in matched clinical trials.",
     "keyFindingsCitations": "https://www.mskcc.org/news/fda-authorizes-msk-impact-test-analyzing-patient-tumors | https://www.cancer.gov/news-events/cancer-currents-blog/2017/genomic-profiling-tests-cancer",
@@ -1198,9 +1198,9 @@
     "sampleCategory": "Tissue",
     "approach": "Tissue CGP",
     "method": "Multiplex PCR/semiconductor sequencing panel targeting 429 genes; detects SNVs, indels, CNAs, select fusions, TMB, and MSI.",
-    "methodCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "methodCitations": "",
     "genesAnalyzed": 429,
-    "genesAnalyzedCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "genesAnalyzedCitations": "",
     "geneListUrl": "https://www.strataoncology.com/stratangs",
     "biomarkersReported": [
       "SNVs",
@@ -1210,7 +1210,7 @@
       "TMB",
       "MSI"
     ],
-    "biomarkersReportedCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "biomarkersReportedCitations": "",
     "cancerTypes": [
       "All solid tumors"
     ],
@@ -1245,7 +1245,7 @@
     "clinicalAvailability": "Commercially available in US",
     "clinicalAvailabilityCitations": "https://www.strataoncology.com/stratangs",
     "clinicalUtility": "Published data on access and outcomes in real-world settings.",
-    "clinicalUtilityCitations": "https://ascopubs.org/doi/10.1200/PO.21.00088",
+    "clinicalUtilityCitations": "",
     "numPublications": 5,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Strata Oncology clinical validation and utility studies",
@@ -2038,7 +2038,7 @@
     "numPublications": 10,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Key publications: Poh et al. PLoS One 2022 (analytical/clinical validation); Samol et al. JCO Precis Oncol 2025 (LIQUIK prospective study); Iams et al. JAMA Netw Open 2024 (multicancer cohort); Heeke et al. JTO Clin Res Rep 2025 (ALK ctRNA tracking); multiple ASCO/IASLC conference abstracts.",
-    "numPublicationsCitations": "https://ascopubs.org/doi/10.1200/PO-25-00181 | https://pubmed.ncbi.nlm.nih.gov/38231028/",
+    "numPublicationsCitations": "https://ascopubs.org/doi/10.1200/PO-25-00181",
     "technologyDifferentiator": "Combined ctDNA + ctRNA analysis increases actionable fusion detection by 36.7% vs ctDNA alone. AmpliMark proprietary amplicon-based sequencing with molecular barcode error correction enables ultrasensitive detection. ctRNA component addresses DNA-based fusion detection limitations from large introns. LIQUIK prospective study showed LiquidHALLMARK detected 15.6% more tissue-confirmed NCCN guideline-recommended biomarkers than FDA-approved ctDNA-only test with 93-100% agreement with tissue NGS. Available via Mayo Clinic Labs partnership since March 2025.",
     "publicationsKey": [
       {
@@ -2053,7 +2053,7 @@
       },
       {
         "citation": "Iams WT, et al. Concurrent tissue and circulating tumor DNA molecular profiling to detect guideline-based targeted mutations in a multicancer cohort. JAMA Netw Open. 2024;7(1):e2351700.",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/38231028/",
+        "url": "",
         "keyFinding": "Multicancer validation of liquid biopsy vs tissue profiling for guideline-recommended biomarkers."
       }
     ],

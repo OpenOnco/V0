@@ -1188,7 +1188,7 @@
     "deletionDuplicationAnalysis": "Yes",
     "prsIncluded": true,
     "prsNotes": "Multi-ancestry polygenic risk scores modulate penetrance of monogenic variants; ~50% of CHEK2 carriers fall above/below guideline thresholds when PRS factored in. PRS identifies ~20% of breast cancer cases where high genetic risk caused disease beyond BRCA1/2/ATM/CHEK2/PALB2.",
-    "prsCitations": "Nature Communications (multi-ancestry PRS validation); Broad Institute collaboration",
+    "prsCitations": "Allelica (vendor); multi-ancestry PRS validation. Primary support: PMID 39202314 (Tsoulos et al., Diagnostics 2024).",
     "fdaStatus": "CLIA LDT",
     "fdaStatusNotes": "Launched October 2025",
     "reimbursement": "Coverage Varies",

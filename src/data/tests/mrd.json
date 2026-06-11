@@ -73,7 +73,7 @@
     "totalParticipants": 333,
     "numPublications": 18,
     "numPublicationsNotes": "Includes Cercek et al., NEJM 2025 (PMID 40293177) where Haystack MRD was a correlative ctDNA tool — ctDNA clearance (median 1.4 mo) preceded imaging-confirmed CR (median 6.1 mo) under neoadjuvant dostarlimab. ASCO GI 2026: Abstract 26 (Tie et al.) — reproducibility and clinical concordance in resected CRC from DYNAMIC trials; Abstract 30 (Christenson et al.) — ctDNA monitoring during total neoadjuvant treatment for locally advanced rectal cancer.",
-    "numPublicationsCitations": "https://doi.org/10.1056/NEJMoa2502029",
+    "numPublicationsCitations": "https://doi.org/10.1056/NEJMoa2404512",
     "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "medicareCoverage": {
       "status": "COVERED",
