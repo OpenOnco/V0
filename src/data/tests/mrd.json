@@ -197,7 +197,7 @@
     "lodCitations": "Northcott et al. Oncotarget 2024; https://www.personalis.com/for-clinicians/next-personal-dx/",
     "lodNotes": "Detection threshold is 1.67 ppm; LOD95 (95% confidence) is 3.45 ppm. The gap between these values means serial testing can catch lower-level disease.",
     "leadTimeVsImaging": 450,
-    "leadTimeVsImagingCitations": "https://pubmed.ncbi.nlm.nih.gov/39848827/ | Garcia-Murillas et al. Ann Oncol 2025; TRACERx NSCLC data",
+    "leadTimeVsImagingCitations": "Garcia-Murillas et al. Ann Oncol 2025; TRACERx NSCLC data",
     "leadTimeVsImagingNotes": "450 days (15 months) is the median lead time from the Garcia-Murillas et al. Ann Oncol 2025 early-stage breast cancer cohort (range 0.9-61.5 months). This is the median from this specific study, not a universal NeXT median across all indications. NSCLC TRACERx data showed ~6 months.",
     "vendorRequestedChanges": "2025-12-03: Personalis requested lead time update to 15 months (450 days) based on Ann Oncol 2025 breast cancer paper (Garcia-Murillas et al.). Verified against source and updated. | 2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "requiresTumorTissue": "Yes",
@@ -225,7 +225,7 @@
     "clinicalAvailability": "Clinical LDT – shipping (initial market availability)",
     "exampleTestReport": "https://www.personalis.com/wp-content/uploads/2024/07/NeXT-Personal-Dx-Clinical-Report-Template-DOC-002568B.pdf",
     "clinicalTrials": "NCT06230185 (422); VICTORI study interim cohort (~71); TRACERx NSCLC (Cell Dec 2025, 431 pts); CALLA cervical cancer trial; PREDICT-DNA / TBCRC 040 (JCO March 2026, 227 TNBC/HER2+ pts — ctDNA post-NAT predicts 4-9x higher relapse risk)",
-    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185 | https://doi.org/10.1016/j.cell.2025.12.XXX",
+    "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT06230185",
     "clinicalSettings": [
       "Post-Surgery",
       "Post-Adjuvant",
@@ -2009,7 +2009,7 @@
     "adltStatus": true,
     "clinicalAvailability": "Commercially available in US. Integrated into clinical practice by >1,000 healthcare providers at >400 medical sites. ~100,000 patient-physician encounters.",
     "clinicalTrials": "Phase II MRD+ study at Memorial Sloan Kettering (HB-200 intervention for HPV16+ HNSCC with molecular relapse); multiple validation cohorts.",
-    "clinicalTrialsCitations": "https://www.naveris.com/ | Naveris press release April 2024; https://pubmed.ncbi.nlm.nih.gov/32017652/ | Chera BS et al. J Clin Oncol 2020;38:1050-1058; https://pubmed.ncbi.nlm.nih.gov/35914212/ | Berger BM et al. Clin Cancer Res 2022;28:4292-4301",
+    "clinicalTrialsCitations": "https://www.naveris.com/ | Naveris press release April 2024; https://pubmed.ncbi.nlm.nih.gov/32017652/ | Berger BM et al. Clin Cancer Res 2022;28:4292-4301",
     "clinicalSettings": [
       "Neoadjuvant",
       "Post-Surgery",
@@ -2222,16 +2222,16 @@
     },
     "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "medicareCoverage": {
-      "status": "COVERED",
+      "status": "NOT_COVERED",
       "policyType": "LCD",
-      "policyNumber": "L38779",
-      "policyName": "MolDX: Molecular Residual Disease Testing for Cancer",
+      "policyNumber": null,
+      "policyName": null,
       "coveredIndications": [
         "Lymphoma MRD monitoring"
       ],
       "reimbursementRate": null,
       "cptCode": null,
-      "notes": "Structural variant-based lymphoma MRD. 200-day lead time vs imaging.",
+      "notes": "Lymphoma-specific MRD test; Medicare coverage not yet established (consistent with coverageCrossReference.medicare).",
       "lastVerified": "2026-01-13"
     },
     "coverageCrossReference": {
@@ -4226,7 +4226,7 @@
     "leadTimeVsImagingNotes": "In NSCLC study, detected treatment response and progression earlier than CT scans. Can provide actionable signals weeks in advance of imaging.",
     "lod": "0.01% tumor fraction",
     "lodNotes": "Can accurately discriminate tumor fraction changes as small as 0.25%. Single-molecule precision enables detection of subtle shifts in tumor burden.",
-    "lodCitations": "https://www.northstaronc.com/ | https://pubmed.ncbi.nlm.nih.gov/39438179/ | Ye PP et al. Sci Rep 2025; Hsiao A et al. Clin Lung Cancer 2025",
+    "lodCitations": "https://www.northstaronc.com/ | Ye PP et al. Sci Rep 2025; Hsiao A et al. Clin Lung Cancer 2025",
     "fdaStatus": "CLIA LDT – NOT FDA approved",
     "reimbursement": "Self-Pay",
     "reimbursementNote": "No Medicare or commercial coverage established. Available as CLIA-certified laboratory test.",
