@@ -3206,7 +3206,7 @@
     ],
     "cancerTypesNotes": "Pan-cancer detection capability; fragmentomics module can infer Tissue-of-Origin for localization. Specific validation data for colorectal cancer, breast cancer, and multiple myeloma.",
     "cancerTypesCitations": "https://www.nature.com/articles/s41467-024-46435-0",
-    "targetPopulation": "High-risk asymptomatic individuals, NSAS triage, therapy selection when tissue unavailable",
+    "targetPopulation": "NSAS (non-specific alarm symptoms) triage, CUP / tissue-of-origin in metastatic disease, MRD / molecular relapse monitoring, and therapy selection when tissue is unavailable",
     "indicationGroup": "MCED",
     "sensitivity": 53.5,
     "sensitivityCitations": "Vendor data (Christophe Van Huffel, OncoDNA, Jan 2026)",
