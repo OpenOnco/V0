@@ -1,4 +1,11 @@
 /**
+ * ⚠️ DECOMMISSIONED (2026-06-11) — LEGACY, NOT THE LIVE WEEKLY ROUTINE.
+ * scripts/auto-triage/ + .github/workflows/auto-triage.yml last ran for real in
+ * Feb 2026. The live weekly pipeline is the scheduled CLOUD AGENT "Weekly OpenOnco
+ * Scan" (Anthropic routine trig_01SLkE5kgdnddGYYXKXQpkEp). Editing THIS prompt does
+ * NOT affect the live routine — update the cloud routine via the /schedule skill.
+ * Kept for history only. See docs/DATA_QUALITY_CHECKLIST.md.
+ *
  * System prompt builder for auto-triage Claude calls.
  * Mirrors the decision rules from .claude/commands/triage.md
  */

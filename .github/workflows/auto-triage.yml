@@ -1,13 +1,26 @@
-name: Auto-Triage Weekly Submissions
+# =============================================================================
+# ⚠️ DECOMMISSIONED (2026-06-11) — DO NOT TRUST / DO NOT REVIVE WITHOUT REVIEW
+# -----------------------------------------------------------------------------
+# This GitHub Action and scripts/auto-triage/ are a LEGACY design. They last
+# ran for real in February 2026. The live weekly pipeline is now the scheduled
+# CLOUD AGENT "Weekly OpenOnco Scan" (Anthropic-hosted routine
+# trig_01SLkE5kgdnddGYYXKXQpkEp, Sat 09:00 UTC) — it crawls + edits
+# src/data/tests/*.json + commits auto(weekly) directly. The test-data-tracker
+# Railway daemon that fed this Action's `push` trigger is also decommissioned
+# (no Railway project exists). The auto `push` trigger is disabled below so this
+# can never fire on its own. See docs/DATA_QUALITY_CHECKLIST.md.
+# =============================================================================
+name: "[DECOMMISSIONED] Auto-Triage Weekly Submissions"
 
 on:
-  # Trigger when weekly file is pushed to develop
-  push:
-    branches: [develop]
-    paths:
-      - 'test-data-tracker/data/submissions/weekly-*.json'
+  # DISABLED: the test-data-tracker daemon no longer pushes weekly-*.json. Superseded
+  # by the "Weekly OpenOnco Scan" cloud routine. Left here for history only.
+  # push:
+  #   branches: [develop]
+  #   paths:
+  #     - 'test-data-tracker/data/submissions/weekly-*.json'
 
-  # Manual trigger for testing
+  # Manual trigger only (legacy — for reference/testing; not the live path)
   workflow_dispatch:
     inputs:
       dry_run:
