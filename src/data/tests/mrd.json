@@ -4482,7 +4482,7 @@
     "clinicalTrialsCitations": "https://guardanthealth.com/products/tests-for-patients-with-early-and-advanced-stage-cancer/ | AACR 2025 Tumor Fraction Update presentation",
     "totalParticipants": 31000,
     "totalParticipantsNotes": "Pan-cancer landscape of tumor fraction in >31,000 patients across most frequent solid tumors from CLIA ordering.",
-    "numPublications": 80,
+    "numPublications": 81,
     "numPublicationsPlus": true,
     "numPublicationsCitations": "Guardant Health claims >80 publications showing clinical feasibility or validity of genomic MR and/or monitoring.",
     "requiresTumorTissue": "No",
