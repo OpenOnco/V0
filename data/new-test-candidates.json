@@ -9,15 +9,6 @@
     "dateFound": "2026-05-23"
   },
   {
-    "name": "Caris ChromoSeq",
-    "vendor": "Caris Life Sciences",
-    "category": "TDS",
-    "summary": "Whole genome tumor profiling assay for myeloid malignancies (AML, MDS, MPN). >200X depth of coverage, ~1.6B reads per patient. MolDX approved. Hematologic CGP \u2014 evaluate if in scope.",
-    "source": "https://finance.yahoo.com/sectors/healthcare/articles/caris-life-sciences-q1-earnings-213936656.html",
-    "fdaAction": "MolDX approved (early May 2026)",
-    "dateFound": "2026-05-23"
-  },
-  {
     "name": "TOBY Urine MCED",
     "vendor": "TOBY Inc.",
     "category": "ECD",
@@ -26,14 +17,5 @@
     "fdaAction": "FDA Breakthrough Device Designation (April 14, 2026)",
     "dateFound": "2026-06-06",
     "status": "deferred \u2014 reviewed 2026-06-06; pre-validation (BDD only), revisit on launch/validation"
-  },
-  {
-    "name": "Tempus xH",
-    "vendor": "Tempus AI",
-    "category": "TDS",
-    "summary": "Whole-genome sequencing (WGS) test for hematologic malignancies (AML, MDS, MPN, overlap syndromes). Clinical availability announced June 1, 2026. In blinded MDS cohort, >99% sensitivity; uncovered 40% more clinically relevant genomic findings than standard of care. ASCO 2026 data presented.",
-    "source": "https://www.businesswire.com/news/home/20260601323021/en/Tempus-Announces-the-Upcoming-Clinical-Availability-of-Its-First-Whole-Genome-Sequencing-Assay-xH",
-    "fdaAction": "CLIA LDT (clinical launch June 2026)",
-    "dateFound": "2026-06-13"
   }
 ]
