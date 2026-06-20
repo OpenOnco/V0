@@ -769,7 +769,7 @@
     "clinicalTrialsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866 | https://grail.com/press-releases/grail-pathfinder-2-results-show-galleri-multi-cancer-early-detection-blood-test-increased-cancer-detection-more-than-seven-fold-when-added-to-uspstf-a-and-b-recommended-screenings/ | https://grail.com/press-releases/grail-reports-full-results-from-nhs-galleri-trial-demonstrating-substantial-reduction-in-stage-iv-cancer-diagnoses-at-2026-asco-annual-meeting/",
     "totalParticipants": 188535,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT05611632 | https://clinicaltrials.gov/study/NCT05155605 | https://clinicaltrials.gov/study/NCT03934866",
-    "numPublications": 27,
+    "numPublications": 28,
     "numPublicationsPlus": true,
     "financialAssistance": "Billing support available. Contact: (833) 694-2553",
     "medicareCoverage": {
@@ -2620,7 +2620,7 @@
     "tat": "1-2 weeks",
     "screeningInterval": "Every 3 years",
     "totalParticipants": 10000,
-    "numPublications": 100,
+    "numPublications": 101,
     "numPublicationsPlus": true,
     "nccnNamedInGuidelines": true,
     "nccnGuidelineReference": "NCCN Colorectal Cancer Screening Guidelines",

@@ -1058,7 +1058,7 @@
     "clinicalSettingsNotes": "Most broadly validated across clinical settings. Neoadjuvant: breast cancer (I-SPY2 trial, Medicare covered). Post-surgery: landmark ~4 weeks (75% NSCLC sens). Post-adjuvant: after chemo completion. Surveillance: longitudinal monitoring (94% NSCLC sens). Medicare covers all settings for CRC, breast, bladder, NSCLC, ovarian.",
     "totalParticipants": 2000,
     "totalParticipantsCitations": "https://clinicaltrials.gov/study/NCT04264702",
-    "numPublications": 104,
+    "numPublications": 105,
     "numPublicationsCitations": "https://www.natera.com/company/news/natera-announces-publication-of-over-100-peer-reviewed-papers-on-signateratm/",
     "numPublicationsPlus": true,
     "nccnNamedInGuidelines": true,
@@ -2643,7 +2643,7 @@
     "totalParticipants": 5000,
     "totalParticipantsNotes": "Estimated >5,000 patients across published clinical validation studies. ALCYONE alone included 706 patients.",
     "totalParticipantsCitations": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7325652/ | https://www.clonoseq.com/multiple-myeloma/",
-    "numPublications": 250,
+    "numPublications": 251,
     "numPublicationsPlus": true,
     "numPublicationsNotes": "Over 250 peer-reviewed publications including validation studies in MM, ALL, CLL, lymphomas. Clinical data incorporated into FDA drug approvals and NCCN guidelines.",
     "clinicalSettings": [
