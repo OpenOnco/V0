@@ -1010,7 +1010,7 @@
     "tat": 28,
     "tatCitations": "https://www.natera.com/oncology/signatera-advanced-cancer-detection/faq/",
     "tatNotes": "Overall paradigm: ~4 weeks for initial build, ~1–1.5 weeks for follow-up tests.",
-    "fdaStatus": "FDA-approved CDx (PMA, May 15, 2026) — Signatera CDx approved as companion diagnostic for adjuvant atezolizumab in ctDNA-positive muscle-invasive bladder cancer (MIBC); first blood-based MRD companion diagnostic. Also CLIA LDT for pan-tumor MRD monitoring.",
+    "fdaStatus": "FDA-approved CDx (PMA, May 15, 2026) — Signatera CDx approved as companion diagnostic for adjuvant atezolizumab in ctDNA-positive muscle-invasive bladder cancer (MIBC); first blood-based MRD companion diagnostic. Also CLIA LDT for pan-tumor MRD monitoring. Japan PMDA approved for CRC (June 23, 2026).",
     "reimbursement": "Medicare (CRC, Breast, Bladder, NSCLC, Ovarian, ICI)",
     "reimbursementNote": "Medicare MolDX coverage for: CRC (stage II-IV, oligometastatic), breast cancer (neoadjuvant, stage IIb+ adjuvant/recurrence), bladder (MIBC), NSCLC (stage I-III surveillance), ovarian/fallopian/peritoneal, and pan-solid ICI response monitoring. ADLT pricing. Coverage varies by indication - verify specific cancer type with payer.",
     "commercialPayers": [
@@ -1041,6 +1041,7 @@
       "US",
       "EU",
       "UK",
+      "Japan",
       "International"
     ],
     "clinicalAvailability": "Clinical LDT – shipping",
@@ -1746,9 +1747,9 @@
     "fdaStatus": "CLIA LDT; not FDA-cleared. Commercially launched June 1, 2026 as Veracyte's first MRD test (whole-genome MRD), built on the C2i Genomics platform.",
     "fdaStatusNotes": "Platform acquired from C2i Genomics in Feb 2024. Branded TrueMRD; secured MolDX Medicare coverage for MIBC (announced May 15, 2026) and commercially launched June 1, 2026 for clinical ordering.",
     "fdaStatusCitations": "Veracyte Q1 2025 earnings; GenomeWeb May 2025; EAU25 presentation.",
-    "reimbursement": "Not applicable",
-    "reimbursementNote": "Pre-commercial; Veracyte plans to leverage established urology channel for MIBC indication.",
-    "cptCodesNotes": "None (pre-commercial).",
+    "reimbursement": "Medicare (MIBC)",
+    "reimbursementNote": "MolDX Medicare coverage for muscle-invasive bladder cancer recurrence monitoring (announced May 15, 2026). Commercially launched June 1, 2026.",
+    "cptCodesNotes": "PLA code pending; MolDX coverage active.",
     "clinicalAvailability": "Commercial — available to order from June 1, 2026 (MIBC recurrence monitoring).",
     "medicareCoverage": {
       "status": "COVERED",
@@ -1779,22 +1780,26 @@
     "isRUO": false,
     "isInvestigational": false,
     "isClinicalLDT": true,
-    "regulatoryStatusNotes": "Pre-commercial investigational WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. First clinical test for MIBC expected H1 2026.",
+    "regulatoryStatusNotes": "WGS-based MRD platform acquired by Veracyte (Feb 2024, $70M + $25M milestones). TOMBOLA trial supports validation. Commercially launched June 1, 2026 for MIBC with MolDX Medicare coverage.",
     "vendorRequestedChanges": "2026-01-27: UHC Policy Review - Updated UHC coverage status per 2026 Molecular Oncology Testing policy - solid tumor MRD listed as Unproven/Not Medically Necessary.",
     "coverageCrossReference": {
       "lastVerified": "2026-01-15",
       "vendorClaims": {
         "url": "https://www.veracyte.com/",
-        "medicareClaimed": [],
-        "commercialClaimed": "Pre-commercial; first test expected H1 2026",
+        "medicareClaimed": [
+          "MIBC recurrence monitoring"
+        ],
+        "commercialClaimed": "Commercially launched June 1, 2026 for MIBC; coverage expanding.",
         "cashPay": null
       },
       "medicare": {
-        "status": "NOT_COVERED",
+        "status": "COVERED",
         "policies": [],
-        "indications": [],
+        "indications": [
+          "Muscle-invasive bladder cancer recurrence monitoring"
+        ],
         "rate": null,
-        "notes": "Pre-commercial research platform"
+        "notes": "MolDX Medicare coverage announced May 15, 2026; commercially launched June 1, 2026."
       },
       "privatePayers": {
         "aetna": {
@@ -1821,9 +1826,9 @@
         }
       },
       "analysis": {
-        "vendorClaimAccuracy": "N/A - Pre-commercial",
-        "patientGuidance": "Not yet available for clinical use. First commercial test (MIBC) expected H1 2026.",
-        "keyInsight": "Veracyte acquired C2i Genomics platform; commercial launch pending."
+        "vendorClaimAccuracy": "Medicare: Accurate (MIBC covered via MolDX)",
+        "patientGuidance": "Commercially available since June 1, 2026 for MIBC recurrence monitoring. Medicare coverage active.",
+        "keyInsight": "Veracyte launched TrueMRD (WGS-based MRD) with Medicare coverage for MIBC; first commercial test on C2i Genomics platform."
       }
     }
   },
